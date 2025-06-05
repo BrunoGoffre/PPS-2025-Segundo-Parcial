@@ -1,0 +1,105 @@
+.fondo-oscuro {
+  --background: #0e2a3b; /* azul marino profundo */
+  background: #0e2a3b;
+  color: #e0f7fa; /* blanco suave */
+}
+
+.titulo-principal {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #26c6da; /* celeste principal */
+  margin-top: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  text-shadow: 0 0 8px #007c91aa;
+}
+
+.linea-divisoria {
+  width: 100%;
+  margin: 0 auto -40px auto;
+  border: none;
+  border-top: 2px solid #26c6da;
+  box-shadow: 0 0 8px #00838f66;
+}
+
+.logo-img {
+  display: block;
+  height: 50vh;
+  object-fit: contain;
+  margin: -20px auto;
+  margin-left: 22px;
+  padding: 10px 0;
+}
+
+.contenido-login {
+  padding: 0 20px;
+  background: transparent;
+}
+
+.input-item {
+  background-color: #1b3c4c; /* azul grafito */
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.custom-label {
+  color: #b2ebf2; /* celeste muy suave */
+  font-size: 1.5rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+ion-input {
+  color: #e0f7fa;
+  font-size: 1.5rem;
+}
+
+.error-msg {
+  color: #ef9a9a; /* rojo claro para errores */
+  font-size: 1rem;
+  margin-left: 8px;
+}
+
+.btn-ingresar {
+  margin-top: 20px;
+  background-color: #00838f; /* azul petróleo */
+  color: white;
+  font-weight: bold;
+  font-family: 'Segoe UI', sans-serif;
+  border-radius: 12px;
+  height: 3.5rem;
+  font-size: large;
+  --background: #00838f;
+}
+
+.selectores-usuarios {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 30px 20px 0 20px;
+  gap: 15px;
+}
+
+.selector-card {
+  flex: 1 1 30%;
+  background-color: #263238; /* gris azulado oscuro */
+  padding: 15px;
+  text-align: center;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  color: #eceff1;
+  font-weight: 500;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 5px #00000066;
+}
+
+.selector-card:hover {
+  background-color: #37474f; /* gris más claro */
+}
+
+.selector-card.activo {
+  border: 2px solid #26c6da;
+  box-shadow: 0 0 15px #26c6da88;
+  background-color: #007c91;
+}

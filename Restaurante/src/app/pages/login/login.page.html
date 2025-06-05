@@ -1,0 +1,32 @@
+<ion-content [fullscreen]="true" class="fondo-oscuro">
+  <h1 class="titulo-principal">Bom apetite</h1>
+  <hr class="linea-divisoria">
+  <ion-img src="../../../assets/icon/icon.png" class="logo-img"></ion-img>
+
+
+  <ion-list class="contenido-login" color="transparent">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmitTemplate()">
+
+      <ion-item class="input-item">
+        <ion-label position="floating" class="custom-label">Correo electrónico</ion-label>
+        <ion-input formControlName="email" type="text"></ion-input>
+      </ion-item>
+      <ion-note *ngIf="isNotValidField('email')" class="error-msg">
+        {{getErrorMessage('email')}}
+      </ion-note>
+
+      <ion-item class="input-item">
+        <ion-label position="floating" class="custom-label">Contraseña</ion-label>
+        <ion-input formControlName="pass" type="password"></ion-input>
+      </ion-item>
+      <ion-note *ngIf="isNotValidField('pass')" class="error-msg">
+        {{getErrorMessage('pass')}}
+      </ion-note>
+
+      <ion-button class="btn-ingresar" expand="block" type="submit" [disabled]="loginForm.invalid">
+        Ingresar
+      </ion-button>
+    </form>
+  </ion-list>
+
+</ion-content>
