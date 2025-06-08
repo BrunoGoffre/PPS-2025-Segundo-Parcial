@@ -35,3 +35,29 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+
+.custom-loader .loading-wrapper {
+  background: rgba(111, 157, 255, 0.95);
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  text-align: center;
+  animation: fadeInScale 0.3s ease-in-out;
+
+  ion-spinner.sc-ion-loading-md{
+    color: white;
+  }
+  
+}
+
+@keyframes fadeInScale {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

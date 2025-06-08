@@ -4,6 +4,7 @@ import { LoadingController, ToastController } from '@ionic/angular';
 // import { Usuario } from 'src/app/clases/usuario'; <--- Clase para el usuario
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoadingService } from 'src/app/services/loading.service';
 //import { DataService } from 'src/app/services/data.service'; <--- Service para el usuario
 
 @Component({
@@ -33,7 +34,7 @@ export class LoginPage implements OnInit {
     // private dataService: DataService,
     private form: FormBuilder,
     private router: Router,
-    private loadingController: LoadingController
+    private loader: LoadingService
   ) {}
 
   ngOnInit() {
@@ -41,6 +42,7 @@ export class LoginPage implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       pass: ['', [Validators.required, Validators.minLength(6)]],
     });
+    this.loader.present();
   }
 
   cargarSesion(event: any, tipo: any) {
@@ -86,7 +88,6 @@ export class LoginPage implements OnInit {
     //     this.presentToast();
     //   }
     // );
-    this.presentLoading('Iniciando sesión...');
 
     // this.usuario = new Usuario();
     // console.log(this.dataService.getUserDetail());
@@ -126,21 +127,4 @@ export class LoginPage implements OnInit {
       this.loginControls[field].dirty == true
     );
   }
-
-  async presentLoading(message: string): Promise<void> {
-    const loading = await this.loadingController.create({
-      message,
-      duration: 1500,
-      spinner: 'circles',
-      showBackdrop: true,
-      cssClass: 'custom-loading',
-    });
-    await loading.present();
-  }
-
-  // resetForm() {
-  //   this.rol = '';
-  //   this.usuario.email = '';
-  //   this.usuario.pass = '';
-  // }
 }
