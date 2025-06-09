@@ -76,7 +76,7 @@ export class AuthService {
       if (user) {
         // Crear el perfil del usuario
         const { error: profileError } = await this.supabase
-          .from('profiles')
+          .from('Users')
           .insert({
             id: user.id,
             full_name: fullName,
@@ -102,7 +102,7 @@ export class AuthService {
 
   async getProfile(userId: string): Promise<Profile | null> {
     const { data, error } = await this.supabase
-      .from('profiles')
+      .from('Users')
       .select('*')
       .eq('id', userId)
       .single();
@@ -118,7 +118,7 @@ export class AuthService {
   async updateProfile(profile: Partial<Profile>): Promise<{ success: boolean; message?: string }> {
     try {
       const { error } = await this.supabase
-        .from('profiles')
+        .from('Users')
         .update(profile)
         .eq('id', this.currentUserValue?.id);
 
