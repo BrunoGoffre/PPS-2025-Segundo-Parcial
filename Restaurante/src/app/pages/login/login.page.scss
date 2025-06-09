@@ -4,102 +4,170 @@
   color: #e0f7fa; /* blanco suave */
 }
 
+.safe-area {
+  padding: calc(env(safe-area-inset-top) + 20px) 20px calc(env(safe-area-inset-bottom) + 32px) 16px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 .titulo-principal {
   text-align: center;
   font-size: 2.5rem;
   font-weight: bold;
   color: #26c6da; /* celeste principal */
-  margin-top: 20px;
+  margin: 16px 0;
   font-family: 'Segoe UI', sans-serif;
-  text-shadow: 0 0 8px #007c91aa;
+  text-shadow: 0 0 8px rgba(0, 124, 145, 0.4);
 }
 
 .linea-divisoria {
-  width: 100%;
-  margin: 0 auto -40px auto;
+  width: 80%;
+  margin: 0 auto 16px;
   border: none;
   border-top: 2px solid #26c6da;
-  box-shadow: 0 0 8px #00838f66;
+  opacity: 0.6;
 }
 
 .logo-img {
-  display: block;
-  height: 50vh;
-  object-fit: contain;
-  margin: -20px auto;
-  margin-left: 22px;
-  padding: 10px 0;
+  width: 180px;
+  height: auto;
+  margin: 24px auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 }
 
-.contenido-login {
-  padding: 0 20px;
-  background: transparent;
+.form-container {
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .input-item {
-  background-color: #1b3c4c; /* azul grafito */
-  border-radius: 10px;
-  margin-bottom: 15px;
-}
+  --background: rgba(27, 60, 76, 0.6);
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --highlight-height: 2px;
+  margin-bottom: 4px;
 
-.custom-label {
-  color: #b2ebf2; /* celeste muy suave */
-  font-size: 1.5rem;
-  font-family: 'Segoe UI', sans-serif;
-}
+  &::part(native) {
+    padding: 8px 0;
+  }
 
-ion-input {
-  color: #e0f7fa;
-  font-size: 1.5rem;
+  ion-label {
+    color: #b2ebf2;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  ion-input {
+    --padding-start: 0;
+    --padding-end: 0;
+    font-size: 1rem;
+    color: #e0f7fa;
+  }
 }
 
 .error-msg {
   color: #ef9a9a; /* rojo claro para errores */
-  font-size: 1rem;
-  margin-left: 8px;
+  font-size: 0.75rem;
+  margin-left: 16px;
+  display: block;
 }
 
 .btn-ingresar {
-  margin-top: 20px;
-  background-color: #00838f; /* azul petróleo */
-  color: white;
-  font-weight: bold;
-  font-family: 'Segoe UI', sans-serif;
-  border-radius: 12px;
-  height: 3.5rem;
-  font-size: large;
+  margin: 24px 0;
   --background: #00838f;
+  --border-radius: 12px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.selectores-usuarios {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin: 30px 20px 0 20px;
-  gap: 15px;
+.accesos-rapidos {
+  background: transparent;
+  margin: 8px 0;
+
+  ion-accordion {
+    background: transparent;
+    margin: 0;
+
+    .accordion-header {
+      --background: rgba(27, 60, 76, 0.6);
+      --border-radius: 12px;
+      
+      ion-label {
+        color: #26c6da;
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+    }
+
+    .accordion-content {
+      padding: 8px 0;
+    }
+  }
 }
 
-.selector-card {
-  flex: 1 1 30%;
-  background-color: #263238; /* gris azulado oscuro */
-  padding: 15px;
+.quick-access-item {
+  --background: rgba(27, 60, 76, 0.4);
+  --border-radius: 8px;
+  margin: 4px 0;
+  --padding-start: 16px;
+  --padding-end: 16px;
+
+  h2 {
+    color: #e0f7fa;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  p {
+    color: #b2ebf2;
+    font-size: 0.8rem;
+    opacity: 0.8;
+  }
+
+  &:hover {
+    --background: rgba(27, 60, 76, 0.6);
+  }
+}
+
+.register-link {
   text-align: center;
-  border-radius: 12px;
-  border: 2px solid transparent;
-  color: #eceff1;
-  font-weight: 500;
-  font-family: 'Segoe UI', sans-serif;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 5px #00000066;
-}
-
-.selector-card:hover {
-  background-color: #37474f; /* gris más claro */
-}
-
-.selector-card.activo {
-  border: 2px solid #26c6da;
-  box-shadow: 0 0 15px #26c6da88;
-  background-color: #007c91;
+  margin-top: 24px;
+  padding: 8px;
+  
+  p {
+    color: #b2ebf2;
+    font-size: 0.9rem;
+    
+    a {
+      color: #26c6da;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }

@@ -1,32 +1,54 @@
 <ion-content [fullscreen]="true" class="fondo-oscuro">
-  <h1 class="titulo-principal">Bom apetite</h1>
-  <hr class="linea-divisoria">
-  <ion-img src="../../../assets/icon/icon.png" class="logo-img"></ion-img>
+  <div class="safe-area">
+    <div class="login-container">
+      <h1 class="titulo-principal">Bom apetite</h1>
+      <hr class="linea-divisoria">
+      <ion-img src="../../../assets/icon/icon.png" class="logo-img"></ion-img>
 
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-container">
+        <ion-item class="input-item">
+          <ion-label position="floating">Correo electrónico</ion-label>
+          <ion-input formControlName="email" type="email"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="isFieldInvalid('email')" class="error-msg">
+          {{ getErrorMessage('email') }}
+        </ion-note>
 
-  <ion-list class="contenido-login" color="transparent">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmitTemplate()">
+        <ion-item class="input-item">
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input formControlName="password" type="password"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="isFieldInvalid('password')" class="error-msg">
+          {{ getErrorMessage('password') }}
+        </ion-note>
 
-      <ion-item class="input-item">
-        <ion-label position="floating" class="custom-label">Correo electrónico</ion-label>
-        <ion-input formControlName="email" type="text"></ion-input>
-      </ion-item>
-      <ion-note *ngIf="isNotValidField('email')" class="error-msg">
-        {{getErrorMessage('email')}}
-      </ion-note>
+        <ion-button class="btn-ingresar" expand="block" type="submit" [disabled]="loginForm.invalid">
+          Ingresar
+        </ion-button>
 
-      <ion-item class="input-item">
-        <ion-label position="floating" class="custom-label">Contraseña</ion-label>
-        <ion-input formControlName="pass" type="password"></ion-input>
-      </ion-item>
-      <ion-note *ngIf="isNotValidField('pass')" class="error-msg">
-        {{getErrorMessage('pass')}}
-      </ion-note>
+        <ion-accordion-group class="accesos-rapidos">
+          <ion-accordion value="accesos">
+            <ion-item slot="header" class="accordion-header">
+              <ion-label>Accesos Rápidos</ion-label>
+            </ion-item>
+            <div slot="content" class="accordion-content">
+              <ion-item *ngFor="let user of quickAccessUsers" 
+                       button 
+                       (click)="onQuickAccess(user)" 
+                       class="quick-access-item">
+                <ion-label>
+                  <h2>{{ user.displayName }}</h2>
+                  <p>{{ user.rol }}</p>
+                </ion-label>
+              </ion-item>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
 
-      <ion-button class="btn-ingresar" expand="block" type="submit" [disabled]="loginForm.invalid">
-        Ingresar
-      </ion-button>
-    </form>
-  </ion-list>
-
+        <div class="register-link">
+          <p>¿No tenés una cuenta? <a (click)="goToRegister()">Registrate acá</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
 </ion-content>

@@ -40,15 +40,21 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<{ success: boolean; message?: string; user?: User }> {
     try {
+      console.log('[AUTH-SERVICE] Intentando login con email:', email);
       const { data, error } = await this.supabase.auth.signInWithPassword({
         email,
         password
       });
 
-      if (error) throw error;
+      if (error) {
+        console.log('[AUTH-SERVICE] Error de Supabase:', error);
+        throw error;
+      }
 
+      console.log('[AUTH-SERVICE] Login exitoso:', data);
       return { success: true, user: data.user };
     } catch (error: any) {
+      console.log('[AUTH-SERVICE] Error capturado:', error);
       return { success: false, message: error.message };
     }
   }

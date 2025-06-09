@@ -1,0 +1,19 @@
+export interface User {
+  email: string;
+  password: string;
+  rol: 'cliente' | 'supervisor' | 'dueño' | 'empleado';
+  nombre?: string;
+  apellido?: string;
+  dni?: string;
+  foto_url?: string;
+  estado?: 'pendiente' | 'aprobado' | 'rechazado';
+}
+
+export interface QuickAccessUser {
+  email: string;
+  password: string;
+  rol: string;
+  displayName: string;
+}
+
+export type RegisterSource = 'login' | 'supervisor' | 'owner'; 

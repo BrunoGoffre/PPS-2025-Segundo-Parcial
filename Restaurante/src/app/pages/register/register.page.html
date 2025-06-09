@@ -1,13 +1,68 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>register</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="fondo-oscuro">
+  <div class="safe-area">
+    <div class="register-container">
+      <h1 class="titulo-principal">Bom apetite</h1>
+      <hr class="linea-divisoria">
+      <h3 class="subtitulo-principal">Registro</h3>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <ion-list class="contenido-registro">
+          <ion-item class="input-item">
+            <ion-label position="floating">Correo electrónico</ion-label>
+            <ion-input formControlName="email" type="email"></ion-input>
+          </ion-item>
+          <ion-note *ngIf="isFieldInvalid('email')" class="error-msg">
+            {{ getErrorMessage('email') }}
+          </ion-note>
+    
+          <ion-item class="input-item">
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input formControlName="password" type="password"></ion-input>
+          </ion-item>
+          <ion-note *ngIf="isFieldInvalid('password')" class="error-msg">
+            {{ getErrorMessage('password') }}
+          </ion-note>
+    
+          <ion-item class="input-item">
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input formControlName="nombre" type="text"></ion-input>
+          </ion-item>
+          <ion-note *ngIf="isFieldInvalid('nombre')" class="error-msg">
+            {{ getErrorMessage('nombre') }}
+          </ion-note>
+    
+          <ion-item class="input-item">
+            <ion-label position="floating">Apellido</ion-label>
+            <ion-input formControlName="apellido" type="text"></ion-input>
+          </ion-item>
+          <ion-note *ngIf="isFieldInvalid('apellido')" class="error-msg">
+            {{ getErrorMessage('apellido') }}
+          </ion-note>
+    
+          <ion-item class="input-item">
+            <ion-label position="floating">DNI</ion-label>
+            <ion-input formControlName="dni" type="text"></ion-input>
+          </ion-item>
+          <ion-note *ngIf="isFieldInvalid('dni')" class="error-msg">
+            {{ getErrorMessage('dni') }}
+          </ion-note>
+    
+          <ion-item class="input-item">
+            <ion-label position="floating">Foto</ion-label>
+            <ion-input formControlName="foto" type="file" accept="image/*"></ion-input>
+          </ion-item>
+          <ion-note *ngIf="isFieldInvalid('foto')" class="error-msg">
+            {{ getErrorMessage('foto') }}
+          </ion-note>
+    
+          <ion-button expand="block" type="submit" [disabled]="registerForm.invalid" class="btn-registrar">
+            Registrar
+          </ion-button>
+        </ion-list>
+    
+        <div class="login-link" *ngIf="isSourceLogin">
+          <p>¿Ya tenés una cuenta? <a (click)="goToLogin()">Inicia sesión</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
 </ion-content>

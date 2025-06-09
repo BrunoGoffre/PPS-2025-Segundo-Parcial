@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: RegisterPage
+  },
+  {
+    path: ':source',
+    component: RegisterPage
   }
 ];
 

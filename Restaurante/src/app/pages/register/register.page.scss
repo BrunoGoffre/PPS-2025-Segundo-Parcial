@@ -1,0 +1,104 @@
+.fondo-oscuro {
+  --background: #0e2a3b;
+  background: #0e2a3b;
+  color: #e0f7fa;
+}
+
+.safe-area {
+  padding: calc(env(safe-area-inset-top) + 20px) 20px calc(env(safe-area-inset-bottom) + 32px) 16px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.register-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.titulo-principal {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #26c6da; /* celeste principal */
+  margin: 16px 0;
+  font-family: 'Segoe UI', sans-serif;
+  text-shadow: 0 0 8px rgba(0, 124, 145, 0.4);
+}
+
+.subtitulo-principal {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #26c6da; /* celeste principal */
+  margin: 16px 0;
+}
+
+.contenido-registro {
+  padding: 20px;
+  background: transparent;
+}
+
+.input-item {
+  background-color: #1b3c4c;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  --background: #1b3c4c;
+}
+
+ion-label {
+  color: #b2ebf2;
+  font-size: 1.2rem;
+}
+
+ion-input {
+  color: #e0f7fa;
+  font-size: 1.2rem;
+}
+
+.error-msg {
+  color: #ef9a9a;
+  font-size: 0.8rem;
+  margin-left: 8px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.btn-registrar {
+  margin-top: 20px;
+  background-color: #00838f;
+  color: white;
+  font-weight: bold;
+  border-radius: 12px;
+  height: 3.5rem;
+  font-size: large;
+  --background: #00838f;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 24px;
+  padding: 8px;
+
+  p {
+    color: #b2ebf2;
+    font-size: 0.9rem;
+
+    a {
+      color: #26c6da;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
