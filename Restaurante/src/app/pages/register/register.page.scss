@@ -102,3 +102,15 @@ ion-input {
     }
   }
 }
+
+.info-note {
+  display: block;
+  padding: 0 16px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: var(--ion-color-medium);
+}
+
+.toggle-container {
+  margin: 10px 16px 20px;
+}

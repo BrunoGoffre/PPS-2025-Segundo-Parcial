@@ -1,7 +1,7 @@
 export interface User {
   email: string;
   password: string;
-  rol: 'cliente' | 'supervisor' | 'dueño' | 'empleado';
+  rol: 'cliente' | 'supervisor' | 'dueño' | 'empleado' | 'anonimo';
   nombre?: string;
   apellido?: string;
   dni?: string;
@@ -16,4 +16,4 @@ export interface QuickAccessUser {
   displayName: string;
 }
 
-export type RegisterSource = 'login' | 'supervisor' | 'owner'; 
+export type RegisterSource = 'login' | 'supervisor' | 'owner' | 'anonimo'; 

@@ -4,6 +4,14 @@
       <h1 class="titulo-principal">Bom apetite</h1>
       <hr class="linea-divisoria">
       <h3 class="subtitulo-principal">Registro</h3>
+      
+      <!-- Selector de modo anónimo solo para clientes -->
+      <div *ngIf="isSourceLogin" class="toggle-container">
+        <ion-toggle [(ngModel)]="esAnonimo" (ionChange)="toggleModoAnonimo()" label-placement="start">
+          Registro Anónimo
+        </ion-toggle>
+      </div>
+      
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <ion-list class="contenido-registro">
           <ion-item class="input-item">
@@ -30,25 +38,44 @@
             {{ getErrorMessage('nombre') }}
           </ion-note>
     
-          <ion-item class="input-item">
-            <ion-label position="floating">Apellido</ion-label>
-            <ion-input formControlName="apellido" type="text"></ion-input>
-          </ion-item>
-          <ion-note *ngIf="isFieldInvalid('apellido')" class="error-msg">
-            {{ getErrorMessage('apellido') }}
-          </ion-note>
+          <!-- Campos adicionales solo para clientes no anónimos -->
+          <ng-container *ngIf="showDniFields">
+            <ion-item class="input-item">
+              <ion-label position="floating">Apellido</ion-label>
+              <ion-input formControlName="apellido" type="text"></ion-input>
+            </ion-item>
+            <ion-note *ngIf="isFieldInvalid('apellido')" class="error-msg">
+              {{ getErrorMessage('apellido') }}
+            </ion-note>
     
-          <ion-item class="input-item">
-            <ion-label position="floating">DNI</ion-label>
-            <ion-input formControlName="dni" type="text"></ion-input>
-          </ion-item>
-          <ion-note *ngIf="isFieldInvalid('dni')" class="error-msg">
-            {{ getErrorMessage('dni') }}
-          </ion-note>
+            <ion-item class="input-item">
+              <ion-label position="floating">DNI</ion-label>
+              <ion-input formControlName="dni" type="text"></ion-input>
+              <ion-button slot="end" fill="clear" (click)="leerQR()">
+                <ion-icon name="qr-code-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
+            <ion-note class="info-note">
+              Puede escanear el código QR de su DNI para cargar los datos automáticamente.
+              <br>La primera vez podría requerir instalar un componente adicional (una sola vez).
+              <br><a (click)="mostrarAyudaQR()">¿Problemas con el lector QR?</a>
+            </ion-note>
+            <ion-note *ngIf="isFieldInvalid('dni')" class="error-msg">
+              {{ getErrorMessage('dni') }}
+            </ion-note>
+            
+            <ion-item class="input-item">
+              <ion-label position="floating">CUIL</ion-label>
+              <ion-input formControlName="cuil" type="text"></ion-input>
+            </ion-item>
+            <ion-note *ngIf="isFieldInvalid('cuil')" class="error-msg">
+              {{ getErrorMessage('cuil') }}
+            </ion-note>
+          </ng-container>
     
           <ion-item class="input-item">
             <ion-label position="floating">Foto</ion-label>
-            <ion-input formControlName="foto" type="file" accept="image/*"></ion-input>
+            <ion-input formControlName="foto" type="file" accept="image/*" (change)="onFileSelected($event)"></ion-input>
           </ion-item>
           <ion-note *ngIf="isFieldInvalid('foto')" class="error-msg">
             {{ getErrorMessage('foto') }}
