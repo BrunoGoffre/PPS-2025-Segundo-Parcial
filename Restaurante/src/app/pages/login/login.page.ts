@@ -13,10 +13,9 @@ import { QuickAccessUser } from 'src/app/interfaces/user.interface';
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  standalone:false
+  standalone: false,
 })
 export class LoginPage implements OnInit {
-
   // usuario: Usuario = new Usuario(); <--- Clase para el usuario
   checkUsuario: boolean = false;
   checkAdmin: boolean = false;
@@ -35,25 +34,25 @@ export class LoginPage implements OnInit {
       email: 'alex@sdk.com',
       password: 'hola12345',
       rol: 'admin',
-      displayName: 'Alex Test'
+      displayName: 'Alex Test',
     },
     {
       email: 'cliente@test.com',
       password: '123456',
       rol: 'cliente',
-      displayName: 'Cliente Test'
+      displayName: 'Cliente Test',
     },
     {
       email: 'supervisor@test.com',
       password: '123456',
       rol: 'supervisor',
-      displayName: 'Supervisor Test'
+      displayName: 'Supervisor Test',
     },
     {
       email: 'dueño@test.com',
       password: '123456',
       rol: 'dueño',
-      displayName: 'Dueño Test'
+      displayName: 'Dueño Test',
     },
   ];
 
@@ -69,27 +68,33 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    
     // this.loader.present();
   }
 
   private initForm(): FormGroup {
     return this.form.group({
-      email: ['', [
-        Validators.required,
-        Validators.email,
-        Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')
-      ]],
-      password: ['', [
-        Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(20)
-      ]]
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email,
+          Validators.pattern(
+            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
+          ),
+        ],
+      ],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(20),
+        ],
+      ],
     });
   }
 
-  cargarSesion(event: any, tipo: any) {
-  }
+  cargarSesion(event: any, tipo: any) {}
 
   get loginControls() {
     return this.loginForm.controls;
@@ -99,11 +104,22 @@ export class LoginPage implements OnInit {
     if (this.loginForm.valid) {
       try {
         await this.loader.present();
-        
+
         const { email, password } = this.loginForm.value;
         console.log(`[LOGIN-PAGE] Email: ${email}, Password: ${password}`);
-        
-        const { success, message } = await this.authService.login(email, password);
+
+        const { success, message, user } = await this.authService.login(
+          email,
+          password
+        );
+        console.log(user);
+        if (user?.approved == null) {
+          this.showError('Su cuenta esta pendiente de aprobación');
+          return;
+        } else if (user?.approved == false) {
+          this.showError('Su cuenta ha sido rechazada');
+          return;
+        }
 
         if (success) {
           this.router.navigate(['/home']);
@@ -124,12 +140,14 @@ export class LoginPage implements OnInit {
     if (this.loginForm.get('email')?.errors) {
       if (this.loginForm.get('email')?.hasError('required')) {
         this.showError('El email es requerido');
-      } else if (this.loginForm.get('email')?.hasError('email') || 
-                 this.loginForm.get('email')?.hasError('pattern')) {
+      } else if (
+        this.loginForm.get('email')?.hasError('email') ||
+        this.loginForm.get('email')?.hasError('pattern')
+      ) {
         this.showError('El formato del email no es válido');
       }
     }
-    
+
     if (this.loginForm.get('password')?.errors) {
       if (this.loginForm.get('password')?.hasError('required')) {
         this.showError('La contraseña es requerida');
@@ -146,16 +164,18 @@ export class LoginPage implements OnInit {
       message,
       duration: 3000,
       position: 'bottom',
-      color: 'danger'
+      color: 'danger',
     });
     await toast.present();
   }
 
   onQuickAccess(user: QuickAccessUser) {
-    console.log(`[LOGIN-PAGE] Email: ${user.email}, Password: ${user.password}`);
+    console.log(
+      `[LOGIN-PAGE] Email: ${user.email}, Password: ${user.password}`
+    );
     this.loginForm.patchValue({
       email: user.email,
-      password: user.password
+      password: user.password,
     });
   }
 
@@ -172,7 +192,8 @@ export class LoginPage implements OnInit {
     const control = this.loginForm.get(field);
     if (control?.errors) {
       if (control.hasError('required')) return 'Este campo es requerido';
-      if (control.hasError('email') || control.hasError('pattern')) return 'Email inválido';
+      if (control.hasError('email') || control.hasError('pattern'))
+        return 'Email inválido';
       if (control.hasError('minlength')) return 'Mínimo 6 caracteres';
       if (control.hasError('maxlength')) return 'Máximo 20 caracteres';
     }

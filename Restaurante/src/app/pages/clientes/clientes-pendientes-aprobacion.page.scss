@@ -1,0 +1,54 @@
+.no-clients-card {
+  margin-top: 20px;
+  text-align: center;
+  --background: #1b3c4c;
+  color: #e0f7fa;
+}
+
+ion-card {
+  margin-bottom: 15px;
+  --background: #1b3c4c;
+  color: #e0f7fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+ion-card-header {
+  padding-bottom: 0;
+}
+
+ion-card-title {
+  color: #26c6da;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+ion-card-subtitle {
+  color: #a7d9e4;
+  font-size: 0.9em;
+}
+
+ion-card-content {
+  padding-top: 10px;
+  p {
+    color: #b2ebf2;
+    font-size: 0.95em;
+    margin-bottom: 10px;
+  }
+
+  ion-row {
+    margin-top: 10px;
+  }
+
+  ion-button {
+    --box-shadow: none;
+    text-transform: none;
+    font-weight: 600;
+  }
+}
+
+.fondo-oscuro {
+  --background: #0e2a3b;
+  background: #0e2a3b;
+  color: #e0f7fa;
+}

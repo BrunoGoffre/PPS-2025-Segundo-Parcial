@@ -29,38 +29,6 @@ export class SupabaseService {
     });
   }
 
-  // Métodos de autenticación
-  public get currentUserValue(): User | null {
-    return this.currentUserSubject.value;
-  }
-
-  async signUp(email: string, password: string, metadata?: { name?: string }): Promise<AuthResponse> {
-    return await this.supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: metadata
-      }
-    });
-  }
-
-  async signIn(email: string, password: string): Promise<AuthResponse> {
-    return await this.supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-  }
-
-  async signOut(): Promise<void> {
-    await this.supabase.auth.signOut();
-    this.currentUserSubject.next(null);
-    this.authService.clearLoginForm(); // Limpiar el formulario al hacer logout
-  }
-
-  isLoggedIn(): boolean {
-    return !!this.currentUserValue;
-  }
-
   // Métodos para trabajar con tablas
   async getItems<T>(tableName: string, queryOptions?: {
     columns?: string,
