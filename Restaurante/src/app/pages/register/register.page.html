@@ -3,13 +3,31 @@
     <div class="register-container">
       <h1 class="titulo-principal">Bom apetite</h1>
       <hr class="linea-divisoria">
-      <h3 class="subtitulo-principal">Registro</h3>
+      <h3 class="subtitulo-principal">
+        {{ isAltaAdmin ? 'Alta de Dueño/Supervisor' : 'Registro' }}
+      </h3>
       
       <!-- Selector de modo anónimo solo para clientes -->
       <div *ngIf="isSourceLogin" class="toggle-container">
         <ion-toggle [(ngModel)]="esAnonimo" (ionChange)="toggleModoAnonimo()" label-placement="start">
           Registro Anónimo
         </ion-toggle>
+      </div>
+
+      <!-- Foto de perfil -->
+      <div class="profile-photo-container">
+        <div class="profile-photo-wrapper" (click)="sacarFoto()">
+          <div class="profile-photo" [class.has-photo]="selectedPhoto">
+            <img *ngIf="photoPreviewUrl" [src]="photoPreviewUrl" alt="Foto de perfil" />
+            <ion-icon *ngIf="!photoPreviewUrl" name="camera" class="camera-icon"></ion-icon>
+          </div>
+          <div class="photo-label">
+            {{ photoPreviewUrl ? 'Cambiar foto' : 'Agregar foto' }}
+          </div>
+        </div>
+        <ion-note *ngIf="isFieldInvalid('foto')" class="error-msg">
+          {{ getErrorMessage('foto') }}
+        </ion-note>
       </div>
       
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
@@ -21,7 +39,7 @@
           <ion-note *ngIf="isFieldInvalid('email')" class="error-msg">
             {{ getErrorMessage('email') }}
           </ion-note>
-    
+
           <ion-item class="input-item">
             <ion-label position="floating">Contraseña</ion-label>
             <ion-input formControlName="password" type="password"></ion-input>
@@ -29,7 +47,21 @@
           <ion-note *ngIf="isFieldInvalid('password')" class="error-msg">
             {{ getErrorMessage('password') }}
           </ion-note>
-    
+
+          <!-- Selector de perfil solo para alta de administradores -->
+          <ng-container *ngIf="isAltaAdmin">
+            <ion-item class="input-item">
+              <ion-label position="floating">Perfil</ion-label>
+              <ion-select formControlName="perfil" placeholder="Seleccione perfil">
+                <ion-select-option value="supervisor">Supervisor</ion-select-option>
+                <ion-select-option value="dueño">Dueño</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-note *ngIf="isFieldInvalid('perfil')" class="error-msg">
+              {{ getErrorMessage('perfil') }}
+            </ion-note>
+          </ng-container>
+
           <ion-item class="input-item">
             <ion-label position="floating">Nombre</ion-label>
             <ion-input formControlName="nombre" type="text"></ion-input>
@@ -38,8 +70,8 @@
             {{ getErrorMessage('nombre') }}
           </ion-note>
     
-          <!-- Campos adicionales solo para clientes no anónimos -->
-          <ng-container *ngIf="showDniFields">
+          <!-- Campos adicionales solo para clientes no anónimos y administradores -->
+          <ng-container *ngIf="showDniFields || isAltaAdmin">
             <ion-item class="input-item">
               <ion-label position="floating">Apellido</ion-label>
               <ion-input formControlName="apellido" type="text"></ion-input>
@@ -50,42 +82,62 @@
     
             <ion-item class="input-item">
               <ion-label position="floating">DNI</ion-label>
-              <ion-input formControlName="dni" type="text"></ion-input>
-              <ion-button slot="end" fill="clear" (click)="leerQR()">
-                <ion-icon name="qr-code-outline"></ion-icon>
-              </ion-button>
+              <ion-input formControlName="dni" type="text" placeholder="12345678"></ion-input>
             </ion-item>
-            <ion-note class="info-note">
-              Puede escanear el código QR de su DNI para cargar los datos automáticamente.
-              <br>La primera vez podría requerir instalar un componente adicional (una sola vez).
-              <br><a (click)="mostrarAyudaQR()">¿Problemas con el lector QR?</a>
-            </ion-note>
             <ion-note *ngIf="isFieldInvalid('dni')" class="error-msg">
               {{ getErrorMessage('dni') }}
             </ion-note>
             
             <ion-item class="input-item">
-              <ion-label position="floating">CUIL</ion-label>
-              <ion-input formControlName="cuil" type="text"></ion-input>
+              <ion-label position="floating">CUIL{{ isAltaAdmin ? ' *' : '' }}</ion-label>
+              <ion-input formControlName="cuil" type="text" placeholder="{{ isAltaAdmin ? 'XX-XXXXXXXX-X' : '' }}"></ion-input>
             </ion-item>
             <ion-note *ngIf="isFieldInvalid('cuil')" class="error-msg">
               {{ getErrorMessage('cuil') }}
             </ion-note>
           </ng-container>
-    
-          <ion-item class="input-item">
-            <ion-label position="floating">Foto</ion-label>
-            <ion-input formControlName="foto" type="file" accept="image/*" (change)="onFileSelected($event)"></ion-input>
-          </ion-item>
-          <ion-note *ngIf="isFieldInvalid('foto')" class="error-msg">
-            {{ getErrorMessage('foto') }}
-          </ion-note>
+
+          <!-- Selector de rol solo para dueños/supervisores logueados -->
+          <ng-container *ngIf="canAssignRoles">
+            <ion-item class="input-item">
+              <ion-label position="floating">Rol a asignar</ion-label>
+              <ion-select formControlName="rolAsignado" placeholder="Seleccione rol">
+                <ion-select-option value="cliente">Cliente</ion-select-option>
+                <ion-select-option value="empleado">Empleado</ion-select-option>
+                <ion-select-option value="supervisor" *ngIf="currentUser?.rol === 'dueño'">Supervisor</ion-select-option>
+                <ion-select-option value="dueño" *ngIf="currentUser?.rol === 'dueño'">Dueño</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-note *ngIf="isFieldInvalid('rolAsignado')" class="error-msg">
+              {{ getErrorMessage('rolAsignado') }}
+            </ion-note>
+          </ng-container>
+
+          <!-- Botón QR para escanear DNI al final -->
+          <div class="qr-scanner-container" *ngIf="showDniFields || isAltaAdmin">
+            <ion-button 
+              fill="outline" 
+              color="primary" 
+              expand="block" 
+              class="qr-button"
+              (click)="leerQR()">
+              <ion-icon name="qr-code" slot="start"></ion-icon>
+              Escanear DNI con QR
+            </ion-button>
+            <div class="qr-info">
+              <p>Escanea el código QR del reverso de tu DNI argentino para completar automáticamente tus datos.</p>
+              <a (click)="mostrarAyudaQR()" class="help-link">
+                <ion-icon name="help-circle-outline"></ion-icon>
+                ¿Problemas con el escáner?
+              </a>
+            </div>
+          </div>
     
           <ion-button expand="block" type="submit" [disabled]="registerForm.invalid" class="btn-registrar">
-            Registrar
+            {{ isAltaAdmin ? 'Registrar Administrador' : 'Registrar' }}
           </ion-button>
         </ion-list>
-    
+
         <div class="login-link" *ngIf="isSourceLogin">
           <p>¿Ya tenés una cuenta? <a (click)="goToLogin()">Inicia sesión</a></p>
         </div>

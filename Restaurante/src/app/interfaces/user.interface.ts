@@ -1,4 +1,5 @@
 export interface User {
+  id: number;
   email: string;
   password: string;
   rol: 'cliente' | 'supervisor' | 'dueño' | 'empleado' | 'anonimo';
@@ -16,4 +17,4 @@ export interface QuickAccessUser {
   displayName: string;
 }
 
-export type RegisterSource = 'login' | 'supervisor' | 'owner' | 'anonimo'; 
+export type RegisterSource = 'login' | 'supervisor' | 'owner' | 'anonimo' | 'admin'; 

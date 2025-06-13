@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { LoadingController, ToastController } from '@ionic/angular';
-// import { Usuario } from 'src/app/clases/usuario'; <--- Clase para el usuario
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingService } from 'src/app/services/loading.service';
-//import { DataService } from 'src/app/services/data.service'; <--- Service para el usuario
 import { QuickAccessUser } from 'src/app/interfaces/user.interface';
+import { ToolsService } from 'src/app/services/tools.service';
 
 @Component({
   selector: 'app-login',
@@ -16,17 +14,13 @@ import { QuickAccessUser } from 'src/app/interfaces/user.interface';
   standalone: false,
 })
 export class LoginPage implements OnInit {
-  // usuario: Usuario = new Usuario(); <--- Clase para el usuario
   checkUsuario: boolean = false;
   checkAdmin: boolean = false;
   checkTester: boolean = false;
   selectedUser: any;
-  // perfiles = environment.perfiles;
   principal = '../assets/img/alarm.svg';
   rol: string = '';
-  // nombre: string;
-  pattern = '^([a-zA-Z0-9_-.]+)@([a-zA-Z0-9_-.]+).([a-zA-Z]{2,5})$';
-  // mensaje: string;
+  pattern = '^[a-zA-Z0-9._%+-ñÑ]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$';
   loginForm: FormGroup = this.initForm();
   dirty: boolean = false;
   quickAccessUsers: QuickAccessUser[] = [
@@ -49,27 +43,22 @@ export class LoginPage implements OnInit {
       displayName: 'Supervisor Test',
     },
     {
-      email: 'dueño@test.com',
-      password: '123456',
+      email: 'duenio@test.com',
+      password: '12345678',
       rol: 'dueño',
       displayName: 'Dueño Test',
     },
   ];
 
   constructor(
-    public toastController: ToastController,
     // private dataService: DataService,
     private form: FormBuilder,
     private router: Router,
-    private loader: LoadingService,
+    private tools: ToolsService,
     private authService: AuthService
-  ) {
-    // this.initForm();
-  }
+  ) {}
 
-  ngOnInit() {
-    // this.loader.present();
-  }
+  ngOnInit() {}
 
   private initForm(): FormGroup {
     return this.form.group({
@@ -77,9 +66,8 @@ export class LoginPage implements OnInit {
         '',
         [
           Validators.required,
-          Validators.email,
           Validators.pattern(
-            '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
+            '^[a-zA-Z0-9._%+-ñÑ]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
           ),
         ],
       ],
@@ -103,7 +91,7 @@ export class LoginPage implements OnInit {
   async onSubmit() {
     if (this.loginForm.valid) {
       try {
-        await this.loader.present();
+        await this.tools.presentLoader();
 
         const { email, password } = this.loginForm.value;
         console.log(`[LOGIN-PAGE] Email: ${email}, Password: ${password}`);
@@ -114,22 +102,34 @@ export class LoginPage implements OnInit {
         );
         console.log(user);
         if (user?.approved == null) {
-          this.showError('Su cuenta esta pendiente de aprobación');
+          this.tools.PresentToast(
+            'Su cuenta esta pendiente de aprobación',
+            'danger',
+            3000
+          );
           return;
         } else if (user?.approved == false) {
-          this.showError('Su cuenta ha sido rechazada');
+          this.tools.PresentToast(
+            'Su cuenta ha sido rechazada',
+            'danger',
+            3000
+          );
           return;
         }
 
         if (success) {
           this.router.navigate(['/home']);
         } else {
-          this.showError(message || 'Error al iniciar sesión');
+          this.tools.PresentToast(
+            message || 'Error al iniciar sesión',
+            'danger',
+            3000
+          );
         }
       } catch (error) {
-        this.showError('Error al iniciar sesión');
+        this.tools.PresentToast('Error al iniciar sesión', 'danger', 3000);
       } finally {
-        await this.loader.StopLoading();
+        await this.tools.StopLoader();
       }
     } else {
       this.showFormErrors();
@@ -139,34 +139,36 @@ export class LoginPage implements OnInit {
   private showFormErrors(): void {
     if (this.loginForm.get('email')?.errors) {
       if (this.loginForm.get('email')?.hasError('required')) {
-        this.showError('El email es requerido');
+        this.tools.PresentToast('El email es requerido', 'danger', 3000);
       } else if (
         this.loginForm.get('email')?.hasError('email') ||
         this.loginForm.get('email')?.hasError('pattern')
       ) {
-        this.showError('El formato del email no es válido');
+        this.tools.PresentToast(
+          'El formato del email no es válido',
+          'danger',
+          3000
+        );
       }
     }
 
     if (this.loginForm.get('password')?.errors) {
       if (this.loginForm.get('password')?.hasError('required')) {
-        this.showError('La contraseña es requerida');
+        this.tools.PresentToast('La contraseña es requerida', 'danger', 3000);
       } else if (this.loginForm.get('password')?.hasError('minlength')) {
-        this.showError('La contraseña debe tener al menos 6 caracteres');
+        this.tools.PresentToast(
+          'La contraseña debe tener al menos 6 caracteres',
+          'danger',
+          3000
+        );
       } else if (this.loginForm.get('password')?.hasError('maxlength')) {
-        this.showError('La contraseña no puede tener más de 20 caracteres');
+        this.tools.PresentToast(
+          'La contraseña no puede tener más de 20 caracteres',
+          'danger',
+          3000
+        );
       }
     }
-  }
-
-  private async showError(message: string) {
-    const toast = await this.toastController.create({
-      message,
-      duration: 3000,
-      position: 'bottom',
-      color: 'danger',
-    });
-    await toast.present();
   }
 
   onQuickAccess(user: QuickAccessUser) {
@@ -177,6 +179,16 @@ export class LoginPage implements OnInit {
       email: user.email,
       password: user.password,
     });
+    console.log('Errores del formulario:', this.loginForm.errors);
+    console.log(
+      'Errores del control de email:',
+      this.loginForm.get('email')?.errors
+    );
+    console.log(
+      'Errores del control de password:',
+      this.loginForm.get('password')?.errors
+    );
+    console.log('formulario valido: ', this.loginForm.valid);
   }
 
   goToRegister() {
@@ -185,7 +197,7 @@ export class LoginPage implements OnInit {
 
   isFieldInvalid(field: string): boolean {
     const control = this.loginForm.get(field);
-    return !!(control && control.invalid && (control.dirty || control.touched));
+    return !!(control && control.invalid && control.dirty && control.touched);
   }
 
   getErrorMessage(field: string): string {

@@ -21,6 +21,14 @@
   width: 100%;
 }
 
+.linea-divisoria {
+  width: 80%;
+  margin: 0 auto 16px;
+  border: none;
+  border-top: 2px solid #26c6da;
+  opacity: 0.6;
+}
+
 .titulo-principal {
   text-align: center;
   font-size: 2.5rem;
@@ -113,4 +121,154 @@ ion-input {
 
 .toggle-container {
   margin: 10px 16px 20px;
+}
+
+// Estilos para la foto de perfil
+.profile-photo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0 30px;
+}
+
+.profile-photo-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.profile-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #26c6da;
+  background: #1b3c4c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(38, 198, 218, 0.3);
+  transition: all 0.3s ease;
+
+  &.has-photo {
+    border-color: #00838f;
+    box-shadow: 0 4px 16px rgba(0, 131, 143, 0.4);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .camera-icon {
+    font-size: 3rem;
+    color: #26c6da;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+
+    .profile-photo-wrapper:hover & {
+      opacity: 1;
+    }
+  }
+}
+
+.photo-label {
+  margin-top: 12px;
+  color: #26c6da;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 6px 12px;
+  border-radius: 16px;
+  background: rgba(38, 198, 218, 0.1);
+  border: 1px solid rgba(38, 198, 218, 0.3);
+  min-width: 100px;
+  transition: all 0.3s ease;
+
+  .profile-photo-wrapper:hover & {
+    background: rgba(38, 198, 218, 0.2);
+    border-color: rgba(38, 198, 218, 0.5);
+  }
+}
+
+// Estilos para el escáner QR
+.qr-scanner-container {
+  margin: 20px 0;
+  padding: 0 16px;
+}
+
+.qr-button {
+  --border-color: #26c6da;
+  --color: #26c6da;
+  --background: rgba(38, 198, 218, 0.05);
+  margin: 12px 0;
+  height: 48px;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(38, 198, 218, 0.2);
+  transition: all 0.3s ease;
+
+  &:hover {
+    --background: rgba(38, 198, 218, 0.15);
+    box-shadow: 0 4px 16px rgba(38, 198, 218, 0.3);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(38, 198, 218, 0.2);
+  }
+
+  ion-icon {
+    font-size: 1.4rem;
+    margin-right: 8px;
+  }
+}
+
+.qr-info {
+  text-align: center;
+  margin-top: 8px;
+
+  p {
+    color: #b2ebf2;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    opacity: 0.9;
+  }
+
+  .help-link {
+    display: inline-flex;
+    align-items: center;
+    color: #26c6da;
+    font-size: 0.8rem;
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(38, 198, 218, 0.1);
+      text-decoration: underline;
+    }
+
+    ion-icon {
+      font-size: 1rem;
+      margin-right: 4px;
+    }
+  }
 }

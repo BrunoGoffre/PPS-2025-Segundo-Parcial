@@ -29,6 +29,27 @@ export class SupabaseService {
     });
   }
 
+  // Métodos de autenticación
+  public get currentUserValue(): User | null {
+    return this.currentUserSubject.value;
+  }
+
+  async signUp(email: string, password: string, metadata?: { name?: string }): Promise<AuthResponse> {
+    return await this.supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: metadata
+      }
+    });
+  }
+
+  
+
+  isLoggedIn(): boolean {
+    return !!this.currentUserValue;
+  }
+
   // Métodos para trabajar con tablas
   async getItems<T>(tableName: string, queryOptions?: {
     columns?: string,

@@ -28,14 +28,18 @@ export class AuthService {
     // Verificar si hay una sesión activa
     this.supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        this.currentUserSubject.next(session.user);
+        this.getProfile(session.user.id).then((user) => {
+          this.currentUserSubject.next(user as User);
+        })
       }
     });
 
     // Suscribirse a cambios en la autenticación
     this.supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
-        this.currentUserSubject.next(session.user);
+        this.getProfile(session.user.id).then((user) => {
+          this.currentUserSubject.next(user as User);
+        })
       } else {
         this.currentUserSubject.next(null);
       }
@@ -51,7 +55,6 @@ export class AuthService {
     password: string
   ): Promise<{ success: boolean; message?: string; user?: UserModel }> {
     try {
-      console.log('[AUTH-SERVICE] Intentando login con email:', email);
       const { data, error } = await this.supabase.auth.signInWithPassword({
         email,
         password,
@@ -61,17 +64,13 @@ export class AuthService {
         console.log('[AUTH-SERVICE] Error de Supabase:', error);
         throw error;
       }
-      const { data: userData, error: userError } = await this.supabase
-        .from('Users')
-        .select('*')
-        .eq('id', data.user.id)
-        .single();
-      if (userError) {
-        console.error('Error fetching user data:', userError);
-      }
+      console.log('[AUTH-SERVICE] Login exitoso:', data);
+      let userReturn: any;
+      await this.getProfile(data.user.id).then((user) => {
+          userReturn = user;
+      })
+      return { success: true, user: userReturn };
 
-      console.log('[AUTH-SERVICE] Login exitoso:', userData);
-      return { success: true, user: userData as UserModel };
     } catch (error: any) {
       console.log('[AUTH-SERVICE] Error capturado:', error);
       return { success: false, message: error.message };
@@ -94,6 +93,7 @@ export class AuthService {
       dni?: string;
       cuil?: string;
       photoFile?: File;
+      approved?: boolean;
     } = {}
   ): Promise<{ success: boolean; message?: string }> {
     try {
@@ -131,60 +131,82 @@ export class AuthService {
 
       // 2. Si hay una foto, subirla al bucket y registrarla en Profile_Photos
       if (userData.photoFile) {
-        console.log('[AUTH] Procesando foto de perfil...');
+        console.log('[AUTH] Procesando foto de perfil...', {
+          fileName: userData.photoFile.name,
+          fileSize: userData.photoFile.size,
+          fileType: userData.photoFile.type
+        });
 
-        // Generar un nombre único para la foto
-        const fileExt = userData.photoFile.name.split('.').pop();
-        const fileName = `${user.id}_${Date.now()}.${fileExt}`;
+        try {
+          // Generar un nombre único para la foto
+          const fileExt = userData.photoFile.name.split('.').pop() || 'jpg';
+          const fileName = `${user.id}_${Date.now()}.${fileExt}`;
+          
+          console.log('[AUTH] Nombre de archivo generado:', fileName);
 
-        // Subir la foto al bucket
-        const { error: uploadError, data: uploadData } =
-          await this.supabase.storage
+          // Verificar que el archivo es válido
+          if (userData.photoFile.size === 0) {
+            throw new Error('El archivo de imagen está vacío');
+          }
+
+          if (userData.photoFile.size > 5 * 1024 * 1024) { // 5MB
+            throw new Error('El archivo es demasiado grande (máximo 5MB)');
+          }
+
+          // Subir la foto al bucket
+          console.log('[AUTH] Iniciando upload al storage...');
+          const { error: uploadError, data: uploadData } =
+            await this.supabase.storage
+              .from('profile-photos')
+              .upload(fileName, userData.photoFile, {
+                cacheControl: '3600',
+                upsert: false
+              });
+
+          if (uploadError) {
+            console.error('[AUTH] Error al subir imagen:', uploadError);
+            throw new Error(`Error al subir imagen: ${uploadError.message}`);
+          }
+
+          console.log('[AUTH] Archivo subido exitosamente:', uploadData);
+
+          // Obtener la URL pública de la foto
+          const { data: urlData } = this.supabase.storage
             .from('profile-photos')
-            .upload(fileName, userData.photoFile);
+            .getPublicUrl(fileName);
 
-        if (uploadError) {
-          console.error('[AUTH] Error al subir imagen:', uploadError);
-          throw uploadError;
+          if (!urlData?.publicUrl) {
+            throw new Error('No se pudo generar la URL pública');
+          }
+
+          const publicUrl = urlData.publicUrl;
+          console.log('[AUTH] URL pública generada:', publicUrl);
+
+          // Registrar la foto en la tabla Profile_Photos
+          console.log('[AUTH] Guardando referencia en Profile_Photos...');
+          const { data: photoData, error: photoError } = await this.supabase
+            .from('Profile_Photos')
+            .insert({
+              url: publicUrl,
+              name: fileName,
+            })
+            .select('id')
+            .single();
+
+          if (photoError) {
+            console.error('[AUTH] Error al guardar referencia de foto:', photoError);
+            throw new Error(`Error al guardar referencia: ${photoError.message}`);
+          }
+
+          console.log('[AUTH] Referencia de foto guardada exitosamente:', photoData);
+
+          // Guardar el ID de la foto para usarlo en el usuario
+          photoId = photoData.id;
+
+        } catch (photoProcessingError) {
+          console.error('[AUTH] Error en procesamiento de foto:', photoProcessingError);
+          throw new Error(`Error procesando foto: ${photoProcessingError}`);
         }
-
-        console.log('[AUTH] Archivo subido:', uploadData);
-
-        // Obtener la URL pública de la foto - CORREGIDO
-        const { data } = this.supabase.storage
-          .from('profile-photos')
-          .getPublicUrl(fileName);
-
-        // Asegurar que tengamos una URL completa y válida
-        const publicUrl = new URL(
-          `/storage/v1/object/public/profile-photos/${fileName}`,
-          environment.supabaseUrl
-        ).toString();
-        console.log('[AUTH] URL pública generada:', publicUrl);
-
-        // Registrar la foto en la tabla Profile_Photos
-        console.log('[AUTH] Guardando referencia en Profile_Photos...');
-        const { data: photoData, error: photoError } = await this.supabase
-          .from('Profile_Photos')
-          .insert({
-            url: publicUrl,
-            name: fileName,
-          })
-          .select('id')
-          .single();
-
-        if (photoError) {
-          console.error(
-            '[AUTH] Error al guardar referencia de foto:',
-            photoError
-          );
-          throw photoError;
-        }
-
-        console.log('[AUTH] Referencia de foto guardada:', photoData);
-
-        // Guardar el ID de la foto para usarlo en el usuario
-        photoId = photoData.id;
       }
 
       // 3. Crear el perfil del usuario en la tabla Users
@@ -200,6 +222,7 @@ export class AuthService {
         CUIL?: string;
         photo_id: number | null;
         role_Id: number;
+        approved?: boolean;
       } = {
         id: user.id,
         name: fullName.split(' ')[0], // Asumiendo que el nombre viene primero
@@ -209,6 +232,11 @@ export class AuthService {
         photo_id: photoId,
         role_Id: roleId,
       };
+
+      // Para administradores (dueño/supervisor) se aprueban automáticamente
+      if (rol === 'dueño' || rol === 'supervisor' || userData.approved === true) {
+        userData_db.approved = true;
+      }
 
       // Si es anónimo, solo guardamos los campos necesarios
       if (isAnonymous) {
@@ -260,7 +288,7 @@ export class AuthService {
     return !!this.currentUserValue;
   }
 
-  async getProfile(userId: string): Promise<Profile | null> {
+  async getProfile(userId: string): Promise<User | null> {
     const { data, error } = await this.supabase
       .from('Users')
       .select('*, Profile_Photos(url)')
@@ -272,7 +300,7 @@ export class AuthService {
       return null;
     }
 
-    return data as Profile;
+    return data as User;
   }
 
   async updateProfile(
