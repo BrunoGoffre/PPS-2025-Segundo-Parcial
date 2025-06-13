@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToolsService } from 'src/app/services/tools.service';
 import {
@@ -23,6 +24,7 @@ export class AltaEmpleadoPage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
+    private location: Location,
     private authService: AuthService,
     private toolsService: ToolsService,
     private alertController: AlertController,
@@ -219,5 +221,9 @@ export class AltaEmpleadoPage implements OnInit {
       buttons: ['Entendido'],
     });
     await alert.present();
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

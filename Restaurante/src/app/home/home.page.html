@@ -1,20 +1,129 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
-      Blank
+      Bom apetite
     </ion-title>
+    <ion-buttons slot="end">
+      <!-- Mostrar logout solo si hay usuario logueado -->
+      <ion-button *ngIf="currentUser" (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+      <!-- Mostrar login si no hay usuario logueado -->
+      <ion-button *ngIf="!currentUser" (click)="goToLogin()">
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="fondo-oscuro">
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando...</p>
+  </div>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <!-- Contenido principal -->
+  <div *ngIf="!isLoading" class="home-container">
+    <!-- Saludo y información del usuario -->
+    <div class="welcome-section">
+      <h1 class="greeting">{{ getGreeting() }}</h1>
+      
+      <!-- Si hay usuario logueado -->
+      <div *ngIf="currentUser">
+        <h2 class="user-name">{{ currentUser.nombre }}</h2>
+        <div class="user-role">
+          <ion-chip [color]="isDueno ? 'warning' : isSupervisor ? 'secondary' : 'primary'">
+            <ion-icon [name]="isDueno ? 'crown' : isSupervisor ? 'shield' : isEmpleado ? 'briefcase' : 'person'"></ion-icon>
+            <ion-label>{{ currentUser.rol | titlecase }}</ion-label>
+          </ion-chip>
+        </div>
+      </div>
+      
+      <!-- Si no hay usuario logueado -->
+      <div *ngIf="!currentUser" class="guest-welcome">
+        <h2 class="welcome-title">¡Bienvenido a Bom apetite!</h2>
+        <p class="welcome-description">Descubre la mejor experiencia culinaria. Inicia sesión o regístrate para comenzar.</p>
+        
+        <div class="auth-buttons">
+          <ion-button expand="block" fill="solid" color="primary" (click)="goToLogin()" class="auth-btn">
+            <ion-icon name="log-in-outline" slot="start"></ion-icon>
+            Iniciar Sesión
+          </ion-button>
+          
+          <ion-button expand="block" fill="outline" color="primary" (click)="goToRegister()" class="auth-btn">
+            <ion-icon name="person-add-outline" slot="start"></ion-icon>
+            Registrarse
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Opciones de navegación según el rol -->
+    <div class="actions-section">
+      <!-- Opciones para Dueño y Supervisor -->
+      <ng-container *ngIf="canAccessClientes">
+        <div class="section-title">
+          <h3>Administración</h3>
+        </div>
+        
+        <ion-card (click)="goToClientes()" class="action-card">
+          <ion-card-content>
+            <div class="card-icon">
+              <ion-icon name="people" color="primary"></ion-icon>
+            </div>
+            <div class="card-content">
+              <h4>Gestión de Clientes</h4>
+              <p>Ver y aprobar clientes pendientes</p>
+            </div>
+            <ion-icon name="chevron-forward" class="arrow-icon"></ion-icon>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card (click)="goToAltaEmpleado()" class="action-card">
+          <ion-card-content>
+            <div class="card-icon">
+              <ion-icon name="person-add" color="secondary"></ion-icon>
+            </div>
+            <div class="card-content">
+              <h4>Alta de Empleados</h4>
+              <p>Registrar nuevos empleados</p>
+            </div>
+            <ion-icon name="chevron-forward" class="arrow-icon"></ion-icon>
+          </ion-card-content>
+        </ion-card>
+      </ng-container>
+
+      <!-- Opciones generales -->
+      <div class="section-title">
+        <h3>Restaurante</h3>
+      </div>
+
+      <ion-card class="action-card disabled">
+        <ion-card-content>
+          <div class="card-icon">
+            <ion-icon name="restaurant" color="tertiary"></ion-icon>
+          </div>
+          <div class="card-content">
+            <h4>Menú</h4>
+            <p>Ver carta del restaurante</p>
+          </div>
+          <ion-icon name="chevron-forward" class="arrow-icon"></ion-icon>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="action-card disabled">
+        <ion-card-content>
+          <div class="card-icon">
+            <ion-icon name="receipt" color="success"></ion-icon>
+          </div>
+          <div class="card-content">
+            <h4>Pedidos</h4>
+            <p>Realizar o gestionar pedidos</p>
+          </div>
+          <ion-icon name="chevron-forward" class="arrow-icon"></ion-icon>
+        </ion-card-content>
+      </ion-card>
+    </div>
   </div>
 </ion-content>

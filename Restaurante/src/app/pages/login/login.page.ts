@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { QuickAccessUser } from 'src/app/interfaces/user.interface';
 import { ToolsService } from 'src/app/services/tools.service';
 
@@ -54,6 +55,7 @@ export class LoginPage implements OnInit {
     // private dataService: DataService,
     private form: FormBuilder,
     private router: Router,
+    private location: Location,
     private tools: ToolsService,
     private authService: AuthService
   ) {}
@@ -192,7 +194,7 @@ export class LoginPage implements OnInit {
   }
 
   goToRegister() {
-    this.router.navigate(['/register', 'login']);
+    this.router.navigate(['/register']);
   }
 
   isFieldInvalid(field: string): boolean {
@@ -210,5 +212,9 @@ export class LoginPage implements OnInit {
       if (control.hasError('maxlength')) return 'Máximo 20 caracteres';
     }
     return '';
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

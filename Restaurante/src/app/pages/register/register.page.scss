@@ -57,16 +57,77 @@
   border-radius: 10px;
   margin-bottom: 15px;
   --background: #1b3c4c;
+  transition: all 0.3s ease;
+  
+  // Mejorar el contraste cuando el input está focused
+  &.item-has-focus {
+    box-shadow: 0 0 0 2px rgba(38, 198, 218, 0.3);
+    
+    ion-input, ion-select {
+      --placeholder-color: rgba(178, 235, 242, 0.3);
+    }
+  }
+  
+  // Estilo para cuando el input tiene valor
+  &.item-has-value {
+    ion-input {
+      --placeholder-opacity: 0.3;
+    }
+    
+    ion-select {
+      --placeholder-opacity: 0.3;
+    }
+  }
 }
 
 ion-label {
   color: #b2ebf2;
   font-size: 1.2rem;
+  transition: all 0.3s ease;
+  
+  // Label cuando está floating (arriba)
+  &.label-floating {
+    color: #26c6da;
+    font-weight: 500;
+  }
+  
+  // Label cuando está focused
+  &.label-focused {
+    color: #26c6da;
+  }
 }
 
 ion-input {
   color: #e0f7fa;
   font-size: 1.2rem;
+  transition: all 0.3s ease;
+  
+  // Estilos para placeholders más sutiles y elegantes
+  --placeholder-color: rgba(178, 235, 242, 0.45);
+  --placeholder-opacity: 0.7;
+  --placeholder-font-style: italic;
+  --placeholder-font-weight: 300;
+  
+  // Cuando el input está focused, el placeholder se vuelve más sutil
+  &:focus {
+    --placeholder-opacity: 0.3;
+  }
+}
+
+// Placeholder más sutil para ion-select
+ion-select {
+  color: #e0f7fa;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  --placeholder-color: rgba(178, 235, 242, 0.45);
+  --placeholder-opacity: 0.7;
+  --placeholder-font-style: italic;
+  --placeholder-font-weight: 300;
+  
+  // Cuando está abierto o focused
+  &.select-expanded {
+    --placeholder-opacity: 0.3;
+  }
 }
 
 .error-msg {
@@ -119,8 +180,142 @@ ion-input {
   color: var(--ion-color-medium);
 }
 
-.toggle-container {
-  margin: 10px 16px 20px;
+// Contenedor del toggle anónimo rediseñado
+.anonymous-toggle-container {
+  margin: 16px 0 24px;
+  padding: 0 16px;
+}
+
+.toggle-card {
+  background: linear-gradient(135deg, #1b3c4c 0%, #2a4a5a 100%);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(38, 198, 218, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+
+  // Estado cuando el toggle está activado
+  &.active {
+    background: linear-gradient(135deg, #26c6da 0%, #00acc1 100%);
+    border-color: #ffffff;
+    
+    .toggle-title, .toggle-icon {
+      color: #ffffff;
+    }
+    
+    .toggle-description {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
+  // Efecto de brillo sutil
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(38, 198, 218, 0.1),
+      transparent
+    );
+    transition: left 0.6s ease;
+  }
+
+  &:hover {
+    border-color: rgba(38, 198, 218, 0.4);
+    box-shadow: 0 6px 20px rgba(38, 198, 218, 0.2);
+    transform: translateY(-2px);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.toggle-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.toggle-info {
+  flex: 1;
+}
+
+.toggle-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #26c6da;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.toggle-icon {
+  font-size: 1.3rem;
+  color: #26c6da;
+}
+
+.toggle-description {
+  color: #b2ebf2;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  opacity: 0.9;
+}
+
+// Estilos personalizados para el toggle
+.custom-toggle {
+  --track-background: rgba(178, 235, 242, 0.2);
+  --track-background-checked: #26c6da;
+  --handle-background: #ffffff;
+  --handle-background-checked: #ffffff;
+  --handle-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  
+  transform: scale(1.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; // Deshabilitar interacción directa
+  
+  // Mantener apariencia normal aunque esté disabled
+  &.toggle-disabled {
+    opacity: 1 !important;
+    --track-background: rgba(178, 235, 242, 0.2);
+    --track-background-checked: #26c6da;
+    --handle-background: #ffffff;
+    --handle-background-checked: #ffffff;
+  }
+  
+  // Animación del track cuando está checked
+  &.toggle-checked {
+    --track-background-checked: #26c6da;
+    
+    .toggle-inner {
+      box-shadow: 0 0 20px rgba(38, 198, 218, 0.5);
+    }
+  }
+}
+
+// Cuando el card hace hover, el toggle también responde visualmente
+.toggle-card:hover .custom-toggle {
+  transform: scale(1.25);
+}
+
+.toggle-card:active .custom-toggle {
+  transform: scale(1.15);
 }
 
 // Estilos para la foto de perfil

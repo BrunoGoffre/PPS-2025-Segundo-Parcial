@@ -8,7 +8,7 @@ CREATE POLICY "Permitir registro público de clientes"
 ON "Users"
 FOR INSERT 
 TO public
-WITH CHECK (role_Id = 1 OR role_Id = 5); -- 1=cliente, 5=anónimo
+WITH CHECK (role_Id = 1 OR role_Id = 9); -- 1=cliente, 9=anónimo
 
 -- 2. Política para permitir que los usuarios autenticados vean a todos los usuarios
 CREATE POLICY "Usuarios autenticados pueden ver usuarios" 

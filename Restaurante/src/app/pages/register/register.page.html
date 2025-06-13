@@ -1,17 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content [fullscreen]="true" class="fondo-oscuro">
   <div class="safe-area">
     <div class="register-container">
       <h1 class="titulo-principal">Bom apetite</h1>
       <hr class="linea-divisoria">
-      <h3 class="subtitulo-principal">
-        {{ isAltaAdmin ? 'Alta de Dueño/Supervisor' : 'Registro' }}
-      </h3>
+      <h3 class="subtitulo-principal">Registro</h3>
       
-      <!-- Selector de modo anónimo solo para clientes -->
-      <div *ngIf="isSourceLogin" class="toggle-container">
-        <ion-toggle [(ngModel)]="esAnonimo" (ionChange)="toggleModoAnonimo()" label-placement="start">
-          Registro Anónimo
-        </ion-toggle>
+      <!-- Selector de modo anónimo (solo si no hay usuario autenticado) -->
+      <div *ngIf="!currentUser" class="anonymous-toggle-container">
+        <div class="toggle-card" [class.active]="esAnonimo" (click)="toggleModoAnonimo()">
+          <div class="toggle-content">
+            <div class="toggle-info">
+              <div class="toggle-title">
+                <ion-icon name="person-outline" class="toggle-icon"></ion-icon>
+                Registro Anónimo
+              </div>
+              <div class="toggle-description">
+                {{ esAnonimo ? 'Registro rápido activado - Solo necesitas nombre y foto' : 'Regístrate sin proporcionar datos personales completos' }}
+              </div>
+            </div>
+            <!-- Toggle visual - Solo el card es clickeable para evitar conflictos -->
+            <ion-toggle 
+              [(ngModel)]="esAnonimo" 
+              [disabled]="true"
+              class="custom-toggle"
+              color="primary">
+            </ion-toggle>
+          </div>
+        </div>
       </div>
 
       <!-- Foto de perfil -->
@@ -34,7 +60,7 @@
         <ion-list class="contenido-registro">
           <ion-item class="input-item">
             <ion-label position="floating">Correo electrónico</ion-label>
-            <ion-input formControlName="email" type="email"></ion-input>
+            <ion-input formControlName="email" type="email" placeholder="ejemplo@email.com"></ion-input>
           </ion-item>
           <ion-note *ngIf="isFieldInvalid('email')" class="error-msg">
             {{ getErrorMessage('email') }}
@@ -42,17 +68,17 @@
 
           <ion-item class="input-item">
             <ion-label position="floating">Contraseña</ion-label>
-            <ion-input formControlName="password" type="password"></ion-input>
+            <ion-input formControlName="password" type="password" placeholder="••••••••"></ion-input>
           </ion-item>
           <ion-note *ngIf="isFieldInvalid('password')" class="error-msg">
             {{ getErrorMessage('password') }}
           </ion-note>
 
           <!-- Selector de perfil solo para alta de administradores -->
-          <ng-container *ngIf="isAltaAdmin">
+          <ng-container *ngIf="canAssignRoles">
             <ion-item class="input-item">
               <ion-label position="floating">Perfil</ion-label>
-              <ion-select formControlName="perfil" placeholder="Seleccione perfil">
+              <ion-select formControlName="perfil" placeholder="Elige un perfil...">
                 <ion-select-option value="supervisor">Supervisor</ion-select-option>
                 <ion-select-option value="dueño">Dueño</ion-select-option>
               </ion-select>
@@ -64,17 +90,17 @@
 
           <ion-item class="input-item">
             <ion-label position="floating">Nombre</ion-label>
-            <ion-input formControlName="nombre" type="text"></ion-input>
+            <ion-input formControlName="nombre" type="text" placeholder="Ej: Juan Carlos"></ion-input>
           </ion-item>
           <ion-note *ngIf="isFieldInvalid('nombre')" class="error-msg">
             {{ getErrorMessage('nombre') }}
           </ion-note>
     
           <!-- Campos adicionales solo para clientes no anónimos y administradores -->
-          <ng-container *ngIf="showDniFields || isAltaAdmin">
+          <ng-container *ngIf="showDniFields || canAssignRoles">
             <ion-item class="input-item">
               <ion-label position="floating">Apellido</ion-label>
-              <ion-input formControlName="apellido" type="text"></ion-input>
+              <ion-input formControlName="apellido" type="text" placeholder="Ej: Pérez"></ion-input>
             </ion-item>
             <ion-note *ngIf="isFieldInvalid('apellido')" class="error-msg">
               {{ getErrorMessage('apellido') }}
@@ -82,26 +108,31 @@
     
             <ion-item class="input-item">
               <ion-label position="floating">DNI</ion-label>
-              <ion-input formControlName="dni" type="text" placeholder="12345678"></ion-input>
+              <ion-input formControlName="dni" type="text" placeholder="Ej: 12345678"></ion-input>
             </ion-item>
             <ion-note *ngIf="isFieldInvalid('dni')" class="error-msg">
               {{ getErrorMessage('dni') }}
             </ion-note>
             
             <ion-item class="input-item">
-              <ion-label position="floating">CUIL{{ isAltaAdmin ? ' *' : '' }}</ion-label>
-              <ion-input formControlName="cuil" type="text" placeholder="{{ isAltaAdmin ? 'XX-XXXXXXXX-X' : '' }}"></ion-input>
+              <ion-label position="floating">CUIL{{ canAssignRoles ? ' *' : '' }}</ion-label>
+              <ion-input formControlName="cuil" type="text" placeholder="{{ canAssignRoles ? 'Ej: 20-12345678-9' : 'Ej: 20-12345678-9' }}"></ion-input>
             </ion-item>
             <ion-note *ngIf="isFieldInvalid('cuil')" class="error-msg">
               {{ getErrorMessage('cuil') }}
             </ion-note>
           </ng-container>
 
+          <!-- Debug info temporal -->
+          <ion-note class="debug-info" style="color: #26c6da; font-size: 0.8rem; padding: 8px;">
+            Usuario: {{ currentUser?.rol || 'no autenticado' }} | canAssignRoles: {{ canAssignRoles }}
+          </ion-note>
+
           <!-- Selector de rol solo para dueños/supervisores logueados -->
           <ng-container *ngIf="canAssignRoles">
             <ion-item class="input-item">
               <ion-label position="floating">Rol a asignar</ion-label>
-              <ion-select formControlName="rolAsignado" placeholder="Seleccione rol">
+              <ion-select formControlName="rolAsignado" placeholder="Elige un rol...">
                 <ion-select-option value="cliente">Cliente</ion-select-option>
                 <ion-select-option value="empleado">Empleado</ion-select-option>
                 <ion-select-option value="supervisor" *ngIf="currentUser?.rol === 'dueño'">Supervisor</ion-select-option>
@@ -114,7 +145,7 @@
           </ng-container>
 
           <!-- Botón QR para escanear DNI al final -->
-          <div class="qr-scanner-container" *ngIf="showDniFields || isAltaAdmin">
+          <div class="qr-scanner-container" *ngIf="showDniFields">
             <ion-button 
               fill="outline" 
               color="primary" 
@@ -134,11 +165,11 @@
           </div>
     
           <ion-button expand="block" type="submit" [disabled]="registerForm.invalid" class="btn-registrar">
-            {{ isAltaAdmin ? 'Registrar Administrador' : 'Registrar' }}
+            Registrar
           </ion-button>
         </ion-list>
 
-        <div class="login-link" *ngIf="isSourceLogin">
+        <div class="login-link" *ngIf="!currentUser">
           <p>¿Ya tenés una cuenta? <a (click)="goToLogin()">Inicia sesión</a></p>
         </div>
       </form>

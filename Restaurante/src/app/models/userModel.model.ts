@@ -8,9 +8,14 @@ export interface UserModel
   id: string;
   name: string;
   surname?: string;
-  DNI: string;
-  photo_id: number;
+  DNI?: string;
+  photo_id?: number | null;
   role_Id: number;
   CUIL?: string;
-  approved?: boolean;
+  approved?: boolean | null;
+  // Relación con fotos de perfil
+  Profile_Photos?: Array<{
+    url: string;
+    name?: string;
+  }>;
 }

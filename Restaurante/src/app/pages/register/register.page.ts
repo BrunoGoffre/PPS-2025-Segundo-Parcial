@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { RegisterSource, User as LocalUser } from 'src/app/interfaces/user.interface';
+import { User as LocalUser } from 'src/app/interfaces/user.interface';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToolsService } from 'src/app/services/tools.service';
 import {
@@ -19,28 +19,30 @@ import {
 })
 export class RegisterPage implements OnInit, OnDestroy {
   registerForm!: FormGroup;
-  registerSource: RegisterSource = 'login';
   esAnonimo: boolean = false;
   selectedPhoto: File | null = null;
   photoPreviewUrl: string | null = null;
   currentUser: LocalUser | null = null;
-  perfilSeleccionado: 'dueño' | 'supervisor' | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
+    private location: Location,
     private authService: AuthService,
     private toolsService: ToolsService,
     private alertController: AlertController,
     private loadingController: LoadingController,
     private toastController: ToastController
   ) {
-    this.initForm();
+    // Inicialización del formulario se hace en ngOnInit después de obtener el usuario
   }
 
   initForm() {
-    // Creamos un formulario base con campos comunes
+    console.log('[REGISTER] Inicializando formulario...');
+    console.log('[REGISTER] Usuario actual:', this.currentUser);
+    console.log('[REGISTER] canAssignRoles:', this.canAssignRoles);
+    
+    // Formulario base con campos comunes
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -48,8 +50,8 @@ export class RegisterPage implements OnInit, OnDestroy {
       foto: ['', Validators.required],
     });
 
-    // Agregamos campos adicionales según el source
-    if (this.registerSource === 'login' && !this.esAnonimo) {
+    // Si NO es anónimo, agregar campos adicionales
+    if (!this.esAnonimo) {
       this.registerForm.addControl(
         'apellido',
         this.formBuilder.control('', Validators.required)
@@ -61,64 +63,28 @@ export class RegisterPage implements OnInit, OnDestroy {
       this.registerForm.addControl('cuil', this.formBuilder.control(''));
     }
 
-    // Campos específicos para alta de administradores
-    if (this.isAltaAdmin) {
-      this.registerForm.addControl(
-        'apellido',
-        this.formBuilder.control('', Validators.required)
-      );
-      this.registerForm.addControl(
-        'dni',
-        this.formBuilder.control('', [Validators.required, Validators.pattern(/^\d{7,8}$/)])
-      );
-      this.registerForm.addControl(
-        'cuil',
-        this.formBuilder.control('', [Validators.required, Validators.pattern(/^\d{2}-\d{7,8}-\d{1}$/)])
-      );
-      this.registerForm.addControl(
-        'perfil',
-        this.formBuilder.control('supervisor', Validators.required)
-      );
-    }
-
-    // Campo para asignación de roles por dueños/supervisores
+    // Si es dueño/supervisor autenticado, puede asignar roles
     if (this.canAssignRoles) {
+      console.log('[REGISTER] ✅ Agregando selector de roles');
       this.registerForm.addControl(
         'rolAsignado',
         this.formBuilder.control('cliente', Validators.required)
       );
+    } else {
+      console.log('[REGISTER] ❌ No se agrega selector de roles - será cliente por defecto');
     }
   }
 
   async ngOnInit() {
-    // Obtener el usuario actual
-    const authUser = this.authService.currentUserValue;
+    // Obtener el usuario actual de forma robusta
+    const authUser = await this.authService.getCurrentUserRobust();
     if (authUser) {
       this.currentUser = authUser as unknown as LocalUser;
     }
+    console.log('[REGISTER] Usuario actual obtenido:', this.currentUser);
     
-    this.route.params.subscribe((params) => {
-      if (params['source']) {
-        this.registerSource = params['source'] as RegisterSource;
-        
-        // Verificar permisos para alta de administradores
-        if (this.registerSource === 'admin' && !this.canAccessAdminRegister) {
-          this.toolsService.PresentToast(
-            'No tiene permisos para registrar administradores', 
-            'danger', 
-            3000
-          );
-          this.router.navigate(['/home']);
-          return;
-        }
-        
-        // Reinicializar el formulario con los nuevos parámetros
-        this.initForm();
-      } else {
-        // Si no hay source, inicializar formulario por defecto
-        this.initForm();
-      }
-    });
+    // Inicializar formulario según el usuario autenticado
+    this.initForm();
   }
 
   ngOnDestroy() {
@@ -129,7 +95,6 @@ export class RegisterPage implements OnInit, OnDestroy {
   }
 
   async onSubmit() {
-    debugger;
     if (this.registerForm.valid) {
       const loading = await this.loadingController.create({
         message: 'Registrando...',
@@ -142,22 +107,16 @@ export class RegisterPage implements OnInit, OnDestroy {
           ? formData.nombre
           : `${formData.nombre} ${formData.apellido || ''}`;
 
-        // Determinar el rol según el origen y asignación
-        let rol: 'cliente' | 'supervisor' | 'dueño' | 'empleado' | 'anonimo' =
-          'cliente';
+        // Determinar el rol según la situación
+        let rol: 'cliente' | 'supervisor' | 'dueño' | 'empleado' | 'anonimo' = 'cliente';
         
-        if (this.registerSource === 'supervisor') {
-          rol = 'supervisor';
-        } else if (this.registerSource === 'owner') {
-          rol = 'dueño';
-        } else if (this.registerSource === 'admin') {
-          rol = formData.perfil as 'supervisor' | 'dueño';
-        } else if (this.esAnonimo) {
+        if (this.esAnonimo) {
           rol = 'anonimo';
         } else if (this.canAssignRoles && formData.rolAsignado) {
-          // Si un dueño/supervisor está asignando un rol específico
+          // Dueño/supervisor asignando un rol específico
           rol = formData.rolAsignado as 'cliente' | 'supervisor' | 'dueño' | 'empleado';
         }
+        // Si no hay usuario autenticado o no puede asignar roles, por defecto es 'cliente'
 
         // Datos adicionales según el tipo de usuario
         const userData: {
@@ -173,8 +132,8 @@ export class RegisterPage implements OnInit, OnDestroy {
           userData.photoFile = this.selectedPhoto;
         }
 
-        // Agregar datos específicos solo si no es anónimo
-        if (!this.esAnonimo && this.registerSource === 'login') {
+        // Agregar datos adicionales solo si NO es anónimo
+        if (!this.esAnonimo) {
           userData.apellido = formData.apellido;
           userData.dni = formData.dni;
           if (formData.cuil) {
@@ -182,16 +141,10 @@ export class RegisterPage implements OnInit, OnDestroy {
           }
         }
 
-        // Agregar datos específicos para administradores
-        if (this.registerSource === 'admin') {
-          userData.apellido = formData.apellido;
-          userData.dni = formData.dni;
-          userData.cuil = formData.cuil;
-          userData.approved = true; // Los administradores se aprueban automáticamente
-        }
-
-        // Auto-aprobar usuarios creados por dueños/supervisores (excepto clientes)
-        if (this.canAssignRoles && rol !== 'cliente') {
+        // Lógica de aprobación:
+        // - Si hay dueño/supervisor autenticado: usuario se aprueba automáticamente
+        // - Si no hay usuario autenticado: queda pendiente de aprobación
+        if (this.currentUser && (this.currentUser.rol === 'dueño' || this.currentUser.rol === 'supervisor')) {
           userData.approved = true;
         }
 
@@ -205,32 +158,34 @@ export class RegisterPage implements OnInit, OnDestroy {
         );
 
         if (result.success) {
-          let mensaje = 'Registro exitoso';
+          // Mensaje según rol registrado
+          const rolNames = {
+            'cliente': 'Cliente',
+            'empleado': 'Empleado', 
+            'supervisor': 'Supervisor',
+            'dueño': 'Dueño',
+            'anonimo': 'Usuario anónimo'
+          };
           
-          if (this.registerSource === 'admin') {
-            mensaje = `${rol === 'dueño' ? 'Dueño' : 'Supervisor'} registrado exitosamente`;
-          } else if (this.canAssignRoles) {
-            const rolNames = {
-              'cliente': 'Cliente',
-              'empleado': 'Empleado', 
-              'supervisor': 'Supervisor',
-              'dueño': 'Dueño'
-            };
-            mensaje = `${rolNames[rol as keyof typeof rolNames]} registrado exitosamente`;
+          let mensaje = `${rolNames[rol as keyof typeof rolNames]} registrado exitosamente`;
+          
+          // Agregar info de aprobación si aplica
+          if (!userData.approved) {
+            mensaje += ' - Pendiente de aprobación';
           }
           
           const toast = await this.toastController.create({
             message: mensaje,
-            duration: 2000,
+            duration: 3000,
             color: 'success',
           });
           toast.present();
 
-          // Redirigir según el origen
-          if (this.isSourceLogin) {
-            this.router.navigate(['/login']);
+          // Redirigir: si no hay usuario autenticado, ir a login; si hay usuario, ir a home
+          if (this.currentUser) {
+            this.router.navigateByUrl('/home');
           } else {
-            this.router.navigate(['/home']);
+            this.router.navigateByUrl('/login');
           }
         } else {
           this.mostrarError(result.message || 'Error en el registro');
@@ -435,32 +390,18 @@ export class RegisterPage implements OnInit, OnDestroy {
     }
   }
 
-  get isSourceLogin() {
-    return this.registerSource === 'login';
-  }
-
   get showDniFields() {
-    return this.registerSource === 'login' && !this.esAnonimo;
-  }
-
-  get isAltaAdmin() {
-    return this.registerSource === 'admin' && this.currentUser && 
-           (this.currentUser.rol === 'dueño' || this.currentUser.rol === 'supervisor');
-  }
-
-  get canAccessAdminRegister() {
-    return this.currentUser && (this.currentUser.rol === 'dueño' || this.currentUser.rol === 'supervisor');
+    return !this.esAnonimo;
   }
 
   get canAssignRoles() {
+    // Solo un dueño/supervisor autenticado puede asignar roles
     return this.currentUser && 
-           (this.currentUser.rol === 'dueño' || this.currentUser.rol === 'supervisor') &&
-           !this.isAltaAdmin &&
-           !this.isSourceLogin;
+           (this.currentUser.rol === 'dueño' || this.currentUser.rol === 'supervisor');
   }
 
   goToLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigateByUrl('/login');
   }
 
   getErrorMessage(field: string): string {
@@ -664,5 +605,9 @@ export class RegisterPage implements OnInit, OnDestroy {
       buttons: ['Entendido'],
     });
     await alert.present();
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

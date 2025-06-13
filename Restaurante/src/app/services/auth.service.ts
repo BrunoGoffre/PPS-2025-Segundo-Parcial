@@ -104,6 +104,29 @@ export class AuthService {
         rol = 'anonimo';
       }
 
+      // Validar que el DNI no exista si se proporciona
+      if (userData.dni && userData.dni.trim() !== '') {
+        console.log('[AUTH] Verificando unicidad de DNI:', userData.dni);
+        const { data: existingUser, error: dniCheckError } = await this.supabase
+          .from('Users')
+          .select('id')
+          .eq('DNI', userData.dni.trim())
+          .single();
+
+        if (dniCheckError && dniCheckError.code !== 'PGRST116') {
+          // PGRST116 = No rows found, que es lo que queremos
+          console.error('[AUTH] Error verificando DNI:', dniCheckError);
+          throw new Error('Error verificando DNI en la base de datos');
+        }
+
+        if (existingUser) {
+          console.log('[AUTH] DNI ya existe en la base de datos');
+          throw new Error('El DNI ya está registrado en el sistema');
+        }
+
+        console.log('[AUTH] DNI verificado como único');
+      }
+
       // 1. Registrar el usuario en la autenticación de Supabase
       console.log('[AUTH] Registrando usuario en auth...');
       const {
@@ -214,6 +237,7 @@ export class AuthService {
       // Mapear el rol a role_Id (aquí deberías tener una lógica para obtener el ID correcto)
       const roleId = this.getRoleId(rol);
 
+      // Construir objeto de datos condicionalmente para evitar conflictos de DNI
       const userData_db: {
         id: string;
         name: string;
@@ -222,27 +246,30 @@ export class AuthService {
         CUIL?: string;
         photo_id: number | null;
         role_Id: number;
-        approved?: boolean;
+        approved?: boolean | null;
       } = {
         id: user.id,
         name: fullName.split(' ')[0], // Asumiendo que el nombre viene primero
-        surname: userData.apellido || '',
-        DNI: userData.dni || '',
-        CUIL: userData.cuil || '',
         photo_id: photoId,
         role_Id: roleId,
       };
 
-      // Para administradores (dueño/supervisor) se aprueban automáticamente
-      if (rol === 'dueño' || rol === 'supervisor' || userData.approved === true) {
-        userData_db.approved = true;
+      // Solo agregar campos adicionales si NO es anónimo
+      if (!isAnonymous) {
+        userData_db.surname = userData.apellido || '';
+        userData_db.DNI = userData.dni || '';
+        userData_db.CUIL = userData.cuil || '';
       }
 
-      // Si es anónimo, solo guardamos los campos necesarios
-      if (isAnonymous) {
-        delete userData_db.surname;
-        delete userData_db.DNI;
-        delete userData_db.CUIL;
+      // Lógica de aprobación según rol:
+      // - Clientes y anónimos: requieren aprobación manual (approved = null)
+      // - Otros roles: se aprueban automáticamente (approved = true)
+      if (rol === 'cliente' || rol === 'anonimo') {
+        // Los clientes y anónimos quedan pendientes de aprobación
+        userData_db.approved = null;
+      } else {
+        // Administradores y empleados se aprueban automáticamente
+        userData_db.approved = true;
       }
 
       console.log('[AUTH] Insertando datos en Users:', userData_db);
@@ -268,15 +295,32 @@ export class AuthService {
     const roleMap: Record<string, number> = {
       dueño: 1,
       supervisor: 2,
+      cliente: 3,
+      empleado: 5, // Por defecto empleado será mozo (pero puede ser cambiado)
       empleadoCocinero: 4,
       empleadoMozo: 5,
       empleadoBartender: 6,
       empleadoMaître: 10,
       anonimo: 9,
-      cliente: 3,
     };
 
-    return roleMap[rol] || 1; // Por defecto, cliente
+    return roleMap[rol] || 3; // Por defecto, cliente
+  }
+
+  // Función para mapear IDs de vuelta a roles
+  private getRoleName(roleId: number): string {
+    const idToRoleMap: Record<number, string> = {
+      1: 'dueño',
+      2: 'supervisor',
+      3: 'cliente',
+      4: 'empleadoCocinero',
+      5: 'empleado', // Simplificado como "empleado" genérico
+      6: 'empleadoBartender',
+      9: 'anonimo',
+      10: 'empleadoMaître',
+    };
+
+    return idToRoleMap[roleId] || 'cliente';
   }
 
   async logout(): Promise<void> {
@@ -300,7 +344,14 @@ export class AuthService {
       return null;
     }
 
-    return data as User;
+    // Agregar el campo 'rol' basado en role_Id para compatibilidad
+    const userWithRole = {
+      ...data,
+      rol: this.getRoleName(data.role_Id)
+    };
+
+    console.log('[AUTH] Usuario con rol mapeado:', userWithRole);
+    return userWithRole as User;
   }
 
   async updateProfile(
@@ -402,24 +453,26 @@ export class AuthService {
     }
   }
 
-  // Nuevo método para obtener clientes registrados pendientes de aprobación
+  // Método para obtener usuarios pendientes de aprobación (clientes y anónimos)
   async getPendingRegisteredClients(): Promise<{
     data: User[] | null;
     error: any;
   }> {
     try {
-      const clienteRegistradoRoleId = this.getRoleId('cliente');
+      const clienteRoleId = this.getRoleId('cliente');
+      const anonimoRoleId = this.getRoleId('anonimo');
+      
       const { data, error } = await this.supabase
         .from('Users')
-        .select('*')
-        .eq('role_Id', clienteRegistradoRoleId)
+        .select('*, Profile_Photos(url)')
+        .in('role_Id', [clienteRoleId, anonimoRoleId]) // Incluir clientes y anónimos
         .is('approved', null); // Filtrar por usuarios con 'approved' en null
 
       if (error) {
-        console.error('Error fetching pending registered clients:', error);
+        console.error('Error fetching pending registered users:', error);
         return { data: null, error };
       }
-      // console.log('Datos de usuarios obtenidos:', data); // Eliminar el log de depuración
+      
       return { data: data as User[], error: null };
     } catch (error) {
       console.error('Error in getPendingRegisteredClients:', error);
@@ -452,5 +505,46 @@ export class AuthService {
   // Exponer métodos de admin si es necesario y con cautela
   public get adminAuth() {
     return this.supabase.auth.admin;
+  }
+
+  // Exponer cliente de Supabase para acceso directo cuando sea necesario
+  public get supabaseClient() {
+    return this.supabase;
+  }
+
+  // Método robusto para obtener el usuario actual con fallback
+  async getCurrentUserRobust(): Promise<User | null> {
+    console.log('[AUTH] Obteniendo usuario de forma robusta...');
+    
+    // Primero intentar con currentUserValue
+    let user = this.currentUserValue;
+    console.log('[AUTH] currentUserValue:', user);
+    
+    if (!user) {
+      console.log('[AUTH] currentUserValue es null, intentando con sesión...');
+      
+      try {
+        // Obtener el usuario autenticado de Supabase
+        const { data: { user: authUser } } = await this.supabase.auth.getUser();
+        console.log('[AUTH] Usuario de auth:', authUser);
+        
+        if (authUser) {
+          // Obtener el perfil completo
+          user = await this.getProfile(authUser.id);
+          console.log('[AUTH] Perfil obtenido:', user);
+          
+          // Actualizar el currentUserSubject para futuras consultas
+          if (user) {
+            this.currentUserSubject.next(user);
+          }
+        }
+      } catch (error) {
+        console.error('[AUTH] Error obteniendo usuario:', error);
+        return null;
+      }
+    }
+    
+    console.log('[AUTH] Usuario final obtenido:', user);
+    return user;
   }
 }
