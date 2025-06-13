@@ -217,4 +217,15 @@ export class LoginPage implements OnInit {
   goBack() {
     this.location.back();
   }
+
+  getUserIcon(rol: string): string {
+    const icons: { [key: string]: string } = {
+      'admin': 'shield-outline',
+      'dueño': 'crown-outline',
+      'supervisor': 'star-outline',
+      'empleado': 'briefcase-outline',
+      'cliente': 'person-outline'
+    };
+    return icons[rol] || 'person-outline';
+  }
 }
