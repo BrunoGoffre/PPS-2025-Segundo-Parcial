@@ -90,7 +90,7 @@ export class StatusPedidoAlertComponent {
     }
 
     try {
-      const pedido = await this.pedidoService.obtenerPedidoClientePromise(idUsuario);
+      const pedido = await this.pedidoService.getPedidoClientePromise(idUsuario);
       if (pedido) {
         this.pedidoId = pedido.id;
         console.log(`Pedido encontrado para el usuario: ${this.pedidoId}`);

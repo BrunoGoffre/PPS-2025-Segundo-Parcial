@@ -2,7 +2,7 @@ import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { DynamicSplashComponent } from './dynamic-splash/dynamic-splash.component';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { addIcons } from 'ionicons';
 import { logOutOutline, arrowBackOutline, starOutline, star } from 'ionicons/icons';
@@ -17,7 +17,7 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   standalone: true,
-  imports: [IonApp, IonRouterOutlet, RouterModule, DynamicSplashComponent],
+  imports: [IonApp, IonRouterOutlet, DynamicSplashComponent, NgIf],
 })
 export class AppComponent implements OnInit {
   showLoading = true;
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
     private platform: Platform
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     addIcons({
       logOutOutline,
       arrowBackOutline,

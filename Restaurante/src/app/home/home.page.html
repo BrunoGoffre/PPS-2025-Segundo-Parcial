@@ -1,4 +1,4 @@
-<div *ngIf="loading" class="loading-overlay">
+<div *ngIf="isLoading" class="loading-overlay">
     <div class="loading-content">
       <img src="assets/icons/icon-loading.png" alt="Bon Appétit" class="logo" />
       <div class="loading-label">
@@ -22,29 +22,29 @@
   <ion-content class="ion-padding centered-content">
   
     <!-- Sector supervisor: -->
-    <div class="duenio" *ngIf="user?.profile === 'supervisor' && !loading">
+    <div class="duenio" *ngIf="user?.perfil === 'supervisor' && !isLoading">
       <div class="image-container-chico" >
-        <img class="imagen-chica" src="assets/pendientesAprobacion.png" alt="qr" (click)="goTo('/clientes-pendientes')">
+        <img class="imagen-chica" src="assets/pendientesDeAprobacion.png" alt="qr" (click)="goTo('/clientes-pendientes')">
         <p class="avatar-text">Clientes pendientes de aprobación</p>
         <img class="imagen-chica" src="assets/encuesta.png" alt="qr" (click)="goTo('/encuesta-supervisor')">
         <p class="avatar-text">Completar encuesta</p>
       </div>
      </div>
   
-    <app-custom-alert #customAlert></app-custom-alert>
+    <app-app-alert #appAlert></app-app-alert>
   
     <!-- Sector Clientes: -->
-    <div class="image" *ngIf="user?.profile === 'cliente' && !scaneo && !loading" [hidden]="user?.profile !== 'cliente'">
-      <img class="imagen-grande"  src="assets/qr.png" alt="qr" (click)="LeerQRRestaurante()">
+    <div class="image" *ngIf="user?.perfil === 'cliente' && !isScanning && !isLoading" [hidden]="user?.perfil !== 'cliente'">
+      <img class="imagen-grande"  src="assets/qr.png" alt="qr" (click)="LeerQRLocal()">
       <p class="avatar-text">Leer QR para ingresar al local</p>
     </div>
     <!-- Sector Clientes despues de qr: -->
-      <div class="clientes" *ngIf="user?.profile === 'cliente' && scaneo && !loading" [hidden]="user?.profile !== 'cliente'">
+      <div class="clientes" *ngIf="user?.perfil === 'cliente' && isScanning && !isLoading" [hidden]="user?.perfil !== 'cliente'">
         <div >
           <div class="image-container" >
-            <img class="imagen" src="assets/colaEspera.png" alt="qr" (click)="crearPedido()">
+            <img class="imagen" src="assets/colaDeEspera.png" alt="qr" (click)="crearPedido()">
             <p class="avatar-text">Ponerse en lista de espera</p>
-            <img class="imagen" src="assets/resultadoEncuesta.png" alt="qr" (click)="goTo('resultados-encuestas')">
+            <img class="imagen" src="assets/encuestaResultados.png" alt="qr" (click)="goTo('resultados-encuestas')">
             <p class="avatar-text">Ver resultado de encuestas</p>
             <img class="imagen" src="assets/qr.png" alt="qr" (click)="LeerQRMesa()">
             <p class="avatar-text">Leer QR de su mesa</p>         
@@ -54,9 +54,9 @@
       </div>
   
     <!-- Sector Maitres -->
-     <div class="maitres" *ngIf="user?.tipo === 'maitre' && !loading">
+     <div class="maitres" *ngIf="user?.tipo === 'maitre' && !isLoading">
       <div class="image-container-chico" >
-        <img class="imagen-chica" src="assets/colaEspera.png" alt="qr" (click)="goTo('/lista-espera')">
+        <img class="imagen-chica" src="assets/colaDeEspera.png" alt="qr" (click)="goTo('/lista-espera')">
         <p class="avatar-text">Ver lista de espera</p>
         <img class="imagen-chica" src="assets/encuesta.png" alt="qr" (click)="goTo('/encuesta-empleado')">
         <p class="avatar-text">Realizar encuesta</p>
@@ -64,22 +64,22 @@
      </div>
     
       <!-- Sector Mozos -->
-     <div class="mozo" *ngIf="user?.tipo === 'mozo' && !loading">
+     <div class="mozo" *ngIf="user?.tipo === 'mozo' && !isLoading">
       <div class="image-container-cuadro">
         <div class="item">
           <img class="imagen-chica" src="assets/consultas.png" alt="qr" (click)="goTo('/consultas')">
           <p class="avatar-text">Ver Consultas<br></p>
-          <img class="imagen-chica" src="assets/confirmarPedido.png" alt="qr" (click)="goTo('/confirmar-pedidos')">
+          <img class="imagen-chica" src="assets/pedidoConfirmar.png" alt="qr" (click)="goTo('/confirmar-pedidos')">
           <p class="avatar-text">Confirmar Pedidos</p>
         </div>
         <div class="item">
           <img class="imagen-chica" src="assets/encuesta.png" alt="qr" (click)="goTo('/encuesta-empleado')">
           <p class="avatar-text">Realizar Encuesta</p>
-          <img class="imagen-chica" src="assets/entregarPedido.png" alt="qr" (click)="goTo('/entregar-pedidos')">
+          <img class="imagen-chica" src="assets/pedidoEntregar.png" alt="qr" (click)="goTo('/entregar-pedidos')">
           <p class="avatar-text">Entregar Pedido</p>
         </div>
         <div class="item">
-          <img class="imagen-chica" src="assets/pagarPedido.png" alt="qr" (click)="goTo('/entregar-cuenta')">
+          <img class="imagen-chica" src="assets/pedidoPagar.png" alt="qr" (click)="goTo('/entregar-cuenta')">
           <p class="avatar-text">Enviar Cuenta</p>
         </div>
         <div class="item">
@@ -90,7 +90,7 @@
     </div>
     
      <!-- Sector Empleados -->
-     <div class="cocinero" *ngIf="user?.tipo === 'cocinero' && !loading">
+     <div class="cocinero" *ngIf="user?.tipo === 'cocinero' && !isLoading">
       <div class="image-container-chico" >
         <img class="imagen-chica" src="assets/pedidosPendientes.png" alt="qr" (click)="goTo('/tareas-sector')">
         <p class="avatar-text">Ver pedidos pendientes</p>
@@ -99,7 +99,7 @@
       </div>
      </div>
   
-     <div class="bartender" *ngIf="user?.tipo === 'bartender' && !loading">
+     <div class="bartender" *ngIf="user?.tipo === 'bartender' && !isLoading">
       <div class="image-container-chico" >
         <img class="imagen-chica" src="assets/pedidosPendientes.png" alt="qr" (click)="goTo('/tareas-sector')">
         <p class="avatar-text">Ver pedidos pendientes</p>
@@ -107,7 +107,4 @@
         <p class="avatar-text">Realizar encuesta</p>
       </div>
      </div>
-  
-  
-    
   </ion-content>

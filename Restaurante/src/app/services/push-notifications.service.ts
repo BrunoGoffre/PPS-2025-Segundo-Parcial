@@ -1,27 +1,27 @@
 import { inject, Injectable } from '@angular/core';
-import { User } from '@angular/fire/auth';
+import { User as FirebaseUser } from '@angular/fire/auth';
 import { Capacitor } from '@capacitor/core';
-import { ActionPerformed, PushNotificationSchema, PushNotifications, Token } from '@capacitor/push-notifications';
+import { ActionPerformed, PermissionStatus, PushNotificationSchema, PushNotifications, Token } from '@capacitor/push-notifications';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationsPushService {
+export class PushNotificationsService {
   private firestore:Firestore = inject(Firestore);
   private router:Router = inject(Router);
-  private user!: User;
+  private user!: FirebaseUser;
   private enable:boolean = false;
-  public openedFromNotification: boolean = false;
+  public originNotification: boolean = false;
 
   constructor() { }
 
-  init(user:User){
+  init(user:FirebaseUser){
     this.user = user;
     
     if(Capacitor.isNativePlatform()){
-      PushNotifications.requestPermissions().then((result) => {
+      PushNotifications.requestPermissions().then((result: PermissionStatus) => {
         if (result.receive === 'granted') {
           // Register with Apple / Google to receive push via APNS/FCM
           PushNotifications.register();
@@ -51,7 +51,6 @@ export class NotificationsPushService {
       //alert('Push received: ' + JSON.stringify(notification));
       const enlace = notification.notification.data.enlace;
       if (enlace) {
-        //this.openedFromNotification = true;
         this.router.navigateByUrl(enlace);
       }
     });
@@ -61,7 +60,7 @@ export class NotificationsPushService {
       //alert('Push action performed: ' + JSON.stringify(notification));
       const enlace = notification.notification.data.enlace;
       if (enlace) {
-        this.openedFromNotification = true;
+        this.originNotification = true;
         this.router.navigateByUrl(enlace);
       }
     });

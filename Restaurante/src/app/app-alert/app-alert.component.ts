@@ -1,46 +1,28 @@
 import { Component, Input } from '@angular/core';
 import { NgIf } from '@angular/common';
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { Haptics } from '@capacitor/haptics';
 import { NgClass } from '@angular/common';
 
-type Idioma = 'ingles' 
-type Numero = '1' 
-
 @Component({
-  selector: 'app-custom-alert',
-  template: `
-    <div *ngIf="show" class="alert-overlay">
-      <div class="alert-container" [ngClass]="alertType">
-        <div class="alert-content">
-          <span style="white-space: pre-wrap;">{{ message }}</span>
-          <button [ngClass]="{'success-button': alertType === 'success', 'error-button': alertType !== 'success'}" 
-                  (click)="closeAlert()">Aceptar</button>
-        </div>
-      </div>
-    </div>
-  `,
-  styleUrls: ['./custom-alert.component.scss'],
+  selector: 'app-app-alert',
+  templateUrl: './app-alert.component.html',
+  styleUrls: ['./app-alert.component.scss'],
   imports: [NgIf, NgClass],
   standalone: true,
 })
-export class CustomAlertComponent {
+export class AppAlertComponent {
   @Input() message: string = '';
-  @Input() alertType: 'default' | 'encuesta'| 'success' = 'default'; // Nuevo tipo de alerta
+  @Input() alertType: 'default' | 'encuesta'| 'success' = 'default'; 
   show: boolean = false;
-  isPlaying = false; 
-  idiomaActual: Idioma = 'ingles';
-  private sonidos: { [key in Idioma]: { [key in Numero]: string } } = {
-    'ingles': {
-      '1': 'error',
-    },
-  };
+  isPlayingSound = false; 
+
 
   showAlert(message: string, type: 'default' | 'encuesta' | 'success' = 'default' ) {
     this.message = message;
     this.alertType = type;
     this.show = true;
     this.vibrar();
-    this.LeerNumero('1');
+    this.playSound('1');
   }
 
   showInfo(message: string, type: 'default' | 'encuesta' | 'success' = 'default' ) {
@@ -49,37 +31,49 @@ export class CustomAlertComponent {
     this.show = true;
   }
 
-  LeerNumero(Numero: Numero){
-    if (this.isPlaying) {
-      return;  
+   // sonidos ------------------------------------------------------------
+   playSound(sound: string) {
+    if (this.isPlayingSound) {
+        return;
     }
-    const src = this.getAudioSrc(Numero);  
-    if (src) {
-      const audio = new Audio(src);
-      this.isPlaying = true;  
-      audio.play().then(() => {
-      }).catch(error => {
-        this.isPlaying = false;  
-      });
-      audio.onended = () => {
-        this.isPlaying = false;
-      };
+
+    const audioFile = this.getAudioFile(sound);
+    if (!audioFile) {
+        return;
     }
+
+    const audio = new Audio(audioFile);
+    this.isPlayingSound = true;
+    audio.play().then(() => {
+        this.isPlayingSound = false;
+    }).catch(() => {
+        this.isPlayingSound = false;
+    });
+    audio.onended = () => {
+        this.isPlayingSound = false;
+    };
   }
 
-  getAudioSrc(Numero: Numero): string {
-    if (this.alertType === 'success') {
-       return `assets/sounds/conected.mp3`; 
+  private sounds: { [key: string]: string } = {
+    '1': 'error',
+  };
+
+  private getAudioFile(sound: string) {
+    const audioFile = this.sounds[sound];
+    if (audioFile) {
+        return `assets/sounds/${audioFile}.mp3`;
     }
-    const sonido = this.sonidos[this.idiomaActual][Numero];
-    return sonido ? `assets/sounds/${sonido}.mp3` : '';
- }
+
+    console.error(`No hay archivo de audio para el sonido: ${sound}, revisar los archivos de la carpeta o el número de sonido seleccionado`);
+    return null;
+}
+// sonidos ------------------------------------------------------------
 
   private async vibrar() {
     try {
       await Haptics.vibrate({ duration: 500 });
     } catch (error) {
-      console.error('Error al usar Haptics:', error);
+      console.error('Error al vibrar:', error);
     }
   }
 

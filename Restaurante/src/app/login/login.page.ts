@@ -64,7 +64,7 @@ export class LoginPage {
   }
 
   establecerCredenciales(tipoUsuario: string) {
-    const email = `${tipoUsuario}@restolaurel.com`;
+    const email = `${tipoUsuario}@bonappetit.com`;
     const password = '123456';
     this.emailControl.setValue(email);
     this.passwordControl.setValue(password);
@@ -102,7 +102,7 @@ export class LoginPage {
       });
 
       if (result && result.user) {
-        if (this.emailControl.value == 'duenio@restolaurel.com') {
+        if (this.emailControl.value == 'duenio@bonappetit.com') {
           this.loading = false;
           this.router.navigate(['/clientes-pendientes']);
           this.playSound('1');

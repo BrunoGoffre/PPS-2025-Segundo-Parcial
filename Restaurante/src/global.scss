@@ -37,27 +37,71 @@
 @import "@ionic/angular/css/palettes/dark.system.css";
 
 
-.custom-loader .loading-wrapper {
-  background: rgba(111, 157, 255, 0.95);
-  border-radius: 1rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  padding: 1.5rem;
-  text-align: center;
-  animation: fadeInScale 0.3s ease-in-out;
+* {
+  font-family: LoveYaLikeASister;
+}
 
-  ion-spinner.sc-ion-loading-md{
-    color: white;
-  }
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  background-color:  #4c4f32;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.loading-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color:  #757a4d;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 'LoveYouLikeASister';
+  font-size: 17px;
+}
+
+.logo {
+  width: 80px;
+  height: auto;
+}
+
+ion-spinner {
+  width: 24px;
+  height: 24px;
+}
+
+
+ion-alert.select-alert {
+  --background:  #94a702; /* or whatever color you would like */
   
+   /* Estilo de los botones */
+   button {
+    color:black !important;
+    font-size: 20px !important;
+  }
+
+  .alert-radio-label {
+    font-size: 20px !important;/* Tamaño del texto de las opciones */
+    color: black; /* Color del texto de las opciones */
+     /* Texto en negrita (opcional) */
+  }
 }
 
-@keyframes fadeInScale {
-  0% {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}

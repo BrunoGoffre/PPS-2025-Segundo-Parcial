@@ -87,7 +87,7 @@ export class PedidoService {
     return collectionData(pedidosQuery, { idField: 'id' }) as Observable<Pedido[]>;
   }
 
-  async obtenerPedidosActivosConMensajes(): Promise<{ pedido: Pedido; mensajes: Mensaje[]; cliente: Usuario; estadoConsulta: string }[]> {
+  async obtenerPedidosActivosConMensajes(): Promise<{ pedido: Pedido; mensajes: Message[]; cliente: User; estadoConsulta: string }[]> {
     const pedidosRef = collection(this.firestore, 'pedidos');
     const mensajesRef = collection(this.firestore, 'mensajes');
   
@@ -117,7 +117,7 @@ export class PedidoService {
         const pedidosConMensajes = pedidos.map(pedido => {
           const mensajes = mensajesSnapshot.docs
             .filter(mensajeDoc => mensajeDoc.data()['idPedido'] === pedido.id)
-            .map(mensajeDoc => mensajeDoc.data() as Mensaje);
+            .map(mensajeDoc => mensajeDoc.data() as Message);
 
             if (mensajes.length === 0) {
               return null;
@@ -141,15 +141,12 @@ export class PedidoService {
         })
         .filter(item => item !== null);
   
-        return pedidosConMensajes as { pedido: Pedido; mensajes: Mensaje[]; cliente: Usuario; estadoConsulta: string }[];;
+        return pedidosConMensajes as { pedido: Pedido; mensajes: Message[]; cliente: User; estadoConsulta: string }[];;
       }
     }
   
     return [];
   }
-  
-  
-  
 
   async asignarMesa(mesaId: string, pedidoId: string | undefined): Promise<void> {
     const pedidoRef = doc(this.firestore, `pedidos/${pedidoId}`);
