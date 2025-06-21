@@ -76,3 +76,15 @@ Thumbs.db
 # Archivos de configuración de Ionic
 ionic.config.json
 
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json
+
+# environment
+environment.ts
+environment.prod.ts
+# environment
+/src/environments/environment.ts
+/src/environments/environment.prod.ts
