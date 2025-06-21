@@ -34,7 +34,6 @@
     "@capacitor/splash-screen": "^7.0.1",
     "@capacitor/status-bar": "7.0.1",
     "@ionic/angular": "^8.0.0",
-    "@supabase/supabase-js": "^2.49.9",
     "firebase": "^11.9.1",
     "install": "^0.13.0",
     "ionicons": "^7.0.0",
