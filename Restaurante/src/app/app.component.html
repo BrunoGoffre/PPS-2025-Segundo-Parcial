@@ -1,3 +1,2 @@
-<ion-app>
-  <ion-router-outlet></ion-router-outlet>
-</ion-app>
+<ion-router-outlet *ngIf="!showLoading"></ion-router-outlet>
+<app-dynamic-splash *ngIf="showLoading"></app-dynamic-splash>

@@ -1,0 +1,17 @@
+<div *ngIf="show" class="order-status-overlay">
+  <div class="loading-content">
+    <img src="assets/icons/icon-loading.png" alt="Bon Appétit" class="logo" />
+    <div class="loading-label">
+      <span class="order-status-text">
+        {{ mensajeEstadoPedido }}
+      </span>
+    </div>
+    <div *ngIf="estadoPedido === 'entregado' && !confirmado">
+      <div class="button-group">
+          <button class="confirm-button" (click)="confirmarPedido()">Confirmar</button>
+          <button class="cancel-button" (click)="closeAlert()">Cancelar</button>
+      </div>
+    </div>
+    <button *ngIf="estadoPedido !== 'entregado' || confirmado" class="aceptar-button" (click)="closeAlert()">Aceptar</button>
+  </div>
+</div>

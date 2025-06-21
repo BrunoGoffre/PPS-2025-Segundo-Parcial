@@ -1,58 +1,71 @@
-import { Component } from '@angular/core';
-import { ModalController, Platform } from '@ionic/angular';
-import { Router } from '@angular/router';
-import { SplashComponent } from './components/splash/splash.component';
-
+import { NgIf } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { DynamicSplashComponent } from './dynamic-splash/dynamic-splash.component';
+import { RouterModule } from '@angular/router';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { StatusBar, Style } from '@capacitor/status-bar';
-import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
+import { addIcons } from 'ionicons';
+import { logOutOutline, arrowBackOutline, starOutline, star } from 'ionicons/icons';
+import { Capacitor } from '@capacitor/core';
+import { Platform } from '@ionic/angular';
+import { PushNotifications } from '@capacitor/push-notifications';
+import { PushNotificationsService } from './services/push-notifications.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
-  standalone: false,
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [IonApp, IonRouterOutlet, RouterModule, DynamicSplashComponent],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  showLoading = true;
+  userIsLoggedIn = false;
+
   constructor(
-    private platform: Platform,
-    private modalCtrl: ModalController,
     private router: Router,
+    private pushNotificationsService: PushNotificationsService,
+    private authService: AuthService,
+    private platform: Platform
   ) {}
-  async initializeApp() {
-    await StatusBar.setStyle({ style: Style.Default });
 
-    // await SplashScreen.show();
-    // await this.delay(1000);
-    await SplashScreen.hide();
+  async ngOnInit() {
+    addIcons({
+      logOutOutline,
+      arrowBackOutline,
+      starOutline,
+      star,
+    });
 
-    await this.presentModal();
-
-    this.router.navigate(['/home']);
     this.platform.ready().then(() => {
-      // Este modo es el más compatible con Ionic
-      Keyboard.setResizeMode({ mode: KeyboardResize.Ionic });
-
-      // Opcional: cerrar el teclado tocando fuera
-      Keyboard.setScroll({ isDisabled: false });
+      this.initNotifications();
     });
+    setTimeout(() => {
+      SplashScreen.hide();
+      setTimeout(() => {
+        this.showLoading = false;
+
+        if (!this.pushNotificationsService.originNotification) {
+          if (this.authService.userActive != null) {
+            this.router.navigate(['/home']);
+          } else {
+            this.router.navigate(['/login']);
+          }
+        }
+      }, 2000);
+    }, 2000);
   }
 
-  async presentModal() {
-    const modal = await this.modalCtrl.create({
-      component: SplashComponent,
-      cssClass: 'splash-modal',
-      backdropDismiss: false,
-      animated: true,
-    });
-    await modal.present();
-
-    // Espera unos segundos antes de cerrarlo (puedes poner animación también)
-    setTimeout(() => modal.dismiss(), 3000);
-  }
-
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+  private async initNotifications() {
+    if (Capacitor.getPlatform() === 'android') {
+      await PushNotifications.createChannel({
+        id: 'notifications_alfa', // ID de canal para referenciar
+        name: 'Notifications', // Nombre del canal
+        description: 'Notifications for Alfa', // Descripcion del canal
+        importance: 2, // importancia de la notificacion: ALTA
+        visibility: 1, // visibilidad de la notificacion: PUBLICA
+      });
+    }
   }
 }
-

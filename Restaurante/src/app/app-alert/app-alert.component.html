@@ -1,0 +1,11 @@
+<div *ngIf="show" class="app-alert-overlay">
+  <ion-card class="app-alert-card">
+    <ion-card-header>
+      <ion-card-title class="alert-title">Aviso</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="alert-message">{{ message }}</p>
+      <ion-button expand="block" (click)="hideAlert()" class="alert-button">Aceptar</ion-button>
+    </ion-card-content>
+  </ion-card>
+</div> 
