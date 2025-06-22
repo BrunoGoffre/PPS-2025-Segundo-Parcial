@@ -39,19 +39,32 @@ export class AppComponent implements OnInit {
     });
 
     this.platform.ready().then(() => {
-      this.initNotifications();
+      try {
+        this.initNotifications();
+      } catch (error) {
+        console.error('Error al inicializar notificaciones:', error);
+      }
     });
+    
     setTimeout(() => {
       SplashScreen.hide();
       setTimeout(() => {
         this.showLoading = false;
 
-        if (!this.pushNotificationsService.originNotification) {
-          if (this.authService.userActive != null) {
-            this.router.navigate(['/home']);
-          } else {
-            this.router.navigate(['/login']);
+        try {
+          if (!this.pushNotificationsService.originNotification) {
+            if (this.authService.userActive != null) {
+              this.router.navigate(['/home']);
+            } else {
+              this.router.navigate(['/login']);
+            }
           }
+        } catch (error) {
+          console.error('Error en la navegación inicial:', error);
+          // Si hay un error, intentamos navegar a la página de login como fallback
+          this.router.navigate(['/login']).catch(err => {
+            console.error('Error en navegación de fallback:', err);
+          });
         }
       }, 2000);
     }, 2000);
@@ -59,13 +72,18 @@ export class AppComponent implements OnInit {
 
   private async initNotifications() {
     if (Capacitor.getPlatform() === 'android') {
-      await PushNotifications.createChannel({
-        id: 'notifications_alfa', // ID de canal para referenciar
-        name: 'Notifications', // Nombre del canal
-        description: 'Notifications for Alfa', // Descripcion del canal
-        importance: 2, // importancia de la notificacion: ALTA
-        visibility: 1, // visibilidad de la notificacion: PUBLICA
-      });
+      try {
+        await PushNotifications.createChannel({
+          id: 'notifications_alfa', // ID de canal para referenciar
+          name: 'Notifications', // Nombre del canal
+          description: 'Notifications for Alfa', // Descripcion del canal
+          importance: 2, // importancia de la notificacion: ALTA
+          visibility: 1, // visibilidad de la notificacion: PUBLICA
+        });
+      } catch (error) {
+        console.error('Error al crear canal de notificaciones:', error);
+        // No lanzamos el error para que la aplicación pueda continuar
+      }
     }
   }
 }
