@@ -22,14 +22,14 @@
   <ion-content class="ion-padding centered-content">
   
     <!-- Sector supervisor: -->
-    <div class="duenio" *ngIf="user?.perfil === 'supervisor' && !isLoading">
+    <div class="duenio" *ngIf="(user?.perfil === 'supervisor' || user?.perfil === 'duenio') && !isLoading">
       <div class="image-container-chico" >
-        <img class="imagen-chica" src="assets/pendientesDeAprobacion.png" alt="qr" (click)="goTo('/clientes-pendientes')">
+        <img class="imagen-chica" src="assets/pendienteDeAprobacion.png" alt="clientes-pendientes-aprobacion" (click)="goTo('/clientes-pendientes')">
         <p class="avatar-text">Clientes pendientes de aprobación</p>
-        <img class="imagen-chica" src="assets/encuesta.png" alt="qr" (click)="goTo('/encuesta-supervisor')">
-        <p class="avatar-text">Completar encuesta</p>
+        <!-- <img class="imagen-chica" src="assets/encuesta.png" alt="encuestas" (click)="goTo('/encuesta-supervisor')">
+        <p class="avatar-text">Completar encuesta</p> -->
       </div>
-     </div>
+    </div>
   
     <app-app-alert #appAlert></app-app-alert>
   

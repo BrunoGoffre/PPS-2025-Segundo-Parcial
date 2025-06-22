@@ -64,7 +64,12 @@ export class LoginPage {
   }
 
   establecerCredenciales(tipoUsuario: string) {
-    const email = `${tipoUsuario}@bonappetit.com`;
+    let email = '';
+    if (tipoUsuario === 'clienteAnonimo') {
+      email = `${tipoUsuario}@anonimo.com`;
+    } else {
+      email = `${tipoUsuario}@bonappetit.com`;
+    }
     const password = '123456';
     this.emailControl.setValue(email);
     this.passwordControl.setValue(password);
@@ -81,7 +86,7 @@ export class LoginPage {
   }
 
   irRegistro(){
-    this.router.navigate(['/crear-cliente']);
+    this.router.navigate(['/register']);
   }
 
   async onSubmit() {
@@ -104,7 +109,8 @@ export class LoginPage {
       if (result && result.user) {
         if (this.emailControl.value == 'duenio@bonappetit.com') {
           this.loading = false;
-          this.router.navigate(['/clientes-pendientes']);
+          // this.router.navigate(['/clientes-pendientes']);
+          this.router.navigate(['/home']);
           this.playSound('1');
           this.clearCredentials();
         } else {

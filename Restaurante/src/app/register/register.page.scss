@@ -1,0 +1,150 @@
+ion-content {
+    --background: url('/assets/fondoSplash.png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  /* Card que contiene el formulario de login */
+  .login-card {
+    padding: 3%;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    background-color: rgba(93, 97, 60, 0.95);
+    margin: 0;
+    margin-top: 2vw;
+  }
+  
+  /* Título del card */
+  .card-title {
+    font-size: 6vw; /* Escala según el tamaño de la pantalla */
+    color: #fff;
+    text-align: center;
+  }
+  
+  .user-buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .avatar-row {
+    display: flex;
+    width: 100%;
+    flex-direction: column; 
+    align-items: center;
+  }
+
+  .avatar-text {
+    font-size: 6vw;
+    color: #fff; 
+    text-align: center;
+  }
+  
+  .avatar-button {
+    width: 20vw;
+    height: 20vw;
+    border-radius: 50%;
+    border: none;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .avatar-ok {
+    width: 20vw;
+    height: 20vw;
+    border-radius: 50%;
+    border: none;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    margin-bottom: 10px;
+  }
+  
+  .avatar-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(194, 60, 60, 0.3);
+  }
+  
+  .avatar-ok img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .login-button {
+    width: 100%;
+    background-color: #eb445a;
+    color: white;
+    font-size: 4vw;
+    font-weight: bold;
+    padding: 3vw;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .login-button:hover,
+  .login-button:focus {
+    background-color: #2b7070;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(194, 60, 60, 0.3);
+  }
+
+  .login-button:disabled {
+    background-color: #a3a3a3; 
+    color: #ffffff;
+    opacity: 0.6;
+    cursor: not-allowed; 
+    box-shadow: none; 
+    transform: none; 
+  }
+
+  .escanear-button {
+    width: 100%;
+    background-color: #eb445a;
+    color: white;
+    font-size: 4vw;
+    font-weight: bold;
+    padding: 3vw;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  
+  .escanear-button:disabled {
+    background-color: #a3a3a3; 
+    color: #ffffff;
+    opacity: 0.6;
+    cursor: not-allowed; 
+    box-shadow: none; 
+    transform: none; 
+  }
+  
+  ion-header {
+      border-radius: 12px;
+  }
+  
+  .header-toolbar {
+    border-radius: 12px;
+    --background: #4c4f32;
+    color: #ffffff;
+    text-align: center;
+  }
+
+  ion-grid,  ion-col {
+    padding: 0;
+    margin: 0;
+  }
+
+  .texto{
+    font-size: 4.1vw;
+  }

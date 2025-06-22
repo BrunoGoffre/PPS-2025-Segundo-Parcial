@@ -40,6 +40,7 @@ export class UsersService {
       const userData = querySnapshot.docs[0].data();
 
       if(userData['profile'] == 'cliente' && userData['type'] == 'registrado'){
+        // estados: pendiente, aprobado, rechazado
         const estadoDeAprobacion = userData['estadoAprobacion'];
   
         if (estadoDeAprobacion === 'pendiente')

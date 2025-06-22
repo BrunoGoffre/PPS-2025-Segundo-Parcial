@@ -5,8 +5,8 @@ export interface User{
     dni?:string;
     mail?:string;
     imagen?:string;
-    perfil?:string;
-    tipo?:string;
-    estadoAprobacion?:string;
+    perfil?:string; // cliente, supervisor, duenio, 
+    tipo?:string; // maitre, mozo, cocinero, bartender
+    estadoAprobacion?:string; // pendiente, aprobado, rechazado
     encuestaCompletada?:boolean;
 }
