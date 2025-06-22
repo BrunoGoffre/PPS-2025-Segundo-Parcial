@@ -29,10 +29,12 @@
           <ion-input [formControl]="emailControl" name="email" type="text" placeholder=" Usuario"></ion-input>
         </ion-item>
 
-        <ion-item class="input-item password-item">
-          <ion-input [formControl]="passwordControl" name="password" [type]="mostrarPassword ? 'text' : 'password'" placeholder=" Contraseña"></ion-input>
-          <ion-icon slot="end" [name]="mostrarPassword ? 'eye-outline' : 'eye-off-outline'" (click)="toggleMostrarPassword()" class="password-toggle"></ion-icon>
-        </ion-item>
+        <div class="password-item">
+          <ion-item class="input-item">
+            <ion-input [formControl]="passwordControl" name="password" [type]="mostrarPassword ? 'text' : 'password'" placeholder=" Contraseña"></ion-input>
+          </ion-item>
+          <ion-icon [name]="mostrarPassword ? 'eye-outline' : 'eye-off-outline'" (click)="toggleMostrarPassword()" class="password-toggle"></ion-icon>
+        </div>
         <br>
        
         <div class="accesos-container">

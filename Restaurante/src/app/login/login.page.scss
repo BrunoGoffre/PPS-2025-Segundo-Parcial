@@ -26,7 +26,7 @@ ion-content {
     padding: 5%;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    background-color: rgba(93, 97, 60, 0.95);
+    background-color: #355ca1;
     margin-top: 0;
   }
   
@@ -42,10 +42,8 @@ ion-content {
     margin-bottom: 4vw;
     border-radius: 8px;
     font-size: 4vw;
-    width: 105%; /* Un poco más ancho que el contenedor */
+    width: 100%; /* Ajustado para que no desborde */
     position: relative;
-    left: 50%;
-    transform: translateX(-50%); /* Mantiene el input centrado */
   }
   
   .input-item ion-input {
@@ -83,7 +81,7 @@ ion-content {
   
   .toggle-accesos-button {
     width: 100%;
-    background-color: #4c4f32;
+    background-color: #2e5569;
     color: white;
     font-size: 3.5vw;
     font-weight: bold;
@@ -95,7 +93,7 @@ ion-content {
   }
   
   .toggle-accesos-button:hover {
-    background-color: #5d613c;
+    background-color: #445bb1;
   }
   
   /* Grid de accesos rápidos */
@@ -165,7 +163,7 @@ ion-content {
   
   .header-toolbar {
     border-radius: 12px;
-    --background: #4c4f32;
+    --background: #355ca1;
     color: #ffffff;
     text-align: center;
   }
