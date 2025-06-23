@@ -1,0 +1,89 @@
+ion-content {
+    --background: url('/assets/fondoSplash.png') no-repeat center center fixed;
+    padding: 0;
+  }
+  
+ 
+  
+  .feed-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .feed-item {
+    width: 100%;
+    max-width: 600px;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .photo-container img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .details-container {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+    box-sizing: border-box;
+
+    flex-direction: column; 
+  }
+  
+  .user-info {
+    font-size: 1rem;
+
+    margin-bottom: 10px; 
+  }
+  
+  .email {
+    font-size: 0.9rem;
+    color: #656565;
+  }
+  
+
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+  
+  .custom-header {
+    --background: #4c4f32;
+    --color: #ffffff;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  ion-title{
+    //font-weight: bold;
+    font-size: 1.5em;
+}
+
+ion-icon{
+  font-size: 30px;
+}
+  
+  
+  ion-button.aceptar-button {
+    --background: #28a745; 
+    --color: #ffffff;      
+    font-weight: bold;
+  }
+  
+  ion-button.rechazar-button {
+    --background: #dc3545; 
+    --color: #ffffff;      
+    font-weight: bold;
+  }
+
+  .action-buttons{
+    margin-left: 45px;
+  }

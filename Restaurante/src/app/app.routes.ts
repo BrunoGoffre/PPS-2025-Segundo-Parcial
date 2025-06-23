@@ -18,6 +18,10 @@ export const routes: Routes = [
 		path: 'register',
 		loadComponent: () => import('./register/register.page').then((m) => m.RegisterPage),
 	},
+	{
+		path: 'clientes-pendientes',
+		loadComponent: () => import('./clientes-pendientes/clientes-pendientes.page').then((m) => m.ClientesPendientesPage),
+	},
 	// Ruta por defecto
 	{
 		path: '**',
