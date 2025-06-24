@@ -2,12 +2,19 @@ import { Component, Input } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { Haptics } from '@capacitor/haptics';
 import { NgClass } from '@angular/common';
+import { IonIcon } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { 
+  informationCircleOutline, 
+  checkmarkCircleOutline, 
+  clipboardOutline 
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-app-alert',
   templateUrl: './app-alert.component.html',
   styleUrls: ['./app-alert.component.scss'],
-  imports: [NgIf, NgClass],
+  imports: [NgIf, NgClass, IonIcon],
   standalone: true,
 })
 export class AppAlertComponent {
@@ -16,6 +23,14 @@ export class AppAlertComponent {
   show: boolean = false;
   isPlayingSound = false; 
 
+  constructor() {
+    // Registrar los iconos que vamos a usar
+    addIcons({
+      informationCircleOutline,
+      checkmarkCircleOutline,
+      clipboardOutline
+    });
+  }
 
   showAlert(message: string, type: 'default' | 'encuesta' | 'success' = 'default' ) {
     this.message = message;

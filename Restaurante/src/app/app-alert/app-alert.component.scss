@@ -1,40 +1,113 @@
-.app-alert-overlay {
+.alert-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
+  backdrop-filter: blur(5px);
 }
 
-.app-alert-card {
-  width: 80%;
+.alert-container {
+  width: 85%;
   max-width: 350px;
-  background-color: rgba(93, 97, 60, 0.95);
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-.alert-title {
-  color: white;
+.alert-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  font-size: 5vw;
 }
 
-.alert-message {
-  color: white;
-  text-align: center;
-  margin: 15px 0;
-  font-size: 4vw;
+.alert-content span {
+  margin-bottom: 20px;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 500;
 }
 
-.alert-button {
-  --background: #eb445a;
-  --color: white;
-  margin-top: 10px;
+.alert-container button {
+  padding: 12px 24px;
+  border-radius: 8px;
   font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Estilos según el tipo de alerta */
+.default {
+  background-color: #2c3e50;
+  color: white;
+}
+
+.default button {
+  background-color: #3498db;
+  color: white;
+}
+
+.default button:hover {
+  background-color: #2980b9;
+}
+
+.success {
+  background-color: #27ae60;
+  color: white;
+}
+
+.success button {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.success button:hover {
+  background-color: #27ae60;
+}
+
+.encuesta {
+  background-color: #f39c12;
+  color: white;
+}
+
+.encuesta button {
+  background-color: #f1c40f;
+  color: #34495e;
+}
+
+.encuesta button:hover {
+  background-color: #f39c12;
+}
+
+.success-button {
+  background-color: #2ecc71 !important;
+  color: white !important;
+}
+
+.error-button {
+  background-color: #3498db !important;
+  color: white !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 } 

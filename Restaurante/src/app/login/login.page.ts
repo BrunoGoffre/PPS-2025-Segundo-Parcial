@@ -16,9 +16,6 @@ interface AccesoDirecto {
   icono: string;
 }
 
-type Idioma = 'ingles' 
-type Numero = '1' 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -46,7 +43,7 @@ export class LoginPage {
     { tipo: 'clienteanonimo', nombre: 'Anónimo', icono: 'home' }
   ];
   
-  @ViewChild(AppAlertComponent) customAlert!: AppAlertComponent;
+  @ViewChild(AppAlertComponent) appAlert!: AppAlertComponent;
 
   constructor(private router: Router, private authService: AuthService, private usuariosService: UsersService) {
     addIcons({
@@ -91,11 +88,11 @@ export class LoginPage {
 
   async onSubmit() {
     if (!this.emailControl.valid) {
-      this.customAlert.showAlert('Por favor, ingresa un correo válido.');
+      this.appAlert.showAlert('Por favor, ingresa un correo válido.');
       return;
     }
     if (!this.passwordControl.valid) {
-      this.customAlert.showAlert('La contraseña debe tener al menos 6 caracteres.');
+      this.appAlert.showAlert('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
     this.loading = true;
@@ -107,6 +104,7 @@ export class LoginPage {
       });
 
       if (result && result.user) {
+        console.log('[LoginPage] Usuario logueado:', result.user);
         if (this.emailControl.value == 'duenio@bonappetit.com') {
           this.loading = false;
           // this.router.navigate(['/clientes-pendientes']);
@@ -122,16 +120,16 @@ export class LoginPage {
             this.clearCredentials();
           } else {
             this.loading = false;
-            this.customAlert.showAlert(res!);
+            this.appAlert.showAlert(res!);
           }
         }
       } else {
         this.loading = false;
-        this.customAlert.showAlert('Usuario o contraseña incorrectos.');
+        this.appAlert.showAlert('Usuario o contraseña incorrectos.');
       }
     } catch (error: any) {
       this.loading = false;
-      this.customAlert.showAlert(error.message || 'Usuario o contraseña incorrectos.');
+      this.appAlert.showAlert(error.message || 'Usuario o contraseña incorrectos.');
     }
   }
 

@@ -9,14 +9,11 @@ import { DniValidator } from '../validators/dniValidator.validator';
 import { User } from '../models/user';
 import { AppAlertComponent } from '../app-alert/app-alert.component';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline } from 'ionicons/icons';
 import { passwordMatchValidator } from '../validators/passwordValidator.validator';
 import { Keyboard } from '@capacitor/keyboard';
-
-type Idioma = 'ingles' 
-type Numero = '1' 
 
 @Component({
   selector: 'app-register',
@@ -28,7 +25,7 @@ type Numero = '1'
 export class RegisterPage implements OnInit {
 
   @ViewChild(IonContent, { static: true }) content!: IonContent;
-  @ViewChild(AppAlertComponent) customAlert!: AppAlertComponent;
+  @ViewChild(AppAlertComponent) appAlert!: AppAlertComponent;
 
   imagePreview: string | undefined;
 
@@ -43,6 +40,7 @@ export class RegisterPage implements OnInit {
   flagError: boolean = false;
   msjError: string = "";
   loading: boolean = false;
+  isPlayingSound = false; 
 
   constructor(public router:Router, private authService:AuthService, private usuariosService:UsersService, private fb: FormBuilder) 
   {
@@ -101,7 +99,7 @@ export class RegisterPage implements OnInit {
         if (this.tipoCliente == 'registrado') {
           this.cliente!.apellido = this.apellido?.value;
           this.cliente!.dni = this.dni?.value;
-          this.cliente!.mail = this.mail?.value;
+          this.cliente!.mail = this.mail?.value.toLowerCase();
           this.cliente!.estadoAprobacion = 'pendiente';
 
           // Usar el nuevo método de registro con Supabase
@@ -112,10 +110,11 @@ export class RegisterPage implements OnInit {
           );
 
           if (success) {
-            this.LeerNumero('1');
+            this.playSound('1');
             this.resetForm();
             this.authService.logoutSinRedireccion();
-            this.customAlert.showInfo('Alta exitosa. Aguarde a ser aprobado.', 'success');
+            this.appAlert.showInfo('Alta exitosa. Aguarde a ser aprobado.', 'success');
+            this.router.navigate(['/login']);
           } else {
             throw new Error('Error al registrar usuario');
           }
@@ -131,7 +130,7 @@ export class RegisterPage implements OnInit {
           );
 
           if (success) {
-            this.LeerNumero('1');
+            this.playSound('1');
             this.resetForm();
             this.router.navigate(['/home']);
           } else {
@@ -202,20 +201,46 @@ export class RegisterPage implements OnInit {
 
   async escanearDni(){
     try {
-      await BarcodeScanner.checkPermission({ force: true });
-      const result = await BarcodeScanner.startScan();
+      console.log('[RegisterPage] Iniciando escaneo de dni');
       
-      if (result.hasContent) {
-        const partes = result.content!.split("@");
-
-        this.clienteForm.controls['nombre'].setValue(partes[2]);
-        this.clienteForm.controls['apellido'].setValue(partes[1]);
-        this.clienteForm.controls['dni'].setValue(partes[4]);
+      // Verificar si el escaneo está disponible
+      const isAvailable = await BarcodeScanner.isSupported();
+      if (!isAvailable) {
+        console.error('[RegisterPage] El escaneo de códigos de barras no está disponible en este dispositivo');
+        this.appAlert.showInfo('El escaneo de códigos de barras no está disponible en este dispositivo', 'default');
+        return;
+      }
+      
+      // Verificar permisos
+      const granted = await BarcodeScanner.requestPermissions();
+      if (!granted) {
+        console.error('[RegisterPage] Permiso de cámara denegado');
+        this.appAlert.showInfo('Se requiere permiso de cámara para escanear el DNI', 'default');
+        return;
+      }
+      
+      // Iniciar escaneo
+      const { barcodes } = await BarcodeScanner.scan();
+      
+      if (barcodes.length > 0) {
+        console.log("[RegisterPage] Resultado del escaneo:", barcodes[0].rawValue);
+        const content = barcodes[0].rawValue;
+        if (content) {
+          const partes = content.split("@");
+          
+          if (partes.length >= 5) {
+            this.clienteForm.controls['nombre'].setValue(partes[2]);
+            this.clienteForm.controls['apellido'].setValue(partes[1]);
+            this.clienteForm.controls['dni'].setValue(partes[4]);
+          } else {
+            console.error('[RegisterPage] Formato de DNI no reconocido');
+            this.appAlert.showInfo('Formato de DNI no reconocido', 'default');
+          }
+        }
       }
     } catch (error) {
-      console.error("Error al escanear el dni:", error);
-    } finally {
-      BarcodeScanner.stopScan();
+      console.error("[RegisterPage] Error al escanear el dni:", error);
+      this.appAlert.showInfo('Error al escanear el DNI', 'default');
     }
   }
 
@@ -263,29 +288,47 @@ export class RegisterPage implements OnInit {
   get clave() {return this.clienteForm.get('clave');}
   get clave2() {return this.clienteForm.get('clave2');}
 
-  idiomaActual: Idioma = 'ingles';
-  private sonidos: { [key in Idioma]: { [key in Numero]: string } } = {
-    ingles: {
-      '1': 'assets/sounds/bienvenido.mp3',
-    }
+  // sonidos ------------------------------------------------------------
+  private sounds: { [key: string]: string } = {
+    '1': 'welcome',
   };
 
-  isPlaying = false; 
+  playSound(sound: string) {
+    if (this.isPlayingSound) {
+      return;
+    }
 
-  LeerNumero(Numero: Numero){
-    const audio = new Audio();
-    audio.src = this.getAudioSrc(Numero);
-    audio.load();
-    audio.play();
+    const audioFile = this.getAudioFile(sound);
 
-    this.isPlaying = true;
+    if (!audioFile) {
+      return;
+    }
     
+    const audio = new Audio(audioFile);
+
+    this.isPlayingSound = true;
+
+    audio.play().then(() => {
+      this.isPlayingSound = false;
+    })
+    .catch(() => {
+      this.isPlayingSound = false;
+    });
+
     audio.onended = () => {
-      this.isPlaying = false;
+      this.isPlayingSound = false;
     };
   }
 
-  getAudioSrc(Numero: Numero): string {
-    return this.sonidos[this.idiomaActual][Numero];
+  getAudioFile(sound: string) {
+    const audioFile = this.sounds[sound];
+    
+    if (audioFile) {
+      return `assets/sounds/${audioFile}.mp3`;
+    }
+    
+    console.error(`No hay archivo de audio para el sonido: ${sound}, revisar los archivos de la carpeta o el número de sonido seleccionado`);
+    return null;
   }
+  // sonidos ------------------------------------------------------------
 }

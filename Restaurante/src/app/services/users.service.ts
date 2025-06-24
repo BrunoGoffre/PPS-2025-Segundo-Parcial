@@ -20,32 +20,35 @@ export class UsersService {
     const colRef = collection(this.firestore, 'usuarios');
     const usersQuery = query(
       colRef,
-      where('profile', 'in', ['cliente', 'empleado'])
+      where('perfil', 'in', ['cliente', 'empleado'])
     );
     return collectionData(usersQuery, { idField: 'id' }) as Observable<User[]>;
   }
 
   getUsersByProfile(profile: string): Observable<User[]> {
     const colRef = collection(this.firestore, 'usuarios');
-    const clientesQuery = query(colRef, where('profile', '==', 'cliente'));
+    const clientesQuery = query(colRef, where('perfil', '==', 'cliente'));
     return collectionData(clientesQuery, { idField: 'id' }) as Observable<User[]>;
   }
 
   async checkUserApprovalStatus(email: string): Promise<string> {
     const usersCollection = collection(this.firestore, 'usuarios');
-    const q = query(usersCollection, where('mail', '==', email));
+    const emailLower = email.toLowerCase();
+    console.log('[UsersService] Email como viene del login:', email);
+    console.log('[UsersService] Email en minusculas:', emailLower);
+    const q = query(usersCollection, where('mail', '==', emailLower));
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
       const userData = querySnapshot.docs[0].data();
 
-      if(userData['profile'] == 'cliente' && userData['type'] == 'registrado'){
+      if(userData['perfil'] == 'cliente' && userData['tipo'] == 'registrado'){
         // estados: pendiente, aprobado, rechazado
         const estadoDeAprobacion = userData['estadoAprobacion'];
   
         if (estadoDeAprobacion === 'pendiente')
         {
-          return 'Tu cuenta está pendiente de aprobación.\n Por favor, espera a que el administrador revise tu solicitud. Te notificaremos en cuanto esté activa.';
+          return 'Tu cuenta está pendiente de aprobación.\n Por favor, espera a que el administrador revise tu solicitud. Te notificaremos en cuanto tengamos una resolución.';
         } else if (estadoDeAprobacion === 'rechazado')
         {
           return 'Tu solicitud de registro ha sido rechazada.\nSi tienes dudas, por favor, contactáctanos para más información.';
