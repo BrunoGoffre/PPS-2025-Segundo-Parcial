@@ -1,6 +1,5 @@
-# Registro de Auditoría - Proyecto Restaurante
+# Información del Proyecto
 
-## Información del Proyecto
 - **Nombre**: Restaurante
 - **Tecnología**: Ionic + Angular + Capacitor + Supabase
 - **Período de desarrollo**: 24 de Mayo 2025 - 28 de Junio 2025
