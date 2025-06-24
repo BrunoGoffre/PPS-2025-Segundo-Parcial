@@ -40,8 +40,6 @@
 
 ## Funcionalidades Implementadas
 
-Basándose en los commits, el proyecto incluye:
-
 1. **Autenticación y Login**
    - Sistema de login/registro
    - Autenticación con Supabase
