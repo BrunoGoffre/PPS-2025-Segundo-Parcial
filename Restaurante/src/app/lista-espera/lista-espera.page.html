@@ -1,0 +1,56 @@
+<div *ngIf="loading" class="loading-overlay">
+  <div class="loading-content">
+    <img src="assets/icons/icon-512.webp" alt="Logo Empresa" class="logo" />
+    <div class="loading-label">
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>Actualizando lista...</span>
+    </div>
+  </div>
+</div>
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/home">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Lista de espera</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding centered-content">
+  <app-custom-alert #customAlert></app-custom-alert>
+
+  <div *ngIf="!loading" class="contenedor">
+    <div *ngFor="let pedido of pedidosConCliente" class="pedido-card">
+      <div class="custom-card" (click)="seleccionarPedido(pedido)" name="pedidoSeleccionado" [ngClass]="{'selected-card': pedidoSeleccionado === pedido}">
+        <div class="custom-item">
+          <div class="cliente-info">
+            <h2>{{ pedido.cliente.nombre }}</h2>
+            <p>{{ pedido.cliente.apellido }}</p>
+          </div>
+          <div class="avatar">
+            <img [src]="pedido.cliente.imagen" alt="Imagen del cliente">
+          </div>
+          <div class="mesa-info">
+            <ion-select 
+            [(ngModel)]="mesaSeleccionada" 
+            placeholder="Mesa" 
+            name="mesaSeleccionada" 
+            okText="Aceptar" 
+            cancelText="Cancelar">
+            <ion-select-option *ngFor="let mesa of mesasLibres$ | async" [value]="mesa">
+              Mesa {{ mesa['numero'] }}
+            </ion-select-option>
+          </ion-select>
+            <ion-button class="verde" (click)="asignarMesaAlCliente(pedido)">Asignar Mesa</ion-button>
+            <ion-button class="rojo" (click)="borrarDelListado(pedido.pedido.id)">Eliminar de lista</ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <app-logout-button></app-logout-button> -->
+</ion-content>

@@ -1,0 +1,112 @@
+  ion-content{
+    --background: url('/assets/fondoSplash.png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    //min-height: 100vh;
+  }
+  
+  .contenedor {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto; 
+  }
+  
+  .pedido-card {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .custom-card {
+    width: 100%;
+    max-width: 300px; /* Ancho máximo de cada tarjeta */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    background-color: #2b7070;
+    margin-bottom: 3vw;
+  }
+  
+  .custom-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .avatar img {
+    width: 100px; /* Tamaño uniforme para todas las imágenes */
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .cliente-info {
+    text-align: center;
+  }
+  
+  .mesa-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  ion-select, ion-button {
+    width: 100%; /* Ancho completo de los elementos */
+    font-size: 6vw;
+    color: #ffffff;
+  }
+
+  .verde{
+    width: 100%; /* Ancho completo de los elementos */
+    font-size: 6vw;
+    color: #ffffff;
+    --background: green;
+  }
+
+  .rojo{
+    width: 100%; /* Ancho completo de los elementos */
+    font-size: 6vw;
+    color: #ffffff;
+    --background: red;
+  }
+
+  h2{
+    font-size: 8vw;
+  }
+
+  p{
+    font-size: 7vw;
+  }
+  
+  .custom-card:hover {
+    background-color: #2b7070;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(194, 60, 60, 0.3);
+  }
+
+  ion-option{
+    color: #ffffff;
+    font-size: 6vw;
+  }
+
+ion-toolbar {
+--background: #4c4f32;
+color: #ffffff;
+}
+
+ion-title{
+//font-weight: bold;
+font-size: 1.5em;
+}
+
+ion-icon{
+font-size: 30px;
+}
+
