@@ -41,6 +41,64 @@
   font-family: LoveYaLikeASister;
 }
 
+/* Estilos para manejar safe areas en dispositivos con notch y barra de navegación */
+:root {
+  --ion-safe-area-top: env(safe-area-inset-top, 20px);
+  --ion-safe-area-bottom: env(safe-area-inset-bottom, 10px);
+  --ion-safe-area-left: env(safe-area-inset-left, 0px);
+  --ion-safe-area-right: env(safe-area-inset-right, 0px);
+  --header-height: 60px;
+}
+
+/* Estilos para el header */
+ion-header {
+  height: var(--header-height);
+  min-height: var(--header-height);
+  padding-top: var(--ion-safe-area-top);
+  position: relative;
+  z-index: 100;
+}
+
+ion-toolbar {
+  --min-height: var(--header-height);
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --background: #4c4f32 !important;
+  color: #ffffff !important;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+}
+
+ion-title {
+  font-size: 1.5em !important;
+  font-weight: bold;
+  color: white;
+}
+
+ion-buttons {
+  margin-right: 8px;
+}
+
+ion-button {
+  --padding-start: 10px;
+  --padding-end: 10px;
+}
+
+ion-icon {
+  font-size: 24px !important;
+  color: white;
+}
+
+ion-footer {
+  padding-bottom: var(--ion-safe-area-bottom);
+}
+
+ion-content {
+  --padding-top: calc(var(--header-height) + 10px);
+  --padding-bottom: var(--ion-safe-area-bottom);
+}
+
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -102,6 +160,29 @@ ion-alert.select-alert {
     font-size: 20px !important;/* Tamaño del texto de las opciones */
     color: black; /* Color del texto de las opciones */
      /* Texto en negrita (opcional) */
+  }
+}
+
+
+/* Estilo para asegurar que los botones en el header sean visibles */
+ion-header ion-button {
+  --background: rgba(255, 255, 255, 0.2);
+  --border-radius: 50%;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  margin: 0 5px;
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 360px) {
+  ion-title {
+    font-size: 1.2em !important;
+  }
+  
+  ion-icon {
+    font-size: 20px !important;
   }
 }
 

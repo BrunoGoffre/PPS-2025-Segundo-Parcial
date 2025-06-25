@@ -14,7 +14,17 @@ const config: CapacitorConfig = {
       cameraPermissionText: "Se necesita permiso de cámara para escanear códigos",
       googleBarcodeScannerModuleInstallTitle: "Instalación de módulo de escaneo",
       googleBarcodeScannerModuleInstallMessage: "Se necesita instalar el módulo de escaneo de códigos de barras de Google"
+    },
+    PushNotifications: {
+      presentationOptions: ["badge", "sound", "alert"]
     }
+  },
+  ios: {
+    preferredContentMode: 'mobile',
+    contentInset: 'automatic'
+  },
+  server: {
+    androidScheme: 'https'
   }
 };
 
