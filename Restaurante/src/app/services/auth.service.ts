@@ -86,7 +86,7 @@ export class AuthService {
   }
 
   logout() {
-    this.pushNotificationsService.deleteToken();
+    this.pushNotificationsService.clearUserToken();
     const auth = getAuth();
 
     signOut(auth)
@@ -96,7 +96,7 @@ export class AuthService {
   }
 
   logoutSinRedireccion(){
-    this.pushNotificationsService.deleteToken();
+    this.pushNotificationsService.clearUserToken();
     const auth = getAuth();
     signOut(auth);
   }

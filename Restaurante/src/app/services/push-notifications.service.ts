@@ -1,21 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { PushNotifications, Token, PushNotificationSchema, ActionPerformed } from '@capacitor/push-notifications';
 import { Capacitor } from '@capacitor/core';
 import { Router } from '@angular/router';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PushNotificationsService {
   private supabase: SupabaseClient;
+  private authService: any; // Inyección tardía
   originNotification = false;
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private injector: Injector
   ) {
     this.supabase = createClient(
       environment.supabase.url,
@@ -90,15 +90,20 @@ export class PushNotificationsService {
 
   private async saveTokenToDatabase(token: string) {
     try {
-      const user = this.authService.userActive;
+      // Obtener AuthService de forma tardía
+      if (!this.authService) {
+        this.authService = this.injector.get('AuthService' as any);
+      }
+      
+      const user = this.authService?.userActive;
       
       if (user) {
-        console.log('Guardando token para usuario:', user.id);
+        console.log('Guardando token para usuario:', user.uid);
         
         const { error } = await this.supabase
           .from('user_push_tokens')
           .upsert({
-            user_id: user.id,
+            user_id: user.uid,
             token: token,
             platform: Capacitor.getPlatform(),
             updated_at: new Date().toISOString()
@@ -230,18 +235,32 @@ export class PushNotificationsService {
   // Método para limpiar tokens (logout)
   async clearUserToken() {
     try {
-      const user = this.authService.userActive;
+      // Obtener AuthService de forma tardía
+      if (!this.authService) {
+        this.authService = this.injector.get('AuthService' as any);
+      }
+      
+      const user = this.authService?.userActive;
       
       if (user) {
         await this.supabase
           .from('user_push_tokens')
           .delete()
-          .eq('user_id', user.id);
+          .eq('user_id', user.uid);
         
         console.log('Token de usuario eliminado');
       }
     } catch (error) {
       console.error('Error eliminando token:', error);
+    }
+  }
+
+  // Método para compatibilidad con AuthService existente
+  init(user: any) {
+    console.log('Init push notifications for user:', user?.uid);
+    // Inicializar cuando el usuario esté autenticado
+    if (user) {
+      this.initializePushNotifications();
     }
   }
 }
