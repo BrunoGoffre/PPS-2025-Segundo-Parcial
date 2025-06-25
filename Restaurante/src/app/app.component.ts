@@ -74,16 +74,24 @@ export class AppComponent implements OnInit {
     if (Capacitor.getPlatform() === 'android') {
       try {
         await PushNotifications.createChannel({
-          id: 'notifications_alfa', // ID de canal para referenciar
-          name: 'Notifications', // Nombre del canal
-          description: 'Notifications for Alfa', // Descripcion del canal
-          importance: 2, // importancia de la notificacion: ALTA
-          visibility: 1, // visibilidad de la notificacion: PUBLICA
+          id: 'restaurante_notifications',
+          name: 'Notificaciones Restaurante',
+          description: 'Notificaciones del restaurante',
+          importance: 5, // Máxima importancia
+          visibility: 1, // Pública
+          sound: 'default'
         });
+        console.log('Canal de notificaciones creado');
       } catch (error) {
         console.error('Error al crear canal de notificaciones:', error);
-        // No lanzamos el error para que la aplicación pueda continuar
       }
+    }
+
+    // Inicializar servicio de push notifications
+    try {
+      await this.pushNotificationsService.initializePushNotifications();
+    } catch (error) {
+      console.error('Error inicializando push notifications:', error);
     }
   }
 }
