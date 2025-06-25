@@ -79,11 +79,15 @@ export class PedidoClientePage implements OnInit {
   async obtenerProductos(): Promise<Producto[]> {
     const productosRef = collection(this.firestore, 'productos');
     return getDocs(productosRef).then((snapshot) => {
-      return snapshot.docs.map((doc) => doc.data() as Producto);
+      return snapshot.docs.map((doc) => {
+        const data = doc.data() as Producto;
+        return { ...data, id: doc.id };
+      });
     });
   }
 
   incrementarCantidad(producto: Producto) {
+    console.log(producto);
     const productoPedido = this.pedido.productos!.find(
       (p) => p.idProducto === producto.id
     );
@@ -97,7 +101,7 @@ export class PedidoClientePage implements OnInit {
         estado: 'pendiente',
       });
     }
-
+    console.log(this.pedido);
     this.actualizarPedido();
   }
 
@@ -121,17 +125,29 @@ export class PedidoClientePage implements OnInit {
     // Calcula el total del pedido
     this.totalPedido = this.pedido.productos!.reduce((total, p) => {
       const prod = this.productos.find((prod) => prod.id === p.idProducto);
-      return total + (prod ? <number>(<unknown>prod.precio) * p.cantidad : 0);
+      console.log(prod);
+      if (prod && prod.precio) {
+        const precio =
+          typeof prod.precio === 'string'
+            ? parseFloat(prod.precio)
+            : Number(prod.precio);
+        return total + precio * p.cantidad;
+      }
+      return total;
     }, 0);
 
     // Calcula el tiempo máximo de los productos en el pedido
     if (this.pedido.productos && this.pedido.productos.length > 0) {
-      this.tiempoPedidoMaximo = Math.max(
-        ...this.pedido.productos.map((p) => {
-          const prod = this.productos.find((prod) => prod.id === p.idProducto);
-          return prod ? <number>(<unknown>prod.tiempo) : 0;
-        })
-      );
+      const tiempos = this.pedido.productos.map((p) => {
+        const prod = this.productos.find((prod) => prod.id === p.idProducto);
+        if (prod && prod.tiempo) {
+          return typeof prod.tiempo === 'string'
+            ? parseFloat(prod.tiempo)
+            : Number(prod.tiempo);
+        }
+        return 0;
+      });
+      this.tiempoPedidoMaximo = Math.max(...tiempos);
     } else {
       this.tiempoPedidoMaximo = 0;
     }

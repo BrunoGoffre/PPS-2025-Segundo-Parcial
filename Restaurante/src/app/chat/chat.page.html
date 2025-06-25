@@ -1,0 +1,97 @@
+<div *ngIf="loading" class="loading-overlay">
+  <div class="loading-content">
+    <img src="assets/icons/icon-loading.png" alt="Logo Empresa" class="logo" />
+    <div class="loading-label">
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>Actualizando mensajes...</span>
+    </div>
+  </div>
+</div>
+
+@if(!loading && usuario?.tipo === 'mozo'){
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/consultas">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> Mesa {{pedido?.mesaNumero}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+} @else if(!loading && usuario?.perfil === 'cliente'){
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/menu-mesa">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> Consulta </ion-title>
+  </ion-toolbar>
+</ion-header>
+} @else {
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button>
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> </ion-title>
+  </ion-toolbar>
+</ion-header>
+}
+
+<ion-content>
+  <div class="contenedor">
+    <div class="mensajes-container">
+      <div class="mensajes">
+        @for (registro of mensajes; track $index) { @if (registro.usuario.id ===
+        usuario?.id) {
+        <div class="mensaje mensaje--derecha">
+          {{registro.mensaje}}
+          <div class="fecha-mensaje text-end">
+            {{(registro.fecha.seconds * 1000) | date:'dd/MM/yy HH:mm'}}
+          </div>
+        </div>
+        } @else {
+        <div class="mensaje mensaje--izquierda">
+          <h6 class="fw-bold">{{registro.usuario.nombre}}</h6>
+          {{registro.mensaje}}
+          <div class="fecha-mensaje">
+            {{(registro.fecha.seconds * 1000) | date:'dd/MM/yy HH:mm'}}
+          </div>
+        </div>
+        } }
+      </div>
+    </div>
+
+    <div class="chat-box">
+      <div class="input-group">
+        <input
+          (keydown.enter)="enviarMensaje()"
+          [(ngModel)]="textoMensaje"
+          type="text"
+          class="form-control"
+          placeholder="Escribe un mensaje..."
+          aria-label="Mensaje"
+        />
+        <button (click)="enviarMensaje()" class="btn" type="button">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-send"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,68 @@
+<div *ngIf="loading" class="loading-overlay">
+  <div class="loading-content">
+    <img src="assets/icons/icon-loading.png" alt="Bon Appétit" class="logo" />
+    <div class="loading-label">
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>Cargando tareas...</span>
+    </div>
+  </div>
+</div>
+<app-custom-alert #customAlert></app-custom-alert>
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      <span *ngIf="!loading">Pendientes {{ usuario?.tipo | uppercase }}</span>
+      <span *ngIf="loading">Pendientes</span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div
+    *ngIf="!loading && pedidosConProductos.length === 0"
+    class="no-pedidos-container"
+  >
+    <p class="no-pedidos-text">No hay pedidos a realizar.</p>
+  </div>
+  <div *ngFor="let pedidoConProductos of pedidosConProductos">
+    <div *ngFor="let producto of pedidoConProductos.productos">
+      <ion-card class="custom-card">
+        <ion-card-header>
+          <ion-card-title class="d-flex justify-content-between"
+            ><span>{{ producto.nombre }}</span
+            ><span>{{ producto.cantidad }}</span></ion-card-title
+          >
+        </ion-card-header>
+
+        <ion-card-content style="display: flex; align-items: center">
+          <img
+            [src]="producto.fotos[0]"
+            alt="Foto de {{ producto.nombre }}"
+            width="145"
+            height="145"
+            style="margin-right: 15px; border-radius: 8px"
+          />
+
+          <div>
+            <ion-button
+              *ngIf="producto.estado === 'pendiente'"
+              (click)="marcarComoPreparado(pedidoConProductos.pedidoId, producto.idProducto)"
+              color="primary"
+            >
+              Marcar como preparado
+            </ion-button>
+            <p *ngIf="producto.estado === 'preparado'" class="text-small pe-1">
+              Preparado
+            </p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

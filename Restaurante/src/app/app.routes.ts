@@ -77,10 +77,25 @@ export const routes: Routes = [
       import('./pagar-pedido/pagar-pedido.page').then((m) => m.PagarPedidoPage),
   },
   {
+    path: 'chat/:idPedido',
+    loadComponent: () => import('./chat/chat.page').then((m) => m.ChatPage),
+  },
+  {
+    path: 'chat',
+    loadComponent: () => import('./chat/chat.page').then((m) => m.ChatPage),
+  },
+  {
     path: 'finalizar-pedidos',
     loadComponent: () =>
       import('./finalizar-pedidos/finalizar-pedidos.page').then(
         (m) => m.FinalizarPedidosPage
+      ),
+  },
+  {
+    path: 'tareas-sector',
+    loadComponent: () =>
+      import('./tareas-sector/tareas-sector.page').then(
+        (m) => m.TareasSectorPage
       ),
   },
   {
