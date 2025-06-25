@@ -8,18 +8,31 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule]
 })
-export class DynamicSplashComponent  implements OnInit {
+export class DynamicSplashComponent implements OnInit {
   showSplash = true;
+  loadingProgress = 0;
+  loadingInterval: any;
 
   constructor() { }
 
   ngOnInit() {
-   this.hideSplashScreen();
+    this.hideSplashScreen();
+    this.simulateLoading();
+  }
+
+  simulateLoading() {
+    this.loadingInterval = setInterval(() => {
+      if (this.loadingProgress < 100) {
+        this.loadingProgress += 5;
+      } else {
+        clearInterval(this.loadingInterval);
+      }
+    }, 150);
   }
 
   hideSplashScreen() {
-      setTimeout(() => {
+    setTimeout(() => {
       this.showSplash = false;
-    }, 4000); 
+    }, 4500); 
   }
 }
