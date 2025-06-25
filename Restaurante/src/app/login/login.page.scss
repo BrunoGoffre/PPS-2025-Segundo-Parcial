@@ -1,209 +1,209 @@
 ion-content {
-    --background: url('/assets/fondoSplash.png') no-repeat center center fixed;
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
-  }
-  
-  /* Contenedor principal para centrar el contenido */
-  .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: 100%;
-    overflow: hidden;
-  }
-  
-  /* Card que contiene el formulario de login */
-  .login-card {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    padding: 5%;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    background-color: #355ca1;
-    margin-top: 0;
-  }
-  
-  /* Título del card */
-  .card-title {
-    font-size: 6vw; /* Escala según el tamaño de la pantalla */
-    color: #fff;
-    text-align: center;
-  }
-  .input-item {
-    --background: transparent;
-    --border-style: none;
-    margin-bottom: 4vw;
-    border-radius: 8px;
-    font-size: 4vw;
-    width: 100%; /* Ajustado para que no desborde */
-    position: relative;
-  }
-  
-  .input-item ion-input {
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 8px;
-    color: #000;
-    padding: 1vw;
-    max-width: 100%; /* Ocupa todo el espacio dentro del `input-item` */
-    font-size: 4vw;
-  }
-  
-  /* Estilos para el campo de contraseña y su icono */
-  .password-item {
-    position: relative;
-  }
-  
-  .password-toggle {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 5vw;
-    color: #333;
-    z-index: 10;
-    cursor: pointer;
-  }
-  
-  /* Estilos para el contenedor de accesos rápidos */
-  .accesos-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 5vw;
-  }
-  
-  .toggle-accesos-button {
-    width: 100%;
-    background-color: #2e5569;
-    color: white;
-    font-size: 3.5vw;
-    font-weight: bold;
-    padding: 2vw;
-    border-radius: 8px;
-    margin-bottom: 3vw;
-    transition: background-color 0.3s ease;
-    border: none;
-  }
-  
-  .toggle-accesos-button:hover {
-    background-color: #445bb1;
-  }
-  
-  /* Grid de accesos rápidos */
-  .accesos-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2vw;
-    width: 100%;
-  }
-  
-  .acceso-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    padding: 2vw;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: none;
-  }
-  
-  .acceso-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .acceso-icon {
-    font-size: 6vw;
-    color: #4c4f32;
-    margin-bottom: 1vw;
-  }
-  
-  .acceso-nombre {
-    font-size: 2.5vw;
-    color: #333;
-    text-align: center;
-  }
-  
-  .login-button {
-    width: 100%;
-    background-color: #eb445a;
-    color: white;
-    font-size: 4vw;
-    font-weight: bold;
-    padding: 3vw;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-bottom: 2vw;
-    border: none;
-  }
-  
-  .login-button:hover,
-  .login-button:focus {
-    background-color: #2b7070;
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(194, 60, 60, 0.3);
-  }
-  
-   ion-header {
+  --background: url("/assets/fondoSplash.png") no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Contenedor principal para centrar el contenido */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Card que contiene el formulario de login */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  padding: 5%;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  background-color: #355ca1;
+  margin-top: 0;
+}
+
+/* Título del card */
+.card-title {
+  font-size: 6vw; /* Escala según el tamaño de la pantalla */
+  color: #fff;
+  text-align: center;
+}
+.input-item {
+  --background: transparent;
+  --border-style: none;
+  margin-bottom: 4vw;
+  border-radius: 8px;
+  font-size: 4vw;
+  width: 100%; /* Ajustado para que no desborde */
+  position: relative;
+}
+
+.input-item ion-input {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  color: #000;
+  padding: 1vw;
+  max-width: 100%; /* Ocupa todo el espacio dentro del `input-item` */
+  font-size: 4vw;
+}
+
+/* Estilos para el campo de contraseña y su icono */
+.password-item {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 5vw;
+  color: #333;
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* Estilos para el contenedor de accesos rápidos */
+.accesos-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5vw;
+}
+
+.toggle-accesos-button {
+  width: 100%;
+  background-color: #2e5569;
+  color: white;
+  font-size: 3.5vw;
+  font-weight: bold;
+  padding: 2vw;
+  border-radius: 8px;
+  margin-bottom: 3vw;
+  transition: background-color 0.3s ease;
+  border: none;
+}
+
+.toggle-accesos-button:hover {
+  background-color: #445bb1;
+}
+
+/* Grid de accesos rápidos */
+.accesos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2vw;
+  width: 100%;
+}
+
+.acceso-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 2vw;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+}
+
+.acceso-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.acceso-icon {
+  font-size: 6vw;
+  color: #355ca1;
+  margin-bottom: 1vw;
+}
+
+.acceso-nombre {
+  font-size: 2.5vw;
+  color: #333;
+  text-align: center;
+}
+
+.login-button {
+  width: 100%;
+  background-color: #eb445a;
+  color: white;
+  font-size: 4vw;
+  font-weight: bold;
+  padding: 3vw;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-bottom: 2vw;
+  border: none;
+}
+
+.login-button:hover,
+.login-button:focus {
+  background-color: #2b7070;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(194, 60, 60, 0.3);
+}
+
+ion-header {
   //   --background: #08415C;
   //   padding: 1vw 0;
   //   width: 100%;
   //   text-align: center;
-    border-radius: 12px;
-   }
-  
-  .header-toolbar {
-    border-radius: 12px;
-    --background: #355ca1;
-    color: #ffffff;
-    text-align: center;
-  }
-  
-  .blurred {
-    filter: blur(4px);
-  }
-  
-  /* Estilos para la pantalla de carga */
-  .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
-  
-  .loading-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-  }
-  
-  .loading-label {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .loading-label ion-spinner {
-    margin-right: 10px;
-  }
-  
-  .logo {
-    width: 100px;
-    height: auto;
-  }
+  border-radius: 12px;
+}
+
+.header-toolbar {
+  border-radius: 12px;
+  --background: #355ca1;
+  color: #ffffff;
+  text-align: center;
+}
+
+.blurred {
+  filter: blur(4px);
+}
+
+/* Estilos para la pantalla de carga */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
+.loading-label {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.loading-label ion-spinner {
+  margin-right: 10px;
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+}

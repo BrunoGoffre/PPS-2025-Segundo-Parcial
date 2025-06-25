@@ -1,0 +1,83 @@
+<div *ngIf="loading" class="loading-overlay">
+  <div class="loading-content">
+    <img src="assets/icons/icon-loading.png" alt="Logo Empresa" class="logo" />
+    <div class="loading-label">
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>Cargando consultas...</span>
+    </div>
+  </div>
+</div>
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/home">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Consultas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding centered-content">
+  <ion-list *ngIf="!loading">
+    <div
+      *ngIf="!loading && pedidosConMensajes.length === 0"
+      class="no-pedidos-container"
+    >
+      <p class="no-pedidos-text">No se realizaron consultas.</p>
+    </div>
+    <ion-card *ngFor="let item of pedidosConMensajes" class="photo-card mt-0">
+      <div class="card-container">
+        <div class="image-container">
+          <img [src]="item.cliente.imagen" alt="Imagen subida" />
+        </div>
+        <div class="info-container">
+          <ion-card-header class="mb-0 pb-0">
+            <ion-card-title class="text-center mb-0 pb-0 fw-bold"
+              >Mesa {{ item.pedido.mesaNumero }}</ion-card-title
+            >
+            <ion-card-subtitle class="text-center pt-0 mt-0"
+              >{{ item.cliente!.nombre }} {{ item.cliente!.apellido
+              }}</ion-card-subtitle
+            >
+          </ion-card-header>
+          <ion-card-content class="vote-container">
+            <p
+              class="consulta-estado text-center w-100 fw-bold text-uppercase"
+              [ngClass]="{'fondorespondida': item.estadoConsulta === 'Respondida', 'fondosinresponder': item.estadoConsulta === 'Sin responder'}"
+            >
+              <span
+                [ngClass]="{'respondida': item.estadoConsulta === 'Respondida', 'sin-responder': item.estadoConsulta === 'Sin responder'}"
+              >
+                {{ item.estadoConsulta }}
+              </span>
+            </p>
+            <ion-button
+              class="fw-bold w-100"
+              (click)="abrirConsulta(item.pedido)"
+              >Ver Consulta</ion-button
+            >
+          </ion-card-content>
+        </div>
+      </div>
+    </ion-card>
+  </ion-list>
+
+  <!-- <div class="card" *ngFor="let item of pedidosConMensajes">
+    <div class="card-header">
+      <h5>Mesa: {{ item.pedido.numeroMesa }}</h5>
+      <p>Cliente: {{ item.cliente!.nombre }} {{ item.cliente!.apellido }}</p>
+    </div>
+    <div class="card-body">
+      <p>Estado: {{ item.pedido.estado }}</p>
+      <p class="consulta-estado">
+        Consulta: <span [ngClass]="{'respondida': item.estadoConsulta === 'Respondida', 'sin-responder': item.estadoConsulta === 'Sin responder'}">
+          {{ item.estadoConsulta }}
+        </span>
+      </p>
+      <button (click)="abrirConsulta(item.pedido)">Ver Consulta</button>
+    </div>
+  </div>
+   -->
+</ion-content>

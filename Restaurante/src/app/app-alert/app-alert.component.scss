@@ -15,8 +15,9 @@
 .alert-container {
   width: 85%;
   max-width: 350px;
+  background-color: #355ca1;
   border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   padding: 20px;
   animation: fadeIn 0.3s ease-in-out;
 }
@@ -30,74 +31,74 @@
 
 .alert-content span {
   margin-bottom: 20px;
-  font-size: 16px;
+  font-size: 1.8em;
   line-height: 1.5;
-  font-weight: 500;
+  font-weight: bold;
+  color: white;
 }
 
 .alert-container button {
-  padding: 12px 24px;
-  border-radius: 8px;
+  width: 100%;
   font-weight: bold;
-  font-size: 16px;
-  text-transform: uppercase;
+  padding: 3vw;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-bottom: 2vw;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%;
-  margin-top: 10px;
+  font-size: 1.5em;
 }
 
 /* Estilos según el tipo de alerta */
 .default {
-  background-color: #2c3e50;
+  background-color: transparent;
   color: white;
 }
 
 .default button {
-  background-color: #3498db;
+  background-color: #eb445a;
   color: white;
 }
 
 .default button:hover {
-  background-color: #2980b9;
+  background-color: #2b7070;
 }
 
 .success {
-  background-color: #27ae60;
+  background-color: transparent;
   color: white;
 }
 
 .success button {
-  background-color: #2ecc71;
+  background-color: #28a745;
   color: white;
 }
 
 .success button:hover {
-  background-color: #27ae60;
+  background-color: #248c3b;
 }
 
 .encuesta {
-  background-color: #f39c12;
+  background-color: transparent;
   color: white;
 }
 
 .encuesta button {
-  background-color: #f1c40f;
-  color: #34495e;
+  background-color: #eb445a;
+  color: white;
 }
 
 .encuesta button:hover {
-  background-color: #f39c12;
+  background-color: #2b7070;
 }
 
 .success-button {
-  background-color: #2ecc71 !important;
+  background-color: #28a745 !important;
   color: white !important;
 }
 
 .error-button {
-  background-color: #3498db !important;
+  background-color: #eb445a !important;
   color: white !important;
 }
 
@@ -110,4 +111,4 @@
     opacity: 1;
     transform: translateY(0);
   }
-} 
+}

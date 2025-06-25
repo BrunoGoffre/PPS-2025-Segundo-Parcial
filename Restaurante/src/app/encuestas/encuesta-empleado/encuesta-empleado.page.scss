@@ -22,7 +22,7 @@
 h2 {
   text-align: center;
   font-family: "Arial", sans-serif;
-  color: #4c4f32;
+  color: #355ca1;
   margin-bottom: 20px;
 }
 
@@ -34,7 +34,7 @@ h2 {
 
 label {
   font-weight: bold;
-  color: #4c4f32;
+  color: #355ca1;
   margin-bottom: 5px;
 }
 
@@ -61,7 +61,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: 20px; /* Ancho del pulgar */
   height: 20px; /* Altura del pulgar */
   border-radius: 50%; /* Pulgar circular */
-  background: #4c4f32; /* Color del pulgar, consistente con el tema */
+  background: #355ca1; /* Color del pulgar, consistente con el tema */
   cursor: pointer; /* Cursor de mano */
   margin-top: -6px; /* Ajusta la posición vertical del pulgar */
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
@@ -71,7 +71,7 @@ input[type="range"]::-moz-range-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #4c4f32;
+  background: #355ca1;
   cursor: pointer;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
@@ -80,7 +80,7 @@ input[type="range"]::-ms-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #4c4f32;
+  background: #355ca1;
   cursor: pointer;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
@@ -96,7 +96,7 @@ textarea {
 }
 
 textarea:focus {
-  border-color: #4c4f32; /* Cambiar color del borde al enfocar */
+  border-color: #355ca1; /* Cambiar color del borde al enfocar */
   box-shadow: 0 0 0 3px rgba(76, 79, 50, 0.3); /* Sombra al enfocar */
 }
 
@@ -136,7 +136,7 @@ input[type="radio"] {
   display: inline-block;
   width: 20px;
   height: 20px;
-  border: 2px solid #4c4f32; /* Borde con color del tema */
+  border: 2px solid #355ca1; /* Borde con color del tema */
   vertical-align: middle;
   margin-right: 8px;
   cursor: pointer;
@@ -153,8 +153,8 @@ input[type="radio"] {
 
 .form-group label input[type="checkbox"]:checked,
 .form-group label input[type="radio"]:checked {
-  background-color: #4c4f32; /* Color de fondo cuando está marcado */
-  border-color: #4c4f32;
+  background-color: #355ca1; /* Color de fondo cuando está marcado */
+  border-color: #355ca1;
 }
 
 .form-group label input[type="checkbox"]:checked::after {
@@ -192,7 +192,7 @@ input[type="radio"] {
 
 .submit-button {
   width: 100%;
-  background-color: #4c4f32;
+  background-color: #355ca1;
   color: white;
   font-weight: bold;
   padding: 10px;
@@ -206,7 +206,7 @@ input[type="radio"] {
 }
 
 .header {
-  background-color: #4c4f32;
+  background-color: #355ca1;
   text-align: center;
   padding: 1vw 0;
   width: 100%;
@@ -218,7 +218,7 @@ input[type="radio"] {
 
 .header h1 {
   color: #ffffff;
-  background-color: #4c4f32;
+  background-color: #355ca1;
   border-radius: 12px;
   padding: 5px;
   font-size: 1.5em;
@@ -226,7 +226,7 @@ input[type="radio"] {
 }
 
 ion-toolbar {
-  --background: #4c4f32;
+  --background: #355ca1;
   color: #ffffff;
 }
 
@@ -239,7 +239,7 @@ ion-icon {
 }
 
 .form-group button[type="button"] {
-  background-color: #4c4f32;
+  background-color: #355ca1;
   color: white;
   padding: 8px 12px;
   border: none;

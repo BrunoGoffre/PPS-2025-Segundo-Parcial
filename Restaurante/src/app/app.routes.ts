@@ -60,6 +60,44 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'consultas',
+    loadComponent: () =>
+      import('./consultas/consultas.page').then((m) => m.ConsultasPage),
+  },
+  {
+    path: 'entregar-cuenta',
+    loadComponent: () =>
+      import('./entregar-cuenta/entregar-cuenta.page').then(
+        (m) => m.EntregarCuentaPage
+      ),
+  },
+  {
+    path: 'pagar-pedido',
+    loadComponent: () =>
+      import('./pagar-pedido/pagar-pedido.page').then((m) => m.PagarPedidoPage),
+  },
+  {
+    path: 'finalizar-pedidos',
+    loadComponent: () =>
+      import('./finalizar-pedidos/finalizar-pedidos.page').then(
+        (m) => m.FinalizarPedidosPage
+      ),
+  },
+  {
+    path: 'entregar-pedidos',
+    loadComponent: () =>
+      import('./entregar-pedidos/entregar-pedidos.page').then(
+        (m) => m.EntregarPedidosPage
+      ),
+  },
+  {
+    path: 'confirmar-pedidos',
+    loadComponent: () =>
+      import('./confirmar-pedidos/confirmar-pedidos.page').then(
+        (m) => m.ConfirmarPedidosPage
+      ),
+  },
+  {
     path: 'lista-espera',
     loadComponent: () =>
       import('./lista-espera/lista-espera.page').then((m) => m.ListaEsperaPage),

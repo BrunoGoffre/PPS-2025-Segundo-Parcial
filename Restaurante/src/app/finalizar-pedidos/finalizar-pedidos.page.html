@@ -1,0 +1,63 @@
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="loading-content">
+    <img src="assets/icons/icon-512.webp" alt="Logo Empresa" class="logo" />
+    <div class="loading-label">
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>Cargando pedidos...</span>
+    </div>
+  </div>
+</div>
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/home">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Finalizar Pedidos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!isLoading" class="feed-container">
+    <div *ngFor="let pedido of pedidos" class="feed-item">
+      <!-- Información del Pedido -->
+      <ion-card>
+        <ion-card-content>
+          <p class="mesa-texto">
+            <strong>Mesa:</strong> {{ pedido.mesaNumero }}
+          </p>
+          <ion-list>
+            <ion-item *ngFor="let producto of pedido.productos">
+              <p class="descripcion-producto">{{ producto.nombre }}</p>
+              <div class="cantidad-container">
+                <span class="cantidad-text"
+                  >${{ producto.precio }} x {{ producto.cantidad }}</span
+                >
+              </div>
+            </ion-item>
+          </ion-list>
+          <p class="detalles">
+            <strong>Propina:</strong> ${{ pedido.propina }}
+          </p>
+          <p class="detalles">
+            <strong>Monto Final:</strong> ${{ pedido.montoFinal }}
+          </p>
+          <ion-button
+            color="success"
+            expand="block"
+            (click)="pedido.id && finalizarPedido(pedido.id)"
+          >
+            Finalizar Pedido
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+  <!-- Mensaje cuando no hay pedidos -->
+  <div *ngIf="!isLoading && pedidos.length === 0" class="no-pedidos-container">
+    <p class="no-pedidos-text">No hay pedidos cobrados para finalizar.</p>
+  </div>
+</ion-content>

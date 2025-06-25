@@ -7,51 +7,48 @@
     </div>
   </div>
 </div>
-  
+
 @if(loading || loading2){
-  <ion-header class="app-header">
-    <ion-toolbar class="custom-header">
-      <ion-title>Clientes Pendientes</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-header class="app-header">
+  <ion-toolbar class="custom-header">
+    <ion-title>Clientes Pendientes</ion-title>
+  </ion-toolbar>
+</ion-header>
+} @else if(usuario!.perfil === 'supervisor' ){
+<ion-header class="app-header">
+  <ion-toolbar class="custom-header">
+    <ion-buttons slot="start">
+      <ion-button class="back-button" routerLink="/home">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Clientes Pendientes</ion-title>
+  </ion-toolbar>
+</ion-header>
+} @else if(usuario!.perfil === 'duenio'){
+<ion-header class="app-header">
+  <ion-toolbar class="custom-header">
+    <ion-title>Clientes Pendientes</ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="logout-button" (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 }
-@else if(usuario!.perfil === 'supervisor' ){
-  <ion-header class="app-header">
-    <ion-toolbar class="custom-header">
-      <ion-buttons slot="start">
-        <ion-button class="back-button" routerLink="/home">
-          <ion-icon name="arrow-back-outline"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-      <ion-title>Clientes Pendientes</ion-title>
-    </ion-toolbar>
-  </ion-header>
-}
-@else if(usuario!.perfil === 'duenio'){
-  <ion-header class="app-header">
-    <ion-toolbar class="custom-header">
-      <ion-title>Clientes Pendientes</ion-title>
-      <ion-buttons slot="end">
-        <ion-button class="logout-button" (click)="logout()">
-          <ion-icon name="log-out-outline"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-}
-  
+
 <ion-content>
   <div *ngIf="!loading && !loading2" class="container-fluid">
+    <div *ngIf="pendingUsers.length === 0" class="no-clientes-container">
+      <p class="no-clientes-text">No hay clientes pendientes de aprobación.</p>
+    </div>
     <div class="feed-container">
-      
       <div *ngFor="let user of pendingUsers" class="feed-item">
-        
-        
         <div class="photo-container">
           <img [src]="user.imagen" class="img-fluid" alt="Foto del usuario" />
         </div>
 
-       
         <div class="details-container">
           <div class="user-info">
             <p class="user">{{ user.nombre }} {{ user.apellido }}</p>
@@ -59,12 +56,21 @@
             <p class="email">DNI: {{ user.dni }}</p>
           </div>
 
-         
           <div class="action-buttons">
-            <ion-button class="aceptar-button" (click)="aprobarUsuario(user.id, user.nombre, user.mail)" fill="solid" size="small">
+            <ion-button
+              class="aceptar-button"
+              (click)="aprobarUsuario(user.id, user.nombre, user.mail)"
+              fill="solid"
+              size="small"
+            >
               Aceptar
             </ion-button>
-            <ion-button class="rechazar-button" (click)="rechazarUsuario(user.id, user.nombre, user.mail)" fill="solid" size="small">
+            <ion-button
+              class="rechazar-button"
+              (click)="rechazarUsuario(user.id, user.nombre, user.mail)"
+              fill="solid"
+              size="small"
+            >
               Rechazar
             </ion-button>
           </div>
@@ -73,5 +79,3 @@
     </div>
   </div>
 </ion-content>
-  
-  

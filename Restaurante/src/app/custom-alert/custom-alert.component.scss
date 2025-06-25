@@ -1,71 +1,86 @@
 .alert-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #323232;
-    color: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    width: 80%;
-    max-width: 300px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    z-index: 1000;
-    background-color: rgba(0, 0, 0, 0.863); 
-  }
-  
-  .alert-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    animation: shake 0.3s ease-in-out;
-  }
-  
-  button {
-    margin-top: 1rem;
-    background-color: #ff4081;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    color: white;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  button:hover {
-    background-color: #e63950;
-  }
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #355ca1;
+  color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 80%;
+  max-width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 1000;
+}
 
-  @keyframes shake { //animacion de sacudida
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
+.alert-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: shake 0.3s ease-in-out;
+}
+
+.alert-content span {
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  line-height: 1.5;
+  font-weight: bold;
+  color: white;
+}
+
+button {
+  width: 100%;
+  font-weight: bold;
+  padding: 3vw;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 1rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5em;
+}
+
+button:hover {
+  background-color: #2b7070;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
   }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
 
-
-
-  /* Estilos específicos para la encuesta */
+/* Estilos específicos para la encuesta */
 .survey .alert-content {
-  background-color: #f8f9fa;
+  background-color: transparent;
   color: #333;
 }
 
 .survey .alert-content button {
-  background-color: #28a745;
+  background-color: #eb445a;
   color: white;
 }
 
 .survey .alert-content button:hover {
-  background-color: #218838;
+  background-color: #2b7070;
 }
 
 .success {
-  background-color: rgba(0, 0, 0, 0.863);  // Color de fondo verde claro para éxito
-  color: #ffffff; // Texto verde oscuro
+  background-color: transparent;
+  color: #ffffff;
 }
 
 .alert-overlay {
@@ -74,38 +89,20 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5); // Fondo semitransparente para el overlay
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(8px); // Desenfoque en el fondo
+  backdrop-filter: blur(8px);
 }
 
-/*.alert-container {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  width: 80%;
-  max-width: 300px;
-}*/
-
 .success-button {
-  background-color: #00a126; // Verde para éxito
-  color: white;
+  background-color: #28a745 !important;
+  color: white !important;
 }
 
 .error-button {
-  background-color: #dc3545; // Rojo para error
-  color: white;
-}
-
-button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  margin-top: 15px;
-  cursor: pointer;
+  background-color: #eb445a !important;
+  color: white !important;
 }

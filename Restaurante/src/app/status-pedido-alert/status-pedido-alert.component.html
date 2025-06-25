@@ -8,10 +8,18 @@
     </div>
     <div *ngIf="estadoPedido === 'entregado' && !confirmado">
       <div class="button-group">
-          <button class="confirm-button" (click)="confirmarPedido()">Confirmar</button>
-          <button class="cancel-button" (click)="closeAlert()">Cancelar</button>
+        <button class="confirm-button" (click)="confirmarPedido()">
+          Confirmar
+        </button>
+        <button class="cancel-button" (click)="closeAlert()">Cancelar</button>
       </div>
     </div>
-    <button *ngIf="estadoPedido !== 'entregado' || confirmado" class="aceptar-button" (click)="closeAlert()">Aceptar</button>
+    <button
+      *ngIf="estadoPedido !== 'entregado' || confirmado"
+      class="aceptar-button"
+      (click)="closeAlert()"
+    >
+      Aceptar
+    </button>
   </div>
 </div>

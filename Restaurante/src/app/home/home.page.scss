@@ -1,11 +1,11 @@
 ion-content {
-    --background: url('/assets/fondoSplash.png') no-repeat center center fixed;
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
+  --background: url("/assets/fondoSplash.png") no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
 .app-header {
@@ -19,7 +19,7 @@ ion-content {
   height: 40px;
   margin-right: 5px;
 }
-  
+
 .image-container {
   display: flex;
   justify-content: center;
@@ -32,28 +32,28 @@ ion-content {
   margin-top: 1vw;
 }
 
-.imagen{
+.imagen {
   width: 100%;
   padding: 5%;
   border-radius: 30px;
   cursor: pointer;
-  background-color: #FF525D;
+  background-color: #ff525d;
 }
 
 .item {
-  text-align: center; 
+  text-align: center;
 }
 
 .image-container-cuadro {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); 
-  grid-template-rows: repeat(2, auto); 
-  gap: 16px; 
-  justify-items: center; 
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 16px;
+  justify-items: center;
   align-items: center;
   margin-top: 12vw;
 }
-  
+
 .image-container-chico {
   display: flex;
   justify-content: center;
@@ -66,23 +66,23 @@ ion-content {
   margin-top: 10vw;
 }
 
-.imagen-chica{
+.imagen-chica {
   cursor: pointer;
-  background-color: #FF525D;
+  background-color: #ff525d;
   width: 100%;
   padding: 5%;
   border-radius: 30px;
 }
 
-.imagen-grande{
+.imagen-grande {
   cursor: pointer;
-  background-color: #FF525D;
+  background-color: #ff525d;
   width: 100%;
   padding: 5%;
   border-radius: 30px;
 }
 
-.image{
+.image {
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -92,17 +92,17 @@ ion-content {
   text-align: center;
   margin-top: 40vw;
 }
-  
+
 .header {
-  background-color: #4c4f32;
+  background-color: #355ca1;
   text-align: center;
   padding: 1vw 0;
   width: 100%;
 }
-  
+
 .header h1 {
   color: #ffffff;
-  background-color: #4c4f32;
+  background-color: #355ca1;
   border-radius: 12px;
   padding: 5px;
   font-size: 1.5em;
@@ -110,21 +110,21 @@ ion-content {
 }
 
 .avatar-text {
-  font-size: 4vw; 
-  color: #fff; 
+  font-size: 4vw;
+  color: #fff;
   text-align: center;
   width: 100%;
 }
 
-ion-icon{
+ion-icon {
   font-size: 30px;
 }
 
-ion-title{
+ion-title {
   font-size: 1.5em;
-} 
+}
 
 ion-toolbar {
-  --background: #4c4f32;
+  --background: #355ca1;
   color: #ffffff;
 }
