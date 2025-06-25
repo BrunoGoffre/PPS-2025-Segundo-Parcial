@@ -27,6 +27,25 @@ export const routes: Routes = [
       import('./register/register.page').then((m) => m.RegisterPage),
   },
   {
+    path: 'menu-mesa',
+    loadComponent: () =>
+      import('./menu-mesa/menu-mesa.page').then((m) => m.MenuMesaPage),
+  },
+  {
+    path: 'encuesta-clientes',
+    loadComponent: () =>
+      import('./encuestas/encuesta-clientes/encuesta-clientes.page').then(
+        (m) => m.EncuestaPage
+      ),
+  },
+  {
+    path: 'resultados-encuestas',
+    loadComponent: () =>
+      import('./encuestas/resultados-encuestas/resultados-encuestas.page').then(
+        (m) => m.ResultadosEncuestasPage
+      ),
+  },
+  {
     path: 'clientes-pendientes',
     loadComponent: () =>
       import('./clientes-pendientes/clientes-pendientes.page').then(

@@ -1,6 +1,6 @@
 <div *ngIf="loading || loading2" class="loading-overlay">
   <div class="loading-content">
-    <img src="assets/icons/icon-512.webp" alt="Logo Empresa" class="logo" />
+    <img src="assets/icons/icon-loading.png" alt="Bon Appétit" class="logo" />
     <div class="loading-label">
       <ion-spinner name="crescent"></ion-spinner>
       <span>Cargando clientes...</span>
@@ -9,17 +9,17 @@
 </div>
   
 @if(loading || loading2){
-  <ion-header>
+  <ion-header class="app-header">
     <ion-toolbar class="custom-header">
       <ion-title>Clientes Pendientes</ion-title>
     </ion-toolbar>
   </ion-header>
 }
 @else if(usuario!.perfil === 'supervisor' ){
-  <ion-header>
+  <ion-header class="app-header">
     <ion-toolbar class="custom-header">
       <ion-buttons slot="start">
-        <ion-button routerLink="/home">
+        <ion-button class="back-button" routerLink="/home">
           <ion-icon name="arrow-back-outline"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -28,11 +28,11 @@
   </ion-header>
 }
 @else if(usuario!.perfil === 'duenio'){
-  <ion-header>
+  <ion-header class="app-header">
     <ion-toolbar class="custom-header">
       <ion-title>Clientes Pendientes</ion-title>
       <ion-buttons slot="end">
-        <ion-button (click)="logout()">
+        <ion-button class="logout-button" (click)="logout()">
           <ion-icon name="log-out-outline"></ion-icon>
         </ion-button>
       </ion-buttons>

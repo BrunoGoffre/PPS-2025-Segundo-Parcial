@@ -1,14 +1,38 @@
-import { Component, ViewChild  } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardContent, IonItem, IonInput, IonCardHeader, IonCardTitle, IonSpinner, IonIcon } from '@ionic/angular/standalone';
-import { CommonModule} from '@angular/common';
+import {
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonCard,
+  IonCardContent,
+  IonItem,
+  IonInput,
+  IonCardHeader,
+  IonCardTitle,
+  IonSpinner,
+  IonIcon,
+} from '@ionic/angular/standalone';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { AppAlertComponent } from '../app-alert/app-alert.component';
 import { UsersService } from '../services/users.service';
 import { addIcons } from 'ionicons';
-import { eyeOutline, eyeOffOutline, peopleOutline, personOutline, restaurantOutline, beerOutline, personCircleOutline, homeOutline, briefcaseOutline, shieldOutline } from 'ionicons/icons';
+import {
+  eyeOutline,
+  eyeOffOutline,
+  peopleOutline,
+  personOutline,
+  restaurantOutline,
+  beerOutline,
+  personCircleOutline,
+  homeOutline,
+  briefcaseOutline,
+  shieldOutline,
+} from 'ionicons/icons';
 
 interface AccesoDirecto {
   tipo: string;
@@ -21,17 +45,37 @@ interface AccesoDirecto {
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonSpinner, IonIcon, AppAlertComponent, ReactiveFormsModule, CommonModule, FormsModule, IonInput, IonItem, IonCardContent, IonCard, IonContent, IonHeader, IonTitle, IonToolbar,IonCardHeader, IonCardTitle]
+  imports: [
+    IonSpinner,
+    IonIcon,
+    AppAlertComponent,
+    ReactiveFormsModule,
+    CommonModule,
+    FormsModule,
+    IonInput,
+    IonItem,
+    IonCardContent,
+    IonCard,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonCardHeader,
+    IonCardTitle,
+  ],
 })
 export class LoginPage {
   emailControl = new FormControl('', [Validators.required, Validators.email]);
-  passwordControl = new FormControl('', [Validators.required, Validators.minLength(6)]);
+  passwordControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(6),
+  ]);
   selected: string | null = null;
   loading: boolean = false;
   mostrarAccesosDirectos: boolean = false;
   mostrarPassword: boolean = false;
   isPlayingSound: boolean = false;
-  
+
   accesosDirectos: AccesoDirecto[] = [
     { tipo: 'duenio', nombre: 'Dueño', icono: 'briefcase' },
     { tipo: 'supervisor', nombre: 'Supervisor', icono: 'shield' },
@@ -40,15 +84,27 @@ export class LoginPage {
     { tipo: 'mozo', nombre: 'Mozo', icono: 'person' },
     { tipo: 'bartender', nombre: 'Bartender', icono: 'beer' },
     { tipo: 'cliente', nombre: 'Cliente', icono: 'person-circle' },
-    { tipo: 'clienteanonimo', nombre: 'Anónimo', icono: 'home' }
+    { tipo: 'clienteanonimo', nombre: 'Anónimo', icono: 'home' },
   ];
-  
+
   @ViewChild(AppAlertComponent) appAlert!: AppAlertComponent;
 
-  constructor(private router: Router, private authService: AuthService, private usuariosService: UsersService) {
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private usuariosService: UsersService
+  ) {
     addIcons({
-      eyeOutline, eyeOffOutline, peopleOutline, personOutline, restaurantOutline, 
-      beerOutline, personCircleOutline, homeOutline, briefcaseOutline, shieldOutline
+      eyeOutline,
+      eyeOffOutline,
+      peopleOutline,
+      personOutline,
+      restaurantOutline,
+      beerOutline,
+      personCircleOutline,
+      homeOutline,
+      briefcaseOutline,
+      shieldOutline,
     });
   }
 
@@ -62,8 +118,9 @@ export class LoginPage {
 
   establecerCredenciales(tipoUsuario: string) {
     let email = '';
-    if (tipoUsuario === 'clienteAnonimo') {
-      email = `${tipoUsuario}@anonimo.com`;
+    if (tipoUsuario === 'clienteanonimo') {
+      email = 'anon_993815@anon.com';
+      // email = `${tipoUsuario}@anonimo.com`;
     } else {
       email = `${tipoUsuario}@bonappetit.com`;
     }
@@ -72,7 +129,7 @@ export class LoginPage {
     this.passwordControl.setValue(password);
   }
 
-  clearCredentials(){
+  clearCredentials() {
     this.emailControl.setValue('');
     this.passwordControl.setValue('');
   }
@@ -82,7 +139,7 @@ export class LoginPage {
     this.establecerCredenciales(tipoUsuario);
   }
 
-  irRegistro(){
+  irRegistro() {
     this.router.navigate(['/register']);
   }
 
@@ -92,7 +149,9 @@ export class LoginPage {
       return;
     }
     if (!this.passwordControl.valid) {
-      this.appAlert.showAlert('La contraseña debe tener al menos 6 caracteres.');
+      this.appAlert.showAlert(
+        'La contraseña debe tener al menos 6 caracteres.'
+      );
       return;
     }
     this.loading = true;
@@ -100,7 +159,7 @@ export class LoginPage {
     try {
       const result = await this.authService.login({
         email: this.emailControl.value!,
-        password: this.passwordControl.value!
+        password: this.passwordControl.value!,
       });
 
       if (result && result.user) {
@@ -112,8 +171,10 @@ export class LoginPage {
           this.playSound('1');
           this.clearCredentials();
         } else {
-          const res = await this.usuariosService.checkUserApprovalStatus(this.emailControl.value!);
-          if (res == "") {
+          const res = await this.usuariosService.checkUserApprovalStatus(
+            this.emailControl.value!
+          );
+          if (res == '') {
             this.loading = false;
             this.router.navigate(['/home']);
             this.playSound('1');
@@ -129,7 +190,9 @@ export class LoginPage {
       }
     } catch (error: any) {
       this.loading = false;
-      this.appAlert.showAlert(error.message || 'Usuario o contraseña incorrectos.');
+      this.appAlert.showAlert(
+        error.message || 'Usuario o contraseña incorrectos.'
+      );
     }
   }
 
@@ -144,10 +207,12 @@ export class LoginPage {
 
       this.isPlayingSound = true;
 
-      audio.play().then(() => {
-      }).catch(error => {
-        this.isPlayingSound = false;
-      });
+      audio
+        .play()
+        .then(() => {})
+        .catch((error) => {
+          this.isPlayingSound = false;
+        });
       audio.onended = () => {
         this.isPlayingSound = false;
       };

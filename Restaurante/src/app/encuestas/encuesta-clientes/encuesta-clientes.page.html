@@ -1,6 +1,6 @@
 <div *ngIf="loading" class="loading-overlay">
   <div class="loading-content">
-    <img src="assets/icons/icon-loading.png" alt="Bon Appétit" class="logo" />
+    <img src="assets/icons/icon-512.webp" alt="Logo Empresa" class="logo" />
     <div class="loading-label">
       <ion-spinner name="crescent"></ion-spinner>
       <span>{{ loadingMessage }}</span>
@@ -8,8 +8,8 @@
   </div>
 </div>
 
-<ion-header>
-  <ion-toolbar>
+<ion-header class="custom-header">
+  <ion-toolbar class="custom-toolbar">
     <ion-buttons slot="start">
       <ion-button (click)="goBack()">
         <ion-icon name="arrow-back-outline"></ion-icon>
@@ -19,7 +19,7 @@
   </ion-toolbar>
 </ion-header>
 
-<div class="content-wrapper">
+<ion-content>
   <app-custom-alert></app-custom-alert>
 
   <div class="encuesta-container">
@@ -38,8 +38,8 @@
 
       <!-- Calificación de la comida -->
       <div class="form-group">
-        <label>Calificación del espacio de trabajo</label>
-        <label
+        <label>Calificación del la comida</label>
+        <label class="text"
           ><input
             type="radio"
             formControlName="calificacion"
@@ -47,15 +47,15 @@
           />
           Excelente</label
         >
-        <label
+        <label class="text"
           ><input type="radio" formControlName="calificacion" value="Bueno" />
           Bueno</label
         >
-        <label
+        <label class="text"
           ><input type="radio" formControlName="calificacion" value="Regular" />
           Regular</label
         >
-        <label
+        <label class="text"
           ><input type="radio" formControlName="calificacion" value="Malo" />
           Malo</label
         >
@@ -63,16 +63,17 @@
 
       <!-- Checkboxes para aspectos específicos -->
       <div class="form-group" formGroupName="aspectos">
-        <label>Aspectos que consideres destacables:</label>
-        <label><input type="checkbox" formControlName="comida" /> Dueño</label>
-        <label
-          ><input type="checkbox" formControlName="limpieza" />
-          Compañeros</label
+        <label class="text">Aspectos que consideres destacables:</label>
+        <label class="text"
+          ><input type="checkbox" formControlName="comida" /> Comida</label
         >
-        <label
+        <label class="text"
+          ><input type="checkbox" formControlName="limpieza" /> Limpieza</label
+        >
+        <label class="text"
           ><input type="checkbox" formControlName="ambiente" /> Ambiente</label
         >
-        <label
+        <label class="text"
           ><input type="checkbox" formControlName="atencionAlCliente" />
           Atención al cliente</label
         >
@@ -80,17 +81,15 @@
 
       <!-- Probabilida de recomendacion -->
       <div class="form-group">
-        <label
-          >¿Qué tan probable es que recomiendes trabajar en Bon Appétit
+        <label class="text"
+          >¿Qué tan probable es que recomiendes El Bon Appétit
           Restaurante?</label
         >
         <select class="text" formControlName="frecuencia">
-          <option class="text" value="" disabled selected>
-            Seleccione una opción
-          </option>
-          <option class="text" value="noProbable">No lo recomendaría</option>
-          <option class="text" value="pocoProbable">Poco probable</option>
-          <option class="text" value="MuyProbable">Muy probable</option>
+          <option value="" disabled selected>Seleccione una opción</option>
+          <option value="noProbable">No lo recomendaría</option>
+          <option value="pocoProbable">Poco probable</option>
+          <option value="MuyProbable">Muy probable</option>
         </select>
       </div>
 
@@ -106,11 +105,11 @@
 
       <!-- Fotos -->
       <div class="form-group">
-        <label>Fotos</label>
+        <label>Fotos (Opcional, máximo 3)</label>
         <button
           type="button"
           (click)="agregarFoto()"
-          [disabled]="fotos.length >= 1"
+          [disabled]="fotos.length >= 3"
         >
           Agregar Foto
         </button>
@@ -126,4 +125,4 @@
       <button type="submit" class="submit-button">Enviar Encuesta</button>
     </form>
   </div>
-</div>
+</ion-content>

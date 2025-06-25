@@ -26,16 +26,41 @@ export class PedidoService {
   constructor(private firestore: Firestore) {}
 
   getPedidoCliente(idCliente: string): Observable<Pedido[]> {
-    const pedidosRef = collection(this.firestore, 'pedidos');
-    const pedidosQuery = query(
-      pedidosRef,
-      where('idCliente', '==', idCliente),
-      where('estado', '!=', 'finalizado')
-    );
+    return new Observable<Pedido[]>((observer) => {
+      const pedidosRef = collection(this.firestore, 'pedidos');
+      console.log('ID de cliente recibido en PedidoService:', idCliente);
 
-    return collectionData(pedidosQuery, { idField: 'id' }) as Observable<
-      Pedido[]
-    >;
+      const pedidosQuery = query(
+        pedidosRef,
+        where('idCliente', '==', idCliente)
+      );
+
+      const unsubscribe = onSnapshot(
+        pedidosQuery,
+        (querySnapshot) => {
+          console.log(
+            'Snapshot recibido, cantidad de documentos:',
+            querySnapshot.size
+          );
+          const pedidos: Pedido[] = [];
+          querySnapshot.forEach((doc) => {
+            const pedido = { id: doc.id, ...doc.data() } as Pedido;
+
+            if (pedido.estado !== 'finalizado') {
+              console.log('Documento encontrado:', doc.id, doc.data());
+              pedidos.push(pedido);
+            }
+          });
+          observer.next(pedidos);
+        },
+        (error) => {
+          console.error('Error en la consulta:', error);
+          observer.error(error);
+        }
+      );
+
+      return () => unsubscribe();
+    });
   }
 
   async obtenerPedidoPorId(id: string): Promise<Pedido | null> {
@@ -56,13 +81,13 @@ export class PedidoService {
 
   async getPedidoClientePromise(idCliente: string): Promise<Pedido | null> {
     const pedidosRef = collection(this.firestore, 'pedidos');
-    const q = query(
+    const pedidosQuery = query(
       pedidosRef,
       where('idCliente', '==', idCliente),
-      where('estado', '!=', 'finalizado')
+      where('estado', 'not-in', ['finalizado'])
     );
 
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await getDocs(pedidosQuery);
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
       const pedidoData = doc.data() as Pedido;
@@ -195,7 +220,7 @@ export class PedidoService {
     const pedidoRef = doc(this.firestore, `pedidos/${pedidoId}`);
     await updateDoc(pedidoRef, {
       estado: 'mesa-asignada',
-      numeroMesa: mesaId,
+      mesaNumero: mesaId,
     });
   }
 

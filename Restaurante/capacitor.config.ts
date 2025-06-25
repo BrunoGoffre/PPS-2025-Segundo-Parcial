@@ -18,6 +18,13 @@ const config: CapacitorConfig = {
     PushNotifications: {
       presentationOptions: ["badge", "sound", "alert"]
     }
+  },
+  ios: {
+    preferredContentMode: 'mobile',
+    contentInset: 'automatic'
+  },
+  server: {
+    androidScheme: 'https'
   }
 };
 

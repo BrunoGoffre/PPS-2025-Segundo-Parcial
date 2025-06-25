@@ -1,0 +1,85 @@
+
+  .section {
+    padding: 20px;
+  }
+  
+  .section-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .section-divider {
+    border: 1px solid  #e3e0e0;   // #ccc;
+    margin-bottom: 20px;
+  }
+  
+  .chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 0;
+    background-color: #c6d687;
+  }
+  
+  .comentarios-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #c6d687;
+    border-radius: 8px;
+    color: black;
+  }
+  
+  .comentario {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 10px 0;
+  }
+  
+  .comentario:last-child {
+    border-bottom: none;
+  }
+
+  
+  
+  ion-content {
+  --background: url('/assets/fondoSplash.png') no-repeat center center fixed;
+    padding: 0;
+  }
+
+  .custom-header {
+    background-color: #4c4f32;
+    text-align: center;
+    padding: 1vw 0;
+    width: 100%;
+  }
+  .custom-header ion-toolbar {
+    background-color: #4c4f32;
+  }
+  
+  .custom-header ion-title {
+    color: #ffffff;
+    background-color: #4c4f32;
+    border-radius: 12px;
+    padding: 5px;
+    font-size: 1.5em;
+    margin: 0;
+  }
+
+  .custom-toolbar {
+    --background: #4c4f32; /* Elimina cualquier borde blanco del toolbar */
+    padding: 0; /* Remueve el padding interno adicional */
+  }
+  
+  .custom-toolbar ion-title {
+    color: #ffffff;
+    background-color: #4c4f32;
+    border-radius: 12px;
+    padding: 5px;
+    font-size: 1.5em;
+    margin: 0;
+  }
+
+  ion-icon{
+    font-size: 30px;
+  }

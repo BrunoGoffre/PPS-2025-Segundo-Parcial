@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/home">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Bienvenido a su mesa</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<app-estado-pedido-alert></app-estado-pedido-alert>
+<app-custom-alert #customAlert></app-custom-alert>
+
+<ion-content class="ion-padding centered-content">
+<div class="image-container-cuadro">
+  <div class="item">
+    <img class="imagen-chica" src="assets/consultas.png" alt="qr" (click)="goTo('chat')">
+    <p class="avatar-text text-center">Consultar al Mozo<br></p>
+    <img *ngIf="mostrarBotonEstadoPedido" class="imagen-chica" src="assets/estadoPedido.png" (click)="mostrarEstadoPedido()" alt="qr" >
+
+    <p *ngIf="mostrarBotonEstadoPedido" class="avatar-text text-center">Estado del Pedido</p>
+    <img *ngIf="!mostrarBotonEstadoPedido" class="imagen-chica" src="assets/hacerPedido.png" (click)="goTo('pedido-cliente')" alt="qr">
+    <p *ngIf="!mostrarBotonEstadoPedido" class="avatar-text text-center">Hacer un pedido</p>
+  </div>
+  <div class="item">
+    <img *ngIf="!usuario?.encuestaCompletada" class="imagen-chica" src="assets/encuesta.png" (click)="goTo('/encuesta-clientes')" alt="qr">
+    <p *ngIf="!usuario?.encuestaCompletada" class="avatar-text text-center">Realizar Encuesta</p>
+    <img *ngIf="usuario?.encuestaCompletada" class="imagen-chica" src="assets/resultadoEncuesta.png" (click)="goTo('resultados-encuestas')" alt="qr">
+    <p *ngIf="usuario?.encuestaCompletada" class="avatar-text text-center">Resultado Encuesta</p>
+    <img class="imagen-chica" src="assets/pagarPedido.png" alt="qr" (click)="pedirCuenta(pedido?.id,'cuenta-pedida')">
+    <p *ngIf="pedido?.estado != 'cuenta-enviada'"class="avatar-text text-center">Pedir la Cuenta</p>
+    <p *ngIf="pedido?.estado == 'cuenta-enviada'" class="avatar-text text-center">Pagar la Cuenta</p>
+  </div>
+</div>
+</ion-content>
