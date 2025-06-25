@@ -129,7 +129,7 @@ export class HomePage {
   }
 
   async LeerQRLocal() {
-    this.isScanning = true; //TODO: eliminar
+    // this.isScanning = true; //TODO: eliminar
     try {
       const result = await BarcodeScanner.scan();
       if (result.barcodes[0].rawValue == '/home') {
@@ -152,7 +152,7 @@ export class HomePage {
       this.appAlert.showAlert('Usted no posee una mesa asignada.');
       return;
     }
-    this.router.navigate(['/menu-mesa']); //TODO: eliminar
+    //this.router.navigate(['/menu-mesa']); //TODO: comentar/descomentar para probar
 
     try {
       const result = await BarcodeScanner.scan();
