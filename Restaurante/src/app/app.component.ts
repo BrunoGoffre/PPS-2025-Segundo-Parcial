@@ -81,9 +81,7 @@ export class AppComponent implements OnInit {
           visibility: 1, // Pública
           sound: 'default'
         });
-        console.log('Canal de notificaciones creado');
       } catch (error) {
-        console.error('Error al crear canal de notificaciones:', error);
       }
     }
 
@@ -91,7 +89,7 @@ export class AppComponent implements OnInit {
     try {
       await this.pushNotificationsService.initializePushNotifications();
     } catch (error) {
-      console.error('Error inicializando push notifications:', error);
+      // Error inicializando push notifications
     }
   }
 }

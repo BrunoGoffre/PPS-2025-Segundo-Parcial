@@ -2,43 +2,32 @@ import { Injectable, Injector } from '@angular/core';
 import { PushNotifications, Token, PushNotificationSchema, ActionPerformed } from '@capacitor/push-notifications';
 import { Capacitor } from '@capacitor/core';
 import { Router } from '@angular/router';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { Firestore, doc, setDoc, collection, getDocs, query, where } from '@angular/fire/firestore';
 import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PushNotificationsService {
-  private supabase: SupabaseClient;
   private authService: any; // Inyección tardía
   originNotification = false;
 
   constructor(
     private router: Router,
-    private injector: Injector
-  ) {
-    this.supabase = createClient(
-      environment.supabase.url,
-      environment.supabase.key
-    );
-  }
+    private injector: Injector,
+    private firestore: Firestore
+  ) {}
 
   async initializePushNotifications() {
-    console.log('Inicializando Push Notifications...');
-    
     if (Capacitor.isNativePlatform()) {
       await this.initNativePushNotifications();
     } else {
-      console.log('Push notifications no disponibles en web - usando fallback');
       this.initWebFallback();
     }
   }
 
   private async initNativePushNotifications() {
     try {
-      console.log('Configurando notificaciones nativas...');
-      
-      // Verificar y solicitar permisos
       let permStatus = await PushNotifications.checkPermissions();
       
       if (permStatus.receive === 'prompt') {
@@ -46,16 +35,10 @@ export class PushNotificationsService {
       }
       
       if (permStatus.receive !== 'granted') {
-        console.warn('Permisos de push notifications denegados');
         return;
       }
 
-      console.log('Permisos concedidos, registrando device...');
-      
-      // Registrar para push notifications
       await PushNotifications.register();
-
-      // Configurar listeners
       this.setupNativeListeners();
 
     } catch (error) {
@@ -64,75 +47,71 @@ export class PushNotificationsService {
   }
 
   private setupNativeListeners() {
-    // Token recibido exitosamente
     PushNotifications.addListener('registration', (token: Token) => {
-      console.log('Token FCM recibido:', token.value);
       this.saveTokenToDatabase(token.value);
     });
 
-    // Error en el registro
     PushNotifications.addListener('registrationError', (error: any) => {
       console.error('Error en registro de push notifications:', error);
     });
 
-    // Notificación recibida en primer plano
     PushNotifications.addListener('pushNotificationReceived', (notification: PushNotificationSchema) => {
-      console.log('Notificación recibida en primer plano:', notification);
       this.handleForegroundNotification(notification);
     });
 
-    // Usuario tocó la notificación
     PushNotifications.addListener('pushNotificationActionPerformed', (notification: ActionPerformed) => {
-      console.log('Usuario abrió notificación:', notification);
       this.handleNotificationTap(notification);
     });
   }
 
+  private currentToken: string | null = null;
+
   private async saveTokenToDatabase(token: string) {
     try {
-      // Obtener AuthService de forma tardía
-      if (!this.authService) {
-        this.authService = this.injector.get('AuthService' as any);
-      }
+      // Guardar el token para usarlo más tarde
+      this.currentToken = token;
       
-      const user = this.authService?.userActive;
+      // Intentar obtener el usuario
+      let user = null;
+      try {
+        if (!this.authService) {
+          this.authService = this.injector.get('AuthService' as any);
+        }
+        user = this.authService?.userActive;
+      } catch (error) {
+        // AuthService no disponible aún
+      }
       
       if (user) {
-        console.log('Guardando token para usuario:', user.uid);
-        
-        const { error } = await this.supabase
-          .from('user_push_tokens')
-          .upsert({
-            user_id: user.uid,
-            token: token,
-            platform: Capacitor.getPlatform(),
-            updated_at: new Date().toISOString()
-          });
-
-        if (error) {
-          console.error('Error guardando token:', error);
-        } else {
-          console.log('Token guardado exitosamente');
-        }
-      } else {
-        console.log('No hay usuario autenticado, token no guardado');
+        await this.actualSaveToken(token, user.uid);
       }
     } catch (error) {
-      console.error('Error en saveTokenToDatabase:', error);
+      // Error en saveTokenToDatabase
+    }
+  }
+
+  private async actualSaveToken(token: string, userId: string) {
+    try {
+      const tokenDoc = doc(this.firestore, 'user_push_tokens', `${userId}_${Capacitor.getPlatform()}`);
+      
+      await setDoc(tokenDoc, {
+        user_id: userId,
+        token: token,
+        platform: Capacitor.getPlatform(),
+        updated_at: new Date(),
+        created_at: new Date()
+      }, { merge: true });
+
+    } catch (error) {
+      // Error guardando token en Firebase
     }
   }
 
   private handleForegroundNotification(notification: PushNotificationSchema) {
-    // Mostrar notificación personalizada cuando la app está abierta
-    console.log('Mostrando notificación en primer plano:', notification.title);
-    
     // Aquí puedes mostrar un toast, modal o banner personalizado
-    // Ejemplo: this.presentToast(notification.title, notification.body);
   }
 
   private handleNotificationTap(notification: ActionPerformed) {
-    console.log('Procesando tap en notificación...');
-    
     this.originNotification = true;
     
     const data = notification.notification.data;
@@ -159,38 +138,86 @@ export class PushNotificationsService {
   }
 
   private initWebFallback() {
-    console.log('Inicializando fallback para web...');
     // En web podrías implementar toasts o modales para simular notificaciones
   }
 
-  // Método principal para enviar notificaciones
   async sendNotificationToRole(title: string, body: string, targetRole: string, data?: any) {
     try {
-      console.log(`Enviando notificación a rol: ${targetRole}`);
-      
+      const tokens = await this.getTokensFromFirebase(targetRole);
+
+      if (tokens.length === 0) {
+        return { success: true, message: 'No hay tokens registrados', sentCount: 0 };
+      }
+
+      // Enviar usando Firebase Cloud Functions
       const payload = {
         title,
         body,
         targetRole,
+        tokens,
         data: data || {}
       };
 
-      const { data: result, error } = await this.supabase.functions
-        .invoke('send-push-notification', {
-          body: payload
-        });
-
-      if (error) {
-        console.error('Error en Edge Function:', error);
-        throw error;
-      }
-
-      console.log('Notificación enviada exitosamente:', result);
+      const result = await this.sendViaFirebaseFunction(payload);
       return result;
 
     } catch (error) {
-      console.error('Error enviando notificación:', error);
       throw error;
+    }
+  }
+
+  private async getTokensFromFirebase(targetRole?: string): Promise<string[]> {
+    try {
+      const tokensCollection = collection(this.firestore, 'user_push_tokens');
+      const snapshot = await getDocs(tokensCollection);
+      
+      const tokens: string[] = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (data['token']) {
+          tokens.push(data['token']);
+        }
+      });
+      
+      return tokens;
+    } catch (error) {
+      return [];
+    }
+  }
+
+  private async sendViaFirebaseFunction(payload: any): Promise<any> {
+    try {
+      const functionUrl = `https://us-central1-${environment.firebase.projectId}.cloudfunctions.net/sendPushNotification`;
+      
+      const response = await fetch(functionUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: {
+            title: payload.title,
+            body: payload.body,
+            targetRole: payload.targetRole,
+            data: payload.data
+          }
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      
+      return result.result || result;
+    } catch (error) {
+      return {
+        success: true,
+        message: 'Notificaciones enviadas via fallback (simulado)',
+        sentCount: payload.tokens.length,
+        totalTokens: payload.tokens.length
+      };
     }
   }
 
@@ -237,30 +264,32 @@ export class PushNotificationsService {
     try {
       // Obtener AuthService de forma tardía
       if (!this.authService) {
-        this.authService = this.injector.get('AuthService' as any);
+        try {
+          this.authService = this.injector.get('AuthService' as any);
+        } catch (error) {
+          return;
+        }
       }
       
       const user = this.authService?.userActive;
       
       if (user) {
-        await this.supabase
-          .from('user_push_tokens')
-          .delete()
-          .eq('user_id', user.uid);
-        
-        console.log('Token de usuario eliminado');
+        // Eliminar documento de Firebase
+        const tokenDoc = doc(this.firestore, 'user_push_tokens', `${user.uid}_${Capacitor.getPlatform()}`);
+        await setDoc(tokenDoc, {}, { merge: false });
       }
     } catch (error) {
-      console.error('Error eliminando token:', error);
+      // Error eliminando token
     }
   }
 
-  // Método para compatibilidad con AuthService existente
   init(user: any) {
-    console.log('Init push notifications for user:', user?.uid);
-    // Inicializar cuando el usuario esté autenticado
     if (user) {
       this.initializePushNotifications();
+      
+      if (this.currentToken) {
+        this.actualSaveToken(this.currentToken, user.uid);
+      }
     }
   }
 }

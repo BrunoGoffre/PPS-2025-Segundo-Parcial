@@ -11,6 +11,7 @@ import { AppAlertComponent } from '../app-alert/app-alert.component';
 import { Pedido } from '../models/pedido';
 import { PedidoService } from '../services/pedido.service';
 import { StatusPedidoAlertComponent } from '../status-pedido-alert/status-pedido-alert.component';
+import { PushNotificationsService } from '../services/push-notifications.service';
 
 @Component({
   selector: 'app-home',
@@ -37,6 +38,7 @@ export class HomePage {
       private authService: AuthService,
       private userService: UsersService,
       private pedidoService: PedidoService,
+      private pushNotificationsService: PushNotificationsService,
   ) {}
   
 	async ionViewWillEnter() {
@@ -185,4 +187,5 @@ export class HomePage {
     return null;
   }
   // sonidos ------------------------------------------------------------
+
 }

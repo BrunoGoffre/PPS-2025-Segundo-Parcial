@@ -14,6 +14,7 @@ import { addIcons } from 'ionicons';
 import { arrowBackOutline } from 'ionicons/icons';
 import { passwordMatchValidator } from '../validators/passwordValidator.validator';
 import { Keyboard } from '@capacitor/keyboard';
+import { PushNotificationsService } from '../services/push-notifications.service';
 
 @Component({
   selector: 'app-register',
@@ -42,8 +43,13 @@ export class RegisterPage implements OnInit {
   loading: boolean = false;
   isPlayingSound = false; 
 
-  constructor(public router:Router, private authService:AuthService, private usuariosService:UsersService, private fb: FormBuilder) 
-  {
+  constructor(
+    public router:Router, 
+    private authService:AuthService, 
+    private usuariosService:UsersService, 
+    private fb: FormBuilder,
+    private pushNotificationsService: PushNotificationsService
+  ) {
     Keyboard.addListener('keyboardWillHide', () => {
       this.content.scrollToPoint(0, 0, 300); // Vuelve al inicio en 300 ms
     });
@@ -111,6 +117,10 @@ export class RegisterPage implements OnInit {
 
           if (success) {
             this.playSound('1');
+            
+            // Enviar push notification ANTES de resetForm
+            this.sendNewClientNotification();
+            
             this.resetForm();
             this.authService.logoutSinRedireccion();
             this.appAlert.showInfo('Alta exitosa. Aguarde a ser aprobado.', 'success');
@@ -201,12 +211,10 @@ export class RegisterPage implements OnInit {
 
   async escanearDni(){
     try {
-      console.log('[RegisterPage] Iniciando escaneo de dni');
       
       // Verificar si el escaneo está disponible
       const isAvailable = await BarcodeScanner.isSupported();
       if (!isAvailable) {
-        console.error('[RegisterPage] El escaneo de códigos de barras no está disponible en este dispositivo');
         this.appAlert.showInfo('El escaneo de códigos de barras no está disponible en este dispositivo', 'default');
         return;
       }
@@ -214,7 +222,6 @@ export class RegisterPage implements OnInit {
       // Verificar permisos
       const granted = await BarcodeScanner.requestPermissions();
       if (!granted) {
-        console.error('[RegisterPage] Permiso de cámara denegado');
         this.appAlert.showInfo('Se requiere permiso de cámara para escanear el DNI', 'default');
         return;
       }
@@ -223,7 +230,6 @@ export class RegisterPage implements OnInit {
       const { barcodes } = await BarcodeScanner.scan();
       
       if (barcodes.length > 0) {
-        console.log("[RegisterPage] Resultado del escaneo:", barcodes[0].rawValue);
         const content = barcodes[0].rawValue;
         if (content) {
           const partes = content.split("@");
@@ -233,13 +239,11 @@ export class RegisterPage implements OnInit {
             this.clienteForm.controls['apellido'].setValue(partes[1]);
             this.clienteForm.controls['dni'].setValue(partes[4]);
           } else {
-            console.error('[RegisterPage] Formato de DNI no reconocido');
             this.appAlert.showInfo('Formato de DNI no reconocido', 'default');
           }
         }
       }
     } catch (error) {
-      console.error("[RegisterPage] Error al escanear el dni:", error);
       this.appAlert.showInfo('Error al escanear el DNI', 'default');
     }
   }
@@ -255,7 +259,6 @@ export class RegisterPage implements OnInit {
 
       this.imagePreview = image.dataUrl;
     } catch (error) {
-      console.error("Error al tomar foto:", error);
     }
   }
 
@@ -331,4 +334,14 @@ export class RegisterPage implements OnInit {
     return null;
   }
   // sonidos ------------------------------------------------------------
+
+  // Push Notifications ------------------------------------------------
+  private async sendNewClientNotification() {
+    try {
+      const clienteName = `${this.cliente.nombre} ${this.cliente.apellido}`.trim();
+      await this.pushNotificationsService.notifyClientePendiente(clienteName);
+    } catch (error) {
+      // No detenemos el flujo de registro si falla la notificación
+    }
+  }
 }
