@@ -68,11 +68,10 @@ export class ListaEsperaPage {
     this.loading = true;
     this.obtenerMesasLibres();
     this.pedidoService
-      .obtenerPedidosPorEstado('lista-espera')
+      .obtenerPedidosPorEstado('lista-de-espera')
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(async (pedidos) => {
         this.pedidos = pedidos;
-
         if (this.pedidos.length > 0) {
           const idClientes = pedidos.map((pedido) => pedido.idCliente);
           this.usuarioService

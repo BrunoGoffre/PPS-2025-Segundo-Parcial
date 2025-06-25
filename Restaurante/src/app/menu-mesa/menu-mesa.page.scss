@@ -1,0 +1,57 @@
+.image-container-cuadro {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    grid-template-rows: repeat(2, auto); 
+    gap: 16px; 
+    justify-items: center; 
+    align-items: center;
+    margin-top: 40vw;
+  }
+
+  .imagen-chica{
+    width: 100%;
+    cursor: pointer;
+    background-color: #FF525D;
+    padding: 5%;
+    border-radius: 30px;
+  }
+
+  ion-content {
+    --background: url('/assets/fondoSplash.png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.header {
+    background-color: #4c4f32;
+    text-align: center;
+    padding: 1vw 0;
+    width: 100%;
+  }
+  
+  .header h1 {
+    color: #ffffff;
+    background-color: #4c4f32;
+    border-radius: 12px;
+    padding: 5px;
+    font-size: 1.5em;
+    margin: 0;
+  }
+
+  ion-icon{
+    font-size: 30px;
+  }
+
+ion-title{
+  //font-weight: bold;
+  font-size: 1.5em;
+} 
+
+ion-toolbar {
+  --background: #4c4f32;
+  color: #ffffff;
+}
