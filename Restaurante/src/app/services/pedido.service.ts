@@ -98,8 +98,32 @@ export class PedidoService {
   }
 
   actualizarPedido(pedido: Partial<Pedido>): Promise<void> {
+    console.log('Pedido recibido para actualizar:', pedido);
     const pedidoDocRef = doc(this.firestore, `pedidos/${pedido.id}`);
-    return updateDoc(pedidoDocRef, { ...pedido });
+    const cleanedPedido = this.removeUndefinedProperties(pedido);
+    console.log('Objeto pedido limpio para actualizar:', cleanedPedido);
+    return updateDoc(pedidoDocRef, cleanedPedido);
+  }
+
+  private removeUndefinedProperties(obj: any): any {
+    if (typeof obj !== 'object' || obj === null) {
+      return obj;
+    }
+
+    if (Array.isArray(obj)) {
+      return obj.map((item) => this.removeUndefinedProperties(item));
+    }
+
+    const newObj: { [key: string]: any } = {};
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const value = obj[key];
+        if (value !== undefined) {
+          newObj[key] = this.removeUndefinedProperties(value);
+        }
+      }
+    }
+    return newObj;
   }
 
   createPedido(pedido: Pedido) {

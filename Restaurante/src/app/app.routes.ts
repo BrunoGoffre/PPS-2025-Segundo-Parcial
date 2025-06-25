@@ -39,6 +39,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'pedido-cliente',
+    loadComponent: () =>
+      import('./pedido-cliente/pedido-cliente.page').then(
+        (m) => m.PedidoClientePage
+      ),
+  },
+  {
     path: 'resultados-encuestas',
     loadComponent: () =>
       import('./encuestas/resultados-encuestas/resultados-encuestas.page').then(

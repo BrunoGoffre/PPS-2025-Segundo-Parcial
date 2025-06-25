@@ -36,7 +36,6 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
 
-
 * {
   font-family: LoveYaLikeASister;
 }
@@ -120,7 +119,7 @@ ion-content {
   gap: 20px;
   padding: 20px;
   border-radius: 12px;
-  background-color:  #4c4f32;
+  background-color: #4c4f32;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -128,11 +127,11 @@ ion-content {
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color:  #757a4d;
+  background-color: #757a4d;
   color: white;
   padding: 10px 20px;
   border-radius: 8px;
-  font-weight: 'LoveYouLikeASister';
+  font-weight: "LoveYouLikeASister";
   font-size: 17px;
 }
 
@@ -146,23 +145,65 @@ ion-spinner {
   height: 24px;
 }
 
-
 ion-alert.select-alert {
-  --background:  #94a702; /* or whatever color you would like */
-  
-   /* Estilo de los botones */
-   button {
-    color:black !important;
+  --background: #94a702; /* or whatever color you would like */
+
+  /* Estilo de los botones */
+  button {
+    color: black !important;
     font-size: 20px !important;
   }
 
   .alert-radio-label {
-    font-size: 20px !important;/* Tamaño del texto de las opciones */
+    font-size: 20px !important; /* Tamaño del texto de las opciones */
     color: black; /* Color del texto de las opciones */
-     /* Texto en negrita (opcional) */
+    /* Texto en negrita (opcional) */
   }
 }
 
+/* Estilos para el popover del ion-select */
+.mesa-select-popover {
+  --background: #355ca1; /* Color de fondo del popover */
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra del popover */
+  --width: 95%; /* Ancho del popover */
+  --max-width: 400px; /* Ancho máximo para pantallas más grandes */
+  --height: auto; /* Altura automática */
+  --border-radius: 12px; /* Bordes redondeados */
+  --backdrop-opacity: 0.5; /* Opacidad del fondo */
+
+  .popover-content {
+    --background: #355ca1; /* Asegura el fondo del contenido */
+    border-radius: 12px;
+    width: 100%; /* Asegura que el contenido ocupe todo el ancho del popover */
+    display: flex;
+    flex-direction: column;
+  }
+
+  ion-item {
+    --background: #355ca1; /* Fondo de cada opción */
+    --color: #ffffff; /* Color del texto de cada opción */
+    border-radius: 8px; /* Bordes redondeados para los items */
+    margin-bottom: 5px; /* Espacio entre items */
+  }
+
+  ion-label {
+    color: #ffffff; /* Color del texto de la etiqueta */
+  }
+
+  ion-radio {
+    --color-checked: #eb445a; /* Color del radio button cuando está seleccionado */
+  }
+
+  ion-list {
+    --background: #355ca1; /* Fondo de la lista */
+    width: 100%; /* Asegura que la lista ocupe todo el ancho del contenido */
+  }
+
+  /* Estilos para los botones (OK/Cancel) */
+  .popover-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
 
 /* Estilo para asegurar que los botones en el header sean visibles */
 ion-header ion-button {
@@ -180,9 +221,8 @@ ion-header ion-button {
   ion-title {
     font-size: 1.2em !important;
   }
-  
+
   ion-icon {
     font-size: 20px !important;
   }
 }
-

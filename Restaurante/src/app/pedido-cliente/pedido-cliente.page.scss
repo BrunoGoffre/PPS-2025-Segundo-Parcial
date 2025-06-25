@@ -1,0 +1,189 @@
+.card-container {
+  margin-bottom: 120px;
+  padding: 10px;
+}
+
+ion-content {
+  --background: url("/assets/fondoSplash.png") no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.card {
+  background-color: rgba(53, 92, 161, 0.9);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-title {
+  color: #ffffff;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  color: #e0e0e0;
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.imagenes-container {
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+}
+
+.foto {
+  width: 33.33%;
+  height: 120px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+ion-toolbar {
+  --background: #355ca1;
+  --color: #ffffff;
+
+  ion-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  ion-icon {
+    font-size: 24px;
+  }
+}
+
+.blurred {
+  filter: blur(4px);
+}
+
+.input-group {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+
+  ion-button {
+    --background: #ffffff;
+    --background-hover: #355ca1;
+    --color: #355ca1;
+    --color-hover: #ffffff;
+    --border-color: #355ca1;
+    --border-radius: 8px;
+    font-weight: bold;
+    height: 40px;
+    min-width: 40px;
+  }
+
+  ion-input {
+    --background: #ffffff;
+    --color: #355ca1;
+    --padding-start: 0;
+    --padding-end: 0;
+    --text-align: center;
+    border: 1px solid #355ca1;
+    border-radius: 0;
+    font-weight: bold;
+    height: 40px;
+    flex-grow: 1;
+    margin: 0 -1px; // Para que los bordes se junten
+  }
+
+  ion-button:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  ion-button:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.footer {
+  background-color: rgba(53, 92, 161, 0.95) !important;
+  padding: 15px !important;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+
+  h6,
+  h5 {
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .btn-success {
+    background-color: #2b7070;
+    border: none;
+    padding: 8px 20px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+      transform: scale(1.05);
+      background-color: #eb445a;
+    }
+
+    &:disabled {
+      background-color: #6c757d;
+      opacity: 0.7;
+    }
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+
+  .loading-content {
+    text-align: center;
+
+    .logo {
+      width: 120px;
+      margin-bottom: 20px;
+    }
+
+    .loading-label {
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+
+      ion-spinner {
+        --color: #ffffff;
+      }
+
+      span {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
