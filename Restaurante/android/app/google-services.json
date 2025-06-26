@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "209035081342",
+    "project_id": "pps-bonappetit",
+    "storage_bucket": "pps-bonappetit.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:209035081342:android:0d911337133b53baef4a2f",
+        "android_client_info": {
+          "package_name": "io.ionic.restaurante"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0LpATdta0Dp2-4xVQy_VGIxKd0niUNh8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

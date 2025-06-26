@@ -1,0 +1,149 @@
+<div *ngIf="loading" class="loading-overlay">
+  <div class="loading-content">
+    <img src="assets/icons/icon-loading.png" alt="Bon Appétit" class="logo" />
+    <div class="loading-label">
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>Creando cliente...</span>
+    </div>
+  </div>
+</div>
+
+<ion-content class="ion-padding" [scrollEvents]="true" fullscreen="true">
+  <ion-header>
+    <ion-toolbar class="header-toolbar">
+      <ion-buttons slot="start">
+        <ion-button routerLink="/login">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Bon Appétit</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <app-app-alert #customAlert></app-app-alert>
+  
+  <form class="contenedor" [formGroup]="clienteForm">
+    <ion-card class="login-card">
+      <div class="user-buttons-container" *ngIf="!imagePreview">
+        <div class="avatar-row">
+          <button class="avatar-button" (click)="takePicture()">
+            <img src="assets/anonimo.png" alt="cliente">
+          </button>
+          <p class="avatar-text">Tomar Foto</p>
+        </div>
+      </div>
+      
+      <div class="user-buttons-container" *ngIf="imagePreview">
+        <div class="avatar-row">
+          <div class="avatar-ok">
+            <img [src]="imagePreview" alt="cliente">
+          </div>
+        </div>
+      </div>
+      
+      <ion-card-title class="card-title">Crear cuenta como:</ion-card-title>
+      
+      <ion-card-content>
+        <select (change)="onChangeCrear($event)" id="selector" formControlName="tipoCliente" class="form-select">
+          <option value="anonimo">Anónimo</option>
+          <option value="registrado">Cliente registrado</option>
+        </select>
+
+        @if(tipoCliente === 'anonimo'){
+          <div>
+            <input class="form-control" formControlName="nombre" type="text" placeholder="Nombre">
+          </div>
+        }
+
+        @if (tipoCliente === 'registrado') {
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6">
+                <input class="form-control" formControlName="nombre" type="text" placeholder="Nombre">
+              </ion-col>
+              <ion-col size="6">
+                <input class="form-control" formControlName="apellido" type="text" placeholder="Apellido">
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <input class="form-control" formControlName="dni" type="number" placeholder="DNI">
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <input class="form-control" formControlName="mail" type="text" placeholder="Correo Electrónico">
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <input class="form-control" formControlName="clave" type="password" placeholder="Contraseña">
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                <input class="form-control" formControlName="clave2" type="password" placeholder="Repita contraseña">
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        }
+
+        @if(flagError || (nombre?.invalid && (nombre?.touched || nombre?.dirty)) || (apellido?.invalid && (apellido?.touched || apellido?.dirty)) || (dni?.invalid && (dni?.touched || dni?.dirty)) || (mail?.invalid && (mail?.touched || mail?.dirty)) || (clave?.invalid && (clave?.touched || clave?.dirty)) || (clienteForm.errors?.['passwordMismatch'] && clave2?.touched))
+        {
+          <div class="texto alert alert-danger alert-dismissible fade show mb-2 fw-bold" role="alert">
+            @if (flagError) {
+              {{msjError}}
+            }
+            @else if ((nombre?.invalid && (nombre?.touched || nombre?.dirty)) && (nombre?.errors?.['required'])) {
+              Nombre requerido
+            }
+            @else if ((nombre?.invalid && (nombre?.touched || nombre?.dirty)) && (nombre?.errors?.['pattern'])) {
+              Nombre: Ingrese solo letras
+            }
+            @else if ((apellido?.invalid && (apellido?.touched || apellido?.dirty)) && (apellido?.errors?.['required'])) {
+              Apellido requerido
+            }
+            @else if ((dni?.invalid && (dni?.touched || dni?.dirty)) && (dni?.errors?.['required'])){
+              DNI requerido
+            }
+            @else if ((dni?.invalid && (dni?.touched || dni?.dirty)) && (dni?.errors?.['pattern'])) {
+              DNI: Ingrese solo números
+            }
+            @else if ((dni?.invalid && (dni?.touched || dni?.dirty)) && (dni?.errors?.['noEsDni'])) {
+              DNI: Ingrese entre 7 y 8 dígitos
+            }
+            @else if ((mail?.invalid && (mail?.touched || mail?.dirty)) && (mail?.errors?.['required'])) {
+              Correo requerido
+            }
+            @else if ((mail?.invalid && (mail?.touched || mail?.dirty)) && (mail?.errors?.['email'])) {
+              Correo inválido
+            }
+            @else if ((clave?.invalid && (clave?.touched || clave?.dirty)) && (clave?.errors?.['required'])) {
+              Contraseña requerida
+            }
+            @else if ((clave?.invalid && (clave?.touched || clave?.dirty)) && (clave?.errors?.['minlength'])) {
+              Contraseña: Mínimo 6 caracteres
+            }
+            @else if (clienteForm.errors?.['passwordMismatch'] && clave2?.touched) {
+              Las contraseñas no coinciden
+            }
+          </div>
+        }
+
+        <button class="escanear-button" (click)="escanearDni()" [disabled]="tipoCliente === 'anonimo'">
+          Completar escaneando DNI
+        </button>
+        
+        <button type="button" class="login-button" [disabled]="!clienteForm.valid || !imagePreview" (click)="altaCliente()">
+          Registrarse
+        </button>
+      </ion-card-content>
+    </ion-card>
+  </form>  
+</ion-content>
+
+

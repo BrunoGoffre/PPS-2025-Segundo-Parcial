@@ -1,0 +1,63 @@
+<ion-header class="custom-header">
+  <ion-toolbar class="custom-toolbar">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()" routerLink="/home">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Resultados de Encuestas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Gráfico de Satisfacción General -->
+  <div class="section">
+    <h2 class="section-title">Satisfacción General</h2>
+    <hr class="section-divider">
+    <div class="chart-container">
+      <canvas id="satisfaccionChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Gráfico de Calificación del Servicio -->
+  <div class="section">
+    <h2 class="section-title">Calificación del Servicio</h2>
+    <hr class="section-divider">
+    <div class="chart-container">
+      <canvas id="serviceRatingChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Gráfico de Aspectos Destacables -->
+  <div class="section">
+    <h2 class="section-title">Aspectos Destacables del Restaurante</h2>
+    <hr class="section-divider">
+    <div class="chart-container">
+      <canvas id="aspectsChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Gráfico de Probabilidad de Recomendación -->
+  <div class="section">
+    <h2 class="section-title">Probabilidad de Recomendación</h2>
+    <hr class="section-divider">
+    <div class="chart-container">
+      <canvas id="recommendationChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Comentarios de Clientes -->
+  <div class="section">
+    <h2 class="section-title">Comentarios de Clientes</h2>
+    <hr class="section-divider">
+     <div class="comentarios-container">
+     <!-- <div *ngFor="let comentario of comentarios" class="comentario">
+        <p>"{{ comentario }}"</p>
+      </div>-->
+       <div *ngFor="let comentario of comentarios" class="comentario">
+        <p><strong>{{ comentario.nombre }} {{ comentario.apellido }}</strong>: "{{ comentario.comentarios }}"</p>
+      </div>
+    </div>
+  </div>
+</ion-content>
+

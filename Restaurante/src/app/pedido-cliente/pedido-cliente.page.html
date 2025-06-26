@@ -1,0 +1,109 @@
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="loading-content">
+    <img src="assets/icons/icon-512.webp" alt="Logo Empresa" class="logo" />
+    <div class="loading-label">
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>Cargando productos...</span>
+    </div>
+  </div>
+</div>
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/menu-mesa">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Menú</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <app-custom-alert #customAlert></app-custom-alert>
+
+  <div class="card-container mt-2" *ngIf="!isLoading">
+    <div class="product-card" *ngFor="let producto of productos">
+      <div class="card rounded-3 mb-2 text-white">
+        <!-- Carousel de Imágenes -->
+        <!-- <div id="carousel{{ producto.id }}" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div *ngFor="let foto of producto.fotos; let i = index" [class.active]="i === 0" class="carousel-item">
+            <img [src]="foto" class="d-block w-100 foto" alt="Imagen de {{ producto.nombre }}">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + producto.id" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+        <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + producto.id" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+      </div> -->
+        <div class="imagenes-container">
+          <img
+            *ngFor="let foto of producto.fotos; let i = index"
+            [src]="foto"
+            class="foto"
+            alt="Imagen de {{ producto.nombre }}"
+          />
+        </div>
+
+        <!-- Detalles del Producto -->
+        <div class="card-body">
+          <h1 class="card-title fw-bold">{{ producto.nombre }}</h1>
+          <h5 class="card-text">{{ producto.descripcion }}</h5>
+          <h5 class="card-text">
+            <strong>Precio:</strong> {{ producto.precio | currency }}
+          </h5>
+          <h5 class="card-text">
+            <strong>Tiempo estimado:</strong> {{ producto.tiempo }} min
+          </h5>
+
+          <!-- Control de Cantidad -->
+          <div class="input-group">
+            <ion-button
+              (click)="disminuirCantidad(producto)"
+              fill="outline"
+              color="light"
+              >-</ion-button
+            >
+            <ion-input
+              type="number"
+              class="form-control text-center"
+              [value]="obtenerCantidadProducto(producto.id)"
+              min="0"
+              readonly="true"
+            ></ion-input>
+            <ion-button
+              (click)="incrementarCantidad(producto)"
+              fill="outline"
+              color="light"
+              >+</ion-button
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer fixed-bottom bg-dark py-3">
+    <div class="d-flex justify-content-between align-items-center px-3">
+      <div>
+        <h6 class="mb-0">
+          <ion-icon size="small" name="time-outline"></ion-icon> {{
+          tiempoPedidoMaximo }} min
+        </h6>
+      </div>
+      <div>
+        <h5 class="mb-0 fw-bold">{{ totalPedido | currency }}</h5>
+      </div>
+      <button
+        class="btn btn-success"
+        (click)="realizarPedido()"
+        [disabled]="totalPedido === 0"
+      >
+        Realizar Pedido
+      </button>
+    </div>
+  </div>
+</ion-content>

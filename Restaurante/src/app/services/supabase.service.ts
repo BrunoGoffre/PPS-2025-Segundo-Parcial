@@ -1,170 +1,118 @@
 import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient, User, AuthResponse } from '@supabase/supabase-js';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
-import { AuthService } from './auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SupabaseService {
-  public supabase: SupabaseClient;
-  private currentUserSubject: BehaviorSubject<User | null>;
-  public currentUser: Observable<User | null>;
+  private supabase: SupabaseClient;
 
-  constructor(private authService: AuthService) {
+  constructor() {
     this.supabase = createClient(
-      environment.supabaseUrl,
-      environment.supabaseKey
+      environment.supabase.url,
+      environment.supabase.key
     );
-
-    this.currentUserSubject = new BehaviorSubject<User | null>(
-      this.supabase.auth.getUser().then(response => response.data.user).catch(() => null) as any
-    );
-    this.currentUser = this.currentUserSubject.asObservable();
-
-    // Actualizar el usuario cuando cambie el estado de autenticación
-    this.supabase.auth.onAuthStateChange((event, session) => {
-      this.currentUserSubject.next(session?.user || null);
-    });
   }
 
-  // Métodos de autenticación
-  public get currentUserValue(): User | null {
-    return this.currentUserSubject.value;
-  }
+  /**
+   * Sube un avatar al storage de Supabase y devuelve la URL pública
+   * @param file Archivo de imagen a subir
+   * @param userId ID del usuario para nombrar el archivo
+   * @returns URL pública de la imagen o null si hay error
+   */
+  async uploadAvatar(file: File, userId: string): Promise<string | null> {
+    try {
+      // Generar un nombre único para el archivo basado en el userId
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${userId}-${Date.now()}.${fileExt}`;
 
-  async signUp(email: string, password: string, metadata?: { name?: string }): Promise<AuthResponse> {
-    return await this.supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: metadata
+      // Subir el archivo al bucket 'avatars'
+      const { data, error } = await this.supabase.storage
+        .from(environment.supabase.bucket)
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: true,
+        });
+
+      if (error) {
+        console.error('Error al subir imagen a Supabase:', error);
+        return null;
       }
-    });
-  }
 
-  
+      // Obtener la URL pública del archivo
+      const { data: urlData } = this.supabase.storage
+        .from(environment.supabase.bucket)
+        .getPublicUrl(fileName);
 
-  isLoggedIn(): boolean {
-    return !!this.currentUserValue;
-  }
-
-  // Métodos para trabajar con tablas
-  async getItems<T>(tableName: string, queryOptions?: {
-    columns?: string,
-    filter?: {column: string, value: any}[],
-    limit?: number,
-    offset?: number,
-    orderBy?: {column: string, ascending?: boolean}
-  }): Promise<T[]> {
-    let query = this.supabase
-      .from(tableName)
-      .select(queryOptions?.columns || '*');
-    
-    // Aplicar filtros si existen
-    if (queryOptions?.filter) {
-      queryOptions.filter.forEach(filter => {
-        query = query.eq(filter.column, filter.value);
-      });
-    }
-
-    // Aplicar límite si existe
-    if (queryOptions?.limit) {
-      query = query.limit(queryOptions.limit);
-    }
-
-    // Aplicar offset si existe
-    if (queryOptions?.offset) {
-      query = query.range(queryOptions.offset, queryOptions.offset + (queryOptions.limit || 10) - 1);
-    }
-
-    // Aplicar orden si existe
-    if (queryOptions?.orderBy) {
-      query = query.order(queryOptions.orderBy.column, { 
-        ascending: queryOptions.orderBy.ascending ?? true 
-      });
-    }
-
-    const { data, error } = await query;
-    
-    if (error) {
-      throw error;
-    }
-    
-    return data as T[];
-  }
-
-  async createItem<T>(tableName: string, item: Partial<T>): Promise<T> {
-    const { data, error } = await this.supabase
-      .from(tableName)
-      .insert(item)
-      .select()
-      .single();
-    
-    if (error) {
-      throw error;
-    }
-    
-    return data as T;
-  }
-
-  async updateItem<T>(tableName: string, id: number | string, updates: Partial<T>): Promise<T> {
-    const { data, error } = await this.supabase
-      .from(tableName)
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .single();
-    
-    if (error) {
-      throw error;
-    }
-    
-    return data as T;
-  }
-
-  async deleteItem(tableName: string, id: number | string): Promise<void> {
-    const { error } = await this.supabase
-      .from(tableName)
-      .delete()
-      .eq('id', id);
-    
-    if (error) {
-      throw error;
+      return urlData.publicUrl;
+    } catch (error) {
+      console.error('Error en uploadAvatar:', error);
+      return null;
     }
   }
 
-  // Métodos para storage
-  async uploadFile(bucket: string, path: string, file: File): Promise<string> {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${path}/${Date.now()}.${fileExt}`;
+  /**
+   * Elimina un avatar del storage de Supabase
+   * @param url URL pública de la imagen a eliminar
+   * @returns true si se eliminó correctamente, false en caso contrario
+   */
+  async deleteAvatar(url: string): Promise<boolean> {
+    try {
+      // Extraer el nombre del archivo de la URL
+      const urlParts = url.split('/');
+      const fileName = urlParts[urlParts.length - 1];
 
-    const { error } = await this.supabase
-      .storage
-      .from(bucket)
-      .upload(fileName, file);
-    
-    if (error) {
-      throw error;
-    }
+      const { error } = await this.supabase.storage
+        .from(environment.supabase.bucket)
+        .remove([fileName]);
 
-    const { data } = this.supabase
-      .storage
-      .from(bucket)
-      .getPublicUrl(fileName);
-    
-    return data.publicUrl;
-  }
+      if (error) {
+        console.error('Error al eliminar imagen de Supabase:', error);
+        return false;
+      }
 
-  async deleteFile(bucket: string, filePath: string): Promise<void> {
-    const { error } = await this.supabase
-      .storage
-      .from(bucket)
-      .remove([filePath]);
-    
-    if (error) {
-      throw error;
+      return true;
+    } catch (error) {
+      console.error('Error en deleteAvatar:', error);
+      return false;
     }
   }
-} 
+
+  /**
+   * Sube un archivo genérico al storage de Supabase y devuelve la URL pública
+   * @param file Archivo a subir (Blob)
+   * @param path Ruta del archivo dentro del bucket
+   * @param bucketName Nombre del bucket de Supabase
+   * @returns URL pública del archivo o null si hay error
+   */
+  async uploadFile(
+    file: Blob,
+    path: string,
+    bucketName: string,
+    contentType: string = 'application/octet-stream'
+  ): Promise<string | null> {
+    try {
+      const { data, error } = await this.supabase.storage
+        .from(bucketName)
+        .upload(path, file, {
+          contentType: contentType,
+          upsert: true,
+        });
+
+      if (error) {
+        console.error('Error al subir archivo a Supabase:', error);
+        return null;
+      }
+
+      const { data: urlData } = this.supabase.storage
+        .from(bucketName)
+        .getPublicUrl(path);
+
+      return urlData.publicUrl;
+    } catch (error) {
+      console.error('Error en uploadFile:', error);
+      return null;
+    }
+  }
+}

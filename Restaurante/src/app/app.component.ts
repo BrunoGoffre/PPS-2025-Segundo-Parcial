@@ -1,58 +1,95 @@
-import { Component } from '@angular/core';
-import { ModalController, Platform } from '@ionic/angular';
+import { NgIf } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { DynamicSplashComponent } from './dynamic-splash/dynamic-splash.component';
 import { Router } from '@angular/router';
-import { SplashComponent } from './components/splash/splash.component';
-
 import { SplashScreen } from '@capacitor/splash-screen';
-import { StatusBar, Style } from '@capacitor/status-bar';
-import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
+import { addIcons } from 'ionicons';
+import { logOutOutline, arrowBackOutline, starOutline, star } from 'ionicons/icons';
+import { Capacitor } from '@capacitor/core';
+import { Platform } from '@ionic/angular';
+import { PushNotifications } from '@capacitor/push-notifications';
+import { PushNotificationsService } from './services/push-notifications.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
-  standalone: false,
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [IonApp, IonRouterOutlet, DynamicSplashComponent, NgIf],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  showLoading = true;
+  userIsLoggedIn = false;
+
   constructor(
-    private platform: Platform,
-    private modalCtrl: ModalController,
     private router: Router,
+    private pushNotificationsService: PushNotificationsService,
+    private authService: AuthService,
+    private platform: Platform
   ) {}
-  async initializeApp() {
-    await StatusBar.setStyle({ style: Style.Default });
 
-    // await SplashScreen.show();
-    // await this.delay(1000);
-    await SplashScreen.hide();
+  ngOnInit() {
+    addIcons({
+      logOutOutline,
+      arrowBackOutline,
+      starOutline,
+      star,
+    });
 
-    await this.presentModal();
-
-    this.router.navigate(['/home']);
     this.platform.ready().then(() => {
-      // Este modo es el más compatible con Ionic
-      Keyboard.setResizeMode({ mode: KeyboardResize.Ionic });
-
-      // Opcional: cerrar el teclado tocando fuera
-      Keyboard.setScroll({ isDisabled: false });
+      try {
+        this.initNotifications();
+      } catch (error) {
+        console.error('Error al inicializar notificaciones:', error);
+      }
     });
+    
+    setTimeout(() => {
+      SplashScreen.hide();
+      setTimeout(() => {
+        this.showLoading = false;
+
+        try {
+          if (!this.pushNotificationsService.originNotification) {
+            if (this.authService.userActive != null) {
+              this.router.navigate(['/home']);
+            } else {
+              this.router.navigate(['/login']);
+            }
+          }
+        } catch (error) {
+          console.error('Error en la navegación inicial:', error);
+          // Si hay un error, intentamos navegar a la página de login como fallback
+          this.router.navigate(['/login']).catch(err => {
+            console.error('Error en navegación de fallback:', err);
+          });
+        }
+      }, 2000);
+    }, 2000);
   }
 
-  async presentModal() {
-    const modal = await this.modalCtrl.create({
-      component: SplashComponent,
-      cssClass: 'splash-modal',
-      backdropDismiss: false,
-      animated: true,
-    });
-    await modal.present();
+  private async initNotifications() {
+    if (Capacitor.getPlatform() === 'android') {
+      try {
+        await PushNotifications.createChannel({
+          id: 'restaurante_notifications',
+          name: 'Notificaciones Restaurante',
+          description: 'Notificaciones del restaurante',
+          importance: 5, // Máxima importancia
+          visibility: 1, // Pública
+          sound: 'default'
+        });
+      } catch (error) {
+      }
+    }
 
-    // Espera unos segundos antes de cerrarlo (puedes poner animación también)
-    setTimeout(() => modal.dismiss(), 3000);
-  }
-
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    // Inicializar servicio de push notifications
+    try {
+      await this.pushNotificationsService.initializePushNotifications();
+    } catch (error) {
+      // Error inicializando push notifications
+    }
   }
 }
-

@@ -1,0 +1,61 @@
+
+
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="loading-content">
+    <img src="assets/icons/icon-512.webp" alt="Logo Empresa" class="logo" />
+    <div class="loading-label">
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>Cargando pedidos...</span>
+    </div>
+  </div>
+</div>
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/home">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Confirmar Pedidos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="card-container mt-2" *ngIf="!isLoading">
+    <div class="pedido-card" *ngFor="let mesa of pedidosPorMesa | keyvalue">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Mesa {{ mesa.key }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div *ngFor="let pedido of mesa.value">
+            <p class="detalles"><strong>Monto Final:</strong> ${{ pedido.montoFinal }}</p>
+            <p class="detalles"><strong>Tiempo Estimado:</strong> {{ pedido.tiempoEstimado }} min</p>
+            <br>
+            <div *ngIf="!isLoading && mesa.value.length === 0" class="no-pedidos-container">
+              <p class="no-pedidos-text">No hay pedidos pendientes a confirmar.</p>
+            </div>
+            <ion-list>
+              <ion-item *ngFor="let producto of pedido.productos" class="ion-item-custom">
+                <p class="descripcion-producto">{{ producto.descripcion ?? 'Descripción no disponible' }}</p>
+                <div class="cantidad-container">
+                  <span class="cantidad-numero">{{ producto.cantidad }}</span>
+                </div>
+              </ion-item>
+            </ion-list>
+            <br>
+            
+            <ion-button color="success" expand="block" (click)="pedido.id && confirmarPedido(pedido.id)">
+              Confirmar Pedido
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+  
+</ion-content>

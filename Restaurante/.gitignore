@@ -67,4 +67,14 @@ testem.log
 
 # System files
 .DS_Store
+../.DS_Store
 Thumbs.db
+
+# Archivos temporales de configuración
+.npmrc
+
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json

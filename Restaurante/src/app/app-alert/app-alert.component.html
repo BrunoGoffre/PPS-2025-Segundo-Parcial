@@ -1,0 +1,36 @@
+<div *ngIf="show" class="alert-overlay">
+  <div class="alert-container" [ngClass]="alertType">
+    <div class="alert-content">
+      <!-- Icono según el tipo de alerta -->
+      <ion-icon 
+        *ngIf="alertType === 'default'" 
+        name="information-circle-outline" 
+        size="large"
+        style="font-size: 48px; margin-bottom: 15px;"
+      ></ion-icon>
+      <ion-icon 
+        *ngIf="alertType === 'success'" 
+        name="checkmark-circle-outline" 
+        size="large"
+        style="font-size: 48px; margin-bottom: 15px;"
+      ></ion-icon>
+      <ion-icon 
+        *ngIf="alertType === 'encuesta'" 
+        name="clipboard-outline" 
+        size="large"
+        style="font-size: 48px; margin-bottom: 15px;"
+      ></ion-icon>
+      
+      <!-- Mensaje -->
+      <span style="white-space: pre-wrap;">{{ message }}</span>
+      
+      <!-- Botón -->
+      <button 
+        [ngClass]="{'success-button': alertType === 'success', 'error-button': alertType !== 'success'}" 
+        (click)="closeAlert()"
+      >
+        Aceptar
+      </button>
+    </div>
+  </div>
+</div>

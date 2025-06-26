@@ -1,0 +1,129 @@
+<div *ngIf="loading" class="loading-overlay">
+  <div class="loading-content">
+    <img src="assets/icons/icon-loading.png" alt="Bon Appétit" class="logo" />
+    <div class="loading-label">
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>{{ loadingMessage }}</span>
+    </div>
+  </div>
+</div>
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Encuesta de Satisfacción</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<div class="content-wrapper">
+  <app-custom-alert></app-custom-alert>
+
+  <div class="encuesta-container">
+    <form [formGroup]="encuestaForm" (ngSubmit)="onSubmit()">
+      <!-- Rango de satisfacción general -->
+      <div class="form-group">
+        <label>Satisfacción General</label>
+        <input
+          type="range"
+          formControlName="satisfaccion"
+          min="0"
+          max="100"
+          step="1"
+        />
+      </div>
+
+      <!-- Calificación de la comida -->
+      <div class="form-group">
+        <label>Calificación del espacio de trabajo</label>
+        <label
+          ><input
+            type="radio"
+            formControlName="calificacion"
+            value="Excelente"
+          />
+          Excelente</label
+        >
+        <label
+          ><input type="radio" formControlName="calificacion" value="Bueno" />
+          Bueno</label
+        >
+        <label
+          ><input type="radio" formControlName="calificacion" value="Regular" />
+          Regular</label
+        >
+        <label
+          ><input type="radio" formControlName="calificacion" value="Malo" />
+          Malo</label
+        >
+      </div>
+
+      <!-- Checkboxes para aspectos específicos -->
+      <div class="form-group" formGroupName="aspectos">
+        <label>Aspectos que consideres destacables:</label>
+        <label><input type="checkbox" formControlName="comida" /> Dueño</label>
+        <label
+          ><input type="checkbox" formControlName="limpieza" />
+          Compañeros</label
+        >
+        <label
+          ><input type="checkbox" formControlName="ambiente" /> Ambiente</label
+        >
+        <label
+          ><input type="checkbox" formControlName="atencionAlCliente" />
+          Atención al cliente</label
+        >
+      </div>
+
+      <!-- Probabilida de recomendacion -->
+      <div class="form-group">
+        <label
+          >¿Qué tan probable es que recomiendes trabajar en Bon Appétit
+          Restaurante?</label
+        >
+        <select class="text" formControlName="frecuencia">
+          <option class="text" value="" disabled selected>
+            Seleccione una opción
+          </option>
+          <option class="text" value="noProbable">No lo recomendaría</option>
+          <option class="text" value="pocoProbable">Poco probable</option>
+          <option class="text" value="MuyProbable">Muy probable</option>
+        </select>
+      </div>
+
+      <!-- Comentarios adicionales -->
+      <div class="form-group">
+        <label>Comentarios o sugerencias:</label>
+        <textarea
+          class="text"
+          formControlName="comentarios"
+          placeholder="(Opcional)"
+        ></textarea>
+      </div>
+
+      <!-- Fotos -->
+      <div class="form-group">
+        <label>Fotos</label>
+        <button
+          type="button"
+          (click)="agregarFoto()"
+          [disabled]="fotos.length >= 1"
+        >
+          Agregar Foto
+        </button>
+      </div>
+      <div class="fotos-preview">
+        <div *ngFor="let foto of fotos; let i = index" class="foto-item">
+          <img [src]="foto" alt="Foto {{ i + 1 }}" width="100" height="100" />
+        </div>
+      </div>
+      <br />
+
+      <!-- Botón para enviar la encuesta -->
+      <button type="submit" class="submit-button">Enviar Encuesta</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div *ngIf="loading" class="loading-overlay">
+  <div class="loading-content">
+    <img src="assets/icons/icon-loading.png" alt="Bon Appétit" class="logo" />
+    <div class="loading-label">
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>Iniciando sesión...</span>
+    </div>
+  </div>
+</div>
+  
+<ion-content scroll-y="false" class="ion-padding">
+  <ion-header>
+    <ion-toolbar class="header-toolbar">
+      <ion-title>Bon Appétit</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+      <!-- Alert Personalizado -->
+  <app-app-alert #customAlert></app-app-alert>
+  
+  <div class="login-container"  [class.blurred]="customAlert.show">
+    <ion-card class="login-card">
+      <ion-card-header>
+        <ion-card-title class="card-title">Iniciar sesión</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item class="input-item">
+          <ion-input [formControl]="emailControl" name="email" type="text" placeholder=" Usuario"></ion-input>
+        </ion-item>
+
+        <div class="password-item">
+          <ion-item class="input-item">
+            <ion-input [formControl]="passwordControl" name="password" [type]="mostrarPassword ? 'text' : 'password'" placeholder=" Contraseña"></ion-input>
+          </ion-item>
+          <ion-icon [name]="mostrarPassword ? 'eye-outline' : 'eye-off-outline'" (click)="toggleMostrarPassword()" class="password-toggle"></ion-icon>
+        </div>
+        <br>
+       
+        <div class="accesos-container">
+          <button class="toggle-accesos-button" (click)="toggleAccesosDirectos()">
+            {{ mostrarAccesosDirectos ? 'Ocultar accesos rápidos' : 'Mostrar accesos rápidos' }}
+          </button>
+          
+          <div *ngIf="mostrarAccesosDirectos" class="accesos-grid">
+            <button *ngFor="let acceso of accesosDirectos" 
+                    class="acceso-button" 
+                    (click)="establecerCredenciales(acceso.tipo)">
+              <ion-icon [name]="acceso.icono + '-outline'" class="acceso-icon"></ion-icon>
+              <span class="acceso-nombre">{{ acceso.nombre }}</span>
+            </button>
+          </div>
+        </div>
+
+        <button (click)="onSubmit()" class="login-button">Aceptar</button>
+        <button  class="login-button" (click)="irRegistro()">Crear Cuenta</button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+  
+  
+  

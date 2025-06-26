@@ -1,0 +1,190 @@
+ion-content {
+  --background: url("/assets/fondoSplash.png") no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  //min-height: 100vh;
+}
+
+ion-toolbar {
+  --background: #355ca1; /* Cambiado a 355ca1 para que coincida con login y lista-espera */
+  color: #ffffff;
+  border-radius: 12px; /* Añadido border-radius */
+}
+
+ion-title {
+  //font-weight: bold;
+  font-size: 1.5em;
+}
+
+ion-icon {
+  font-size: 30px;
+}
+
+.photo-card {
+  margin: 10px;
+  padding: 0;
+  border-radius: 12px; /* Ajustado a 12px */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Añadido box-shadow */
+  display: flex;
+  align-items: stretch;
+  //height: 150px; /* Establecer una altura consistente */
+  background-color: #355ca1; /* Color de las tarjetas de login y lista-espera */
+}
+
+.card-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.image-container {
+  width: 35%;
+  //height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen cubra todo el espacio */
+  cursor: pointer;
+  display: block;
+}
+
+.info-container {
+  width: 65%;
+  //padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+// .vote-container {
+//     display: flex;
+//     align-items: center;
+//     justify-content: flex-end;
+// }
+
+img {
+  max-height: 300px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+ion-card-title {
+  font-size: 1.5rem;
+  color: #ffffff; /* Cambiado a blanco */
+  word-wrap: break-word; /* Permite dividir el texto largo en varias líneas */
+}
+
+ion-card-subtitle {
+  font-size: 1.3rem;
+  color: #ffffff; /* Cambiado a blanco */
+}
+
+ion-card {
+  --background: transparent; /* Fondo transparente para que use el color de .photo-card */
+  box-shadow: none; /* Eliminar sombra duplicada */
+}
+
+.list-md {
+  background-color: transparent;
+}
+
+.respondida {
+  //border: 1px solid #c3e6cb; // Borde verde
+  color: #d4edda; // Texto verde oscuro
+}
+
+.sin-responder {
+  //border: 1px solid #f5c6cb; // Borde rojo
+  color: #f6e8e9; // Texto rojo oscuro
+}
+
+.fondorespondida {
+  background-color: #155724; // Verde claro
+}
+
+.fondosinresponder {
+  background-color: #721c24; // Rojo claro
+}
+
+ion-button {
+  width: 100%; /* Ancho completo de los elementos */
+  font-size: 1.5em;
+  font-weight: bold;
+  padding: 3vw;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-bottom: 2vw;
+  border: none;
+  --background: #eb445a; /* Cambiado al color de los botones de login */
+  color: white; /* Color del texto del botón */
+}
+
+.no-pedidos-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 56px);
+  text-align: center;
+  padding: 20px;
+  background-size: cover;
+}
+
+.no-pedidos-text {
+  font-size: 1.8em;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 15px 20px;
+  border-radius: 10px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  background: rgba(53, 92, 161, 0.8); /* Cambiado a 355ca1 con transparencia */
+}
+
+/* Estilos para la pantalla de carga */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.7
+  ); /* Ajustado a 0.7 como en login y lista-espera */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
+.loading-label {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.loading-label ion-spinner {
+  margin-right: 10px;
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+}

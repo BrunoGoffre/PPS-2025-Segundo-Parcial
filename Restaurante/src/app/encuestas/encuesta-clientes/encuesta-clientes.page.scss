@@ -1,0 +1,239 @@
+ion-content {
+  --background: url("/assets/fondoSplash.png") no-repeat center center fixed;
+  padding: 0;
+}
+
+.encuesta-container {
+  background-color: rgba(255, 255, 255, 0.749); /* Fondo semitransparente */
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 85vh; /* Limita la altura máxima al 80% del viewport */
+  overflow-y: auto; /* Activa el desplazamiento vertical cuando el contenido es demasiado largo */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  margin-bottom: 50px;
+}
+
+h2 {
+  text-align: center;
+  font-family: "Arial", sans-serif;
+  color: #355ca1;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+  color: #355ca1;
+  margin-bottom: 5px;
+}
+
+input[type="range"] {
+  width: 100%;
+  -webkit-appearance: none; /* Elimina los estilos por defecto de WebKit */
+  appearance: none;
+  height: 8px; /* Altura de la pista */
+  background: #d3d3d3; /* Color de la pista */
+  outline: none; /* Elimina el contorno al hacer foco */
+  opacity: 0.7; /* Opacidad de la pista */
+  -webkit-transition: 0.2s; /* Transición suave */
+  transition: opacity 0.2s;
+  border-radius: 5px;
+}
+
+input[type="range"]:hover {
+  opacity: 1; /* Opacidad completa al pasar el ratón */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Elimina los estilos por defecto del pulgar de WebKit */
+  appearance: none;
+  width: 20px; /* Ancho del pulgar */
+  height: 20px; /* Altura del pulgar */
+  border-radius: 50%; /* Pulgar circular */
+  background: #355ca1; /* Color del pulgar, consistente con el tema */
+  cursor: pointer; /* Cursor de mano */
+  margin-top: -6px; /* Ajusta la posición vertical del pulgar */
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #355ca1;
+  cursor: pointer;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+input[type="range"]::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #355ca1;
+  cursor: pointer;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+textarea {
+  width: 100%;
+  height: 80px;
+  padding: 12px;
+  resize: none;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  color: black;
+}
+
+textarea:focus {
+  border-color: #355ca1; /* Cambiar color del borde al enfocar */
+  box-shadow: 0 0 0 3px rgba(76, 79, 50, 0.3); /* Sombra al enfocar */
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  color: black; /* Asegura que el texto sea negro para legibilidad */
+  appearance: none; /* Elimina estilos por defecto del navegador */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2C197.4L159.9%2C69.6c-4.6-4.6-12-4.6-16.6%2C0L5.3%2C197.4c-4.6%2C4.6-4.6%2C12%2C0%2C16.6l16.4%2C16.4c4.6%2C4.6%2C12%2C4.6%2C16.6%2C0L149.9%2C118.6l111.9%2C111.8c4.6%2C4.6%2C12%2C4.6%2C16.6%2C0l16.4-16.4C291.5%2C209.4%2C291.5%2C202%2C287%2C197.4z%22%2F%3E%3C%2Fsvg%3E"); /* Flecha personalizada */
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+select option {
+  color: black; /* Asegura que las opciones también sean negras */
+  background-color: #ffffff;
+}
+
+select,
+input[type="checkbox"],
+input[type="radio"] {
+  margin-top: 5px;
+}
+
+/* Estilos para Checkboxes y Radio Buttons */
+.form-group label input[type="checkbox"],
+.form-group label input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #355ca1; /* Borde con color del tema */
+  vertical-align: middle;
+  margin-right: 8px;
+  cursor: pointer;
+  position: relative;
+}
+
+.form-group label input[type="checkbox"] {
+  border-radius: 4px; /* Bordes ligeramente redondeados para checkboxes */
+}
+
+.form-group label input[type="radio"] {
+  border-radius: 50%; /* Circular para radio buttons */
+}
+
+.form-group label input[type="checkbox"]:checked,
+.form-group label input[type="radio"]:checked {
+  background-color: #355ca1; /* Color de fondo cuando está marcado */
+  border-color: #355ca1;
+}
+
+.form-group label input[type="checkbox"]:checked::after {
+  content: "\2713"; /* Símbolo de checkmark */
+  color: white;
+  font-size: 14px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.form-group label input[type="radio"]:checked::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.fotos-preview {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.foto-item img {
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.submit-button {
+  width: 100%;
+  background-color: #355ca1;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #5438c9;
+}
+
+.custom-header {
+  background-color: #355ca1;
+  text-align: center;
+  padding: 1vw 0;
+  width: 100%;
+}
+.custom-header ion-toolbar {
+  --background: #355ca1;
+}
+
+.custom-header ion-title {
+  color: #ffffff;
+  background-color: #355ca1;
+  border-radius: 12px;
+  padding: 5px;
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.custom-toolbar {
+  --background: #355ca1; /* Elimina cualquier borde blanco del toolbar */
+  padding: 0; /* Remueve el padding interno adicional */
+}
+
+.custom-toolbar ion-title {
+  color: #ffffff;
+  background-color: #355ca1;
+  border-radius: 12px;
+  padding: 5px;
+  font-size: 1.5em;
+  margin: 0;
+}
+
+ion-icon {
+  font-size: 30px;
+}

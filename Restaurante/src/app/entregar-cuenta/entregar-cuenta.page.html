@@ -1,0 +1,68 @@
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="loading-content">
+    <img src="assets/icons/icon-loading.png" alt="Logo Empresa" class="logo" />
+    <div class="loading-label">
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>Cargando cuentas...</span>
+    </div>
+  </div>
+</div>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/home">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Cuentas a Enviar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="card-container mt-2" *ngIf="!isLoading ">
+    <div
+      *ngIf="!isLoading && Object.keys(pedidosPorMesa).length === 0"
+      class="no-pedidos-container"
+    >
+      <p class="no-pedidos-text">No hay cuentas pendientes para enviar.</p>
+    </div>
+    <div class="pedido-card" *ngFor="let mesa of pedidosPorMesa | keyvalue">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Mesa {{ mesa.key }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div *ngFor="let pedido of mesa.value">
+            <br />
+            <ion-list *ngIf="pedido.estado === 'cuenta-pedida'">
+              <ion-item *ngFor="let producto of pedido.productos">
+                <p class="descripcion-producto">
+                  {{ producto.nombre ?? 'Descripción no disponible' }}
+                </p>
+                <div class="cantidad-container">
+                  <span class="cantidad-text"
+                    >${{producto.precio}} x {{producto.cantidad}}</span
+                  >
+                </div>
+              </ion-item>
+            </ion-list>
+            <p class="detalles">
+              <strong>Propina:</strong> ${{ pedido.propina }}
+            </p>
+            <p class="detalles">
+              <strong>Monto Final:</strong> ${{ pedido.montoFinal }}
+            </p>
+            <br />
+            <ion-button
+              color="success"
+              expand="block"
+              (click)="pedido.id && entregarPedido(pedido.id)"
+            >
+              Entregar Cuenta
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

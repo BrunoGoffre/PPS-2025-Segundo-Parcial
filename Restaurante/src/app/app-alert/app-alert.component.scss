@@ -1,0 +1,114 @@
+.alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(5px);
+}
+
+.alert-container {
+  width: 85%;
+  max-width: 350px;
+  background-color: #355ca1;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.alert-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.alert-content span {
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  line-height: 1.5;
+  font-weight: bold;
+  color: white;
+}
+
+.alert-container button {
+  width: 100%;
+  font-weight: bold;
+  padding: 3vw;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-bottom: 2vw;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5em;
+}
+
+/* Estilos según el tipo de alerta */
+.default {
+  background-color: transparent;
+  color: white;
+}
+
+.default button {
+  background-color: #eb445a;
+  color: white;
+}
+
+.default button:hover {
+  background-color: #2b7070;
+}
+
+.success {
+  background-color: transparent;
+  color: white;
+}
+
+.success button {
+  background-color: #28a745;
+  color: white;
+}
+
+.success button:hover {
+  background-color: #248c3b;
+}
+
+.encuesta {
+  background-color: transparent;
+  color: white;
+}
+
+.encuesta button {
+  background-color: #eb445a;
+  color: white;
+}
+
+.encuesta button:hover {
+  background-color: #2b7070;
+}
+
+.success-button {
+  background-color: #28a745 !important;
+  color: white !important;
+}
+
+.error-button {
+  background-color: #eb445a !important;
+  color: white !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
