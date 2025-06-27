@@ -190,8 +190,10 @@ export class LoginPage {
       }
     } catch (error: any) {
       this.loading = false;
+      // console.log('[loginError] error: ', error);
+      const errorMessage = error.code == 'auth/invalid-credential' ? 'Verifique sus credenciales y vuelva a intentarlo.' : 'Ocurrió un error al iniciar sesión, intente nuevamente.';
       this.appAlert.showAlert(
-        error.message || 'Usuario o contraseña incorrectos.'
+        errorMessage
       );
     }
   }

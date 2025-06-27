@@ -142,6 +142,8 @@ export class RegisterPage implements OnInit {
           );
 
           if (success) {
+            console.log('[altaCliente] usuario anónimo registrado correctamente');
+            console.log('[altaCliente] usuario: ', this.cliente.nombre);
             this.playSound('1');
             this.resetForm();
             this.router.navigate(['/home']);
@@ -213,23 +215,41 @@ export class RegisterPage implements OnInit {
 
   async escanearDni(){
     try {
+      console.log('[escanearDni] ingresando a la funcion');
+      
+      // Verificar si el módulo está instalado
+      const { available } = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
+      
+      if (!available) {
+        console.log('[escanearDni] El módulo de Google Barcode Scanner no está disponible, intentando instalarlo...');
+        this.appAlert.showInfo('Instalando módulo de escaneo...', 'default');
+        
+        // Instalar el módulo de Google Barcode Scanner
+        await BarcodeScanner.installGoogleBarcodeScannerModule();
+        console.log('[escanearDni] Módulo de Google Barcode Scanner instalado correctamente');
+      }
       
       // Verificar si el escaneo está disponible
       const isAvailable = await BarcodeScanner.isSupported();
       if (!isAvailable) {
+        console.log('[escanearDni] el escaneo de códigos de barras no está disponible en este dispositivo');
         this.appAlert.showInfo('El escaneo de códigos de barras no está disponible en este dispositivo', 'default');
         return;
       }
       
       // Verificar permisos
+      console.log('[escanearDni] verificando permisos');
       const granted = await BarcodeScanner.requestPermissions();
       if (!granted) {
+        console.log('[escanearDni] se requiere permiso de cámara para escanear el DNI');
         this.appAlert.showInfo('Se requiere permiso de cámara para escanear el DNI', 'default');
         return;
       }
       
       // Iniciar escaneo
+      console.log('[escanearDni] iniciando escaneo');
       const { barcodes } = await BarcodeScanner.scan();
+      console.log('[escanearDni] escaneo finalizado');
       
       if (barcodes.length > 0) {
         const content = barcodes[0].rawValue;
@@ -237,17 +257,24 @@ export class RegisterPage implements OnInit {
           const partes = content.split("@");
           
           if (partes.length >= 5) {
-            this.clienteForm.controls['nombre'].setValue(partes[2]);
-            this.clienteForm.controls['apellido'].setValue(partes[1]);
+            this.clienteForm.controls['nombre'].setValue(this.formatDniName(partes[2]));
+            this.clienteForm.controls['apellido'].setValue(this.formatDniName(partes[1]));
             this.clienteForm.controls['dni'].setValue(partes[4]);
           } else {
             this.appAlert.showInfo('Formato de DNI no reconocido', 'default');
           }
         }
       }
-    } catch (error) {
-      this.appAlert.showInfo('Error al escanear el DNI', 'default');
+    } catch (error: any) {
+      console.log('[escanearDni] error al escanear el DNI');
+      console.log(`[escanearDni] error: ${JSON.stringify(error)}`);
+      this.appAlert.showInfo(`Error al escanear el DNI: ${error.message || 'Error desconocido'}`, 'default');
     }
+  }
+
+  formatDniName(name: string) {
+    // recibe un string con nombre o apellido, el nombre puede ser compuesto por varias palabras, solo la primera letra de cada palabra en mayuscula
+    return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   }
 
   async takePicture() {
