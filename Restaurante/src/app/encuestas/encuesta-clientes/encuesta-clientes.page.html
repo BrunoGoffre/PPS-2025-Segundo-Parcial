@@ -19,7 +19,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
   <app-custom-alert></app-custom-alert>
 
   <div class="encuesta-container">
@@ -106,13 +106,17 @@
       <!-- Fotos -->
       <div class="form-group">
         <label>Fotos (Opcional, máximo 3)</label>
-        <button
-          type="button"
-          (click)="agregarFoto()"
-          [disabled]="fotos.length >= 3"
-        >
-          Agregar Foto
-        </button>
+        <div class="foto-button-container">
+          <button
+            type="button"
+            class="foto-button"
+            (click)="agregarFoto()"
+            [disabled]="fotos.length >= 3"
+          >
+            <ion-icon name="camera-outline"></ion-icon>
+            Agregar Foto
+          </button>
+        </div>
       </div>
       <div class="fotos-preview">
         <div *ngFor="let foto of fotos; let i = index" class="foto-item">

@@ -63,19 +63,19 @@ export class MesaService {
   }
 
   async desasignarPorNumeroMesa(mesaNum: string): Promise<void> {
-    const mesaQuery = query(
-      collection(this.firestore, 'mesas'),
-      where('numero', '==', Number(mesaNum))
-    );
+    const mesasRef = collection(this.firestore, 'mesas');
+    console.log(`Buscando mesa con número (string): '${mesaNum}'`);
+    const ocupadasQuery = query(mesasRef, where('numero', '==', mesaNum));
 
-    const querySnapshot = await getDocs(mesaQuery);
-
+    const querySnapshot = await getDocs(ocupadasQuery);
+    console.log('Query snapshot:', querySnapshot);
     if (querySnapshot.empty) {
+      console.error(`No se encontró una mesa con el número: ${mesaNum}`);
       throw new Error(`No se encontró una mesa con el número: ${mesaNum}`);
     }
 
     const mesaDoc = querySnapshot.docs[0];
-
+    console.log('Mesa encontrada:', mesaDoc);
     const mesaRef = doc(this.firestore, `mesas/${mesaDoc.id}`);
     await updateDoc(mesaRef, {
       estado: 'libre',

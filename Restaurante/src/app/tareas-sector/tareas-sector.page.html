@@ -34,9 +34,11 @@
     <div *ngFor="let producto of pedidoConProductos.productos">
       <ion-card class="custom-card">
         <ion-card-header>
-          <ion-card-title class="d-flex justify-content-between"
-            ><span>{{ producto.nombre }}</span
-            ><span>{{ producto.cantidad }}</span></ion-card-title
+          <ion-card-title class="card-title-container"
+            ><span class="product-name">{{ producto.nombre }}</span
+            ><span class="product-quantity"
+              >{{ producto.cantidad }}</span
+            ></ion-card-title
           >
         </ion-card-header>
 

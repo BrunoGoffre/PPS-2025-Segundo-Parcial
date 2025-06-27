@@ -1,5 +1,13 @@
 .section {
   padding: 20px;
+  margin-bottom: 15px;
+  background-color: rgba(255, 255, 255, 0.749);
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .section-title {
@@ -7,10 +15,11 @@
   font-weight: bold;
   margin-bottom: 10px;
   text-align: center;
+  color: #355ca1;
 }
 
 .section-divider {
-  border: 1px solid #e3e0e0; // #ccc;
+  border: 1px solid #e3e0e0;
   margin-bottom: 20px;
 }
 
@@ -18,25 +27,37 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 60px 0;
-  background-color: #c6d687;
+  padding: 20px 0;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .comentarios-container {
   margin-top: 20px;
-  padding: 10px;
-  background-color: #c6d687;
+  padding: 15px;
+  background-color: #f9f9f9;
   border-radius: 8px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
   color: black;
 }
 
 .comentario {
   border-bottom: 1px solid #e0e0e0;
-  padding: 10px 0;
+  padding: 12px 0;
 }
 
 .comentario:last-child {
   border-bottom: none;
+}
+
+.comentario p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.comentario p strong {
+  color: #355ca1;
 }
 
 ion-content {
@@ -50,8 +71,9 @@ ion-content {
   padding: 1vw 0;
   width: 100%;
 }
+
 .custom-header ion-toolbar {
-  background-color: #355ca1;
+  --background: #355ca1;
 }
 
 .custom-header ion-title {
@@ -64,8 +86,8 @@ ion-content {
 }
 
 .custom-toolbar {
-  --background: #355ca1; /* Elimina cualquier borde blanco del toolbar */
-  padding: 0; /* Remueve el padding interno adicional */
+  --background: #355ca1;
+  padding: 0;
 }
 
 .custom-toolbar ion-title {
@@ -79,4 +101,5 @@ ion-content {
 
 ion-icon {
   font-size: 30px;
+  color: #ffffff;
 }

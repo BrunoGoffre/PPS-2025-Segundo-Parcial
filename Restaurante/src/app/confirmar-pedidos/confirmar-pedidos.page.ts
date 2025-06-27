@@ -49,6 +49,7 @@ import { RouterLink } from '@angular/router';
 export class ConfirmarPedidosPage implements OnInit {
   isLoading: boolean = true;
   pedidosPorMesa: { [mesa: number]: Pedido[] } = {};
+  hayPedidos: boolean = false;
 
   constructor(private pedidoService: PedidoService) {}
 
@@ -60,6 +61,7 @@ export class ConfirmarPedidosPage implements OnInit {
     this.pedidoService
       .obtenerPedidosPorEstado('realizado')
       .subscribe(async (pedidos) => {
+        this.hayPedidos = pedidos.length > 0;
         for (const pedido of pedidos) {
           for (const producto of pedido.productos || []) {
             const productoData = await this.pedidoService.obtenerProductoPorId(

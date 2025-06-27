@@ -30,6 +30,33 @@ ion-card-title {
   color: white;
 }
 
+.card-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.product-name {
+  font-weight: 600;
+  font-size: 1rem;
+  flex: 1;
+  text-align: left;
+  white-space: normal;
+}
+
+.product-quantity {
+  background-color: #f8f8f8;
+  color: #355ca1;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 1rem;
+  min-width: 40px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
 .text-small {
   font-size: 1.2em;
   color: white;

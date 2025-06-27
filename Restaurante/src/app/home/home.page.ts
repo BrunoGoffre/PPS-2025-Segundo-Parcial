@@ -129,7 +129,6 @@ export class HomePage {
   }
 
   async LeerQRLocal() {
-    this.isScanning = true; //TODO: eliminar
     try {
       const result = await BarcodeScanner.scan();
       if (result.barcodes[0].rawValue == '/home') {
@@ -143,7 +142,6 @@ export class HomePage {
     }
   }
   async LeerQRMesa() {
-    console.log('LeerQRMesa', this.pedido);
     if (!this.pedido) {
       this.appAlert.showAlert(
         'Debe colocarse en lista de espera antes de escanear mesa.'
@@ -153,8 +151,8 @@ export class HomePage {
       this.appAlert.showAlert('Usted no posee una mesa asignada.');
       return;
     }
-    this.router.navigate(['/menu-mesa']); //TODO: comentar/descomentar para probar
-    return;
+    //this.router.navigate(['/menu-mesa']); //TODO: comentar/descomentar para probar
+    //return;
     try {
       const result = await BarcodeScanner.scan();
       if (result.barcodes[0].rawValue === `mesa-${this.pedido?.mesaNumero}`) {

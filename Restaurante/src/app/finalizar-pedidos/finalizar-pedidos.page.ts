@@ -23,6 +23,7 @@ import {
 } from '@ionic/angular/standalone';
 import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
 import { MesaService } from '../services/mesa.service';
+import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-finalizar-pedidos',
@@ -60,7 +61,8 @@ export class FinalizarPedidosPage implements OnInit {
   constructor(
     private router: Router,
     private pedidoService: PedidoService,
-    private mesaService: MesaService
+    private mesaService: MesaService,
+    private zone: NgZone
   ) {}
 
   ngOnInit() {
@@ -86,36 +88,37 @@ export class FinalizarPedidosPage implements OnInit {
     );
   }
 
-  finalizarPedido(pedidoId: string) {
+  async finalizarPedido(pedidoId: string) {
     const pedido = this.pedidos.find((p) => p.id === pedidoId);
     if (!pedido) {
       return;
     }
-    this.pedidoService
-      .actualizarPedido({ id: pedidoId, estado: 'finalizado' })
-      .then(async () => {
-        console.log('Pedido actualizado:', pedidoId);
+    console.log('Pedido a finalizar:', pedido);
+    this.isLoading = true;
 
-        if (pedido.mesaNumero) {
-          console.log('Desasignando mesa:', pedido.mesaNumero);
+    try {
+      await this.pedidoService.actualizarPedido({
+        id: pedidoId,
+        estado: 'finalizado',
+      });
+      if (pedido.mesaNumero) {
+        this.zone.run(async () => {
           await this.mesaService.desasignarPorNumeroMesa(
             pedido.mesaNumero.toString()
           );
-          console.log('Mesa desasignada exitosamente:', pedido.mesaNumero);
-        } else {
-          console.log('El pedido no tiene número de mesa asociado:', pedidoId);
-        }
-        this.obtenerPedidosCobrados();
-      })
-      .catch((error) => {
-        console.error(
-          'Error al finalizar el pedido o desasignar la mesa:',
-          error
-        );
-      })
-      .finally(() => {
-        this.isLoading = false;
-      });
+        });
+      } else {
+        console.log('El pedido no tiene número de mesa asociado:', pedidoId);
+      }
+      this.obtenerPedidosCobrados();
+    } catch (error) {
+      console.error(
+        'Error al finalizar el pedido o desasignar la mesa:',
+        error
+      );
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   ngOnDestroy() {

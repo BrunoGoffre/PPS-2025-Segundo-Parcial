@@ -1,6 +1,9 @@
 ion-content {
   --background: url("/assets/fondoSplash.png") no-repeat center center fixed;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .encuesta-container {
@@ -12,7 +15,7 @@ ion-content {
   max-height: 85vh; /* Limita la altura máxima al 80% del viewport */
   overflow-y: auto; /* Activa el desplazamiento vertical cuando el contenido es demasiado largo */
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
-  margin-bottom: 50px;
+  margin: 20px auto; /* Centrado horizontal con margen vertical */
 }
 
 h2 {
@@ -88,6 +91,7 @@ textarea {
   resize: none;
   border-radius: 8px;
   border: 1px solid #ccc;
+  background-color: white;
   color: black;
 }
 
@@ -175,15 +179,72 @@ input[type="radio"] {
   transform: translate(-50%, -50%);
 }
 
+.foto-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.foto-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #355ca1;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.foto-button:hover {
+  background-color: #5438c9;
+}
+
+.foto-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.foto-button ion-icon {
+  font-size: 20px;
+}
+
 .fotos-preview {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .foto-item img {
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button[type="button"] {
+  background-color: #355ca1;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 5px;
+  transition: background-color 0.3s;
+}
+
+button[type="button"]:hover {
+  background-color: #5438c9;
+}
+
+button[type="button"]:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 
 .submit-button {

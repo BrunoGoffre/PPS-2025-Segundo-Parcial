@@ -13,7 +13,7 @@
   <!-- Gráfico de Satisfacción General -->
   <div class="section">
     <h2 class="section-title">Satisfacción General</h2>
-    <hr class="section-divider">
+    <hr class="section-divider" />
     <div class="chart-container">
       <canvas id="satisfaccionChart"></canvas>
     </div>
@@ -22,7 +22,7 @@
   <!-- Gráfico de Calificación del Servicio -->
   <div class="section">
     <h2 class="section-title">Calificación del Servicio</h2>
-    <hr class="section-divider">
+    <hr class="section-divider" />
     <div class="chart-container">
       <canvas id="serviceRatingChart"></canvas>
     </div>
@@ -31,7 +31,7 @@
   <!-- Gráfico de Aspectos Destacables -->
   <div class="section">
     <h2 class="section-title">Aspectos Destacables del Restaurante</h2>
-    <hr class="section-divider">
+    <hr class="section-divider" />
     <div class="chart-container">
       <canvas id="aspectsChart"></canvas>
     </div>
@@ -40,7 +40,7 @@
   <!-- Gráfico de Probabilidad de Recomendación -->
   <div class="section">
     <h2 class="section-title">Probabilidad de Recomendación</h2>
-    <hr class="section-divider">
+    <hr class="section-divider" />
     <div class="chart-container">
       <canvas id="recommendationChart"></canvas>
     </div>
@@ -49,15 +49,17 @@
   <!-- Comentarios de Clientes -->
   <div class="section">
     <h2 class="section-title">Comentarios de Clientes</h2>
-    <hr class="section-divider">
-     <div class="comentarios-container">
-     <!-- <div *ngFor="let comentario of comentarios" class="comentario">
-        <p>"{{ comentario }}"</p>
-      </div>-->
-       <div *ngFor="let comentario of comentarios" class="comentario">
-        <p><strong>{{ comentario.nombre }} {{ comentario.apellido }}</strong>: "{{ comentario.comentarios }}"</p>
+    <hr class="section-divider" />
+    <div class="comentarios-container">
+      <div *ngFor="let comentario of comentarios" class="comentario">
+        <p>
+          <strong>{{ comentario.nombre }} {{ comentario.apellido }}</strong>:
+          "{{ comentario.comentarios }}"
+        </p>
+      </div>
+      <div *ngIf="comentarios.length === 0" class="comentario">
+        <p>No hay comentarios disponibles.</p>
       </div>
     </div>
   </div>
 </ion-content>
-

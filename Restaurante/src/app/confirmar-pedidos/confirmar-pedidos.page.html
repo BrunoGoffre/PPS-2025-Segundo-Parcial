@@ -1,5 +1,3 @@
-
-
 <div *ngIf="isLoading" class="loading-overlay">
   <div class="loading-content">
     <img src="assets/icons/icon-loading.png" alt="Bon Appétit" class="logo" />
@@ -21,10 +19,12 @@
   </ion-toolbar>
 </ion-header>
 
-
-
 <ion-content [fullscreen]="true" class="ion-padding">
-  <div class="card-container mt-2" *ngIf="!isLoading">
+  <div *ngIf="!isLoading && !hayPedidos" class="no-pedidos-container">
+    <p class="no-pedidos-text">No hay pedidos pendientes a confirmar.</p>
+  </div>
+
+  <div class="card-container mt-2" *ngIf="!isLoading && hayPedidos">
     <div class="pedido-card" *ngFor="let mesa of pedidosPorMesa | keyvalue">
       <ion-card>
         <ion-card-header>
@@ -32,23 +32,33 @@
         </ion-card-header>
         <ion-card-content>
           <div *ngFor="let pedido of mesa.value">
-            <p class="detalles"><strong>Monto Final:</strong> ${{ pedido.montoFinal }}</p>
-            <p class="detalles"><strong>Tiempo Estimado:</strong> {{ pedido.tiempoEstimado }} min</p>
-            <br>
-            <div *ngIf="!isLoading && mesa.value.length === 0" class="no-pedidos-container">
-              <p class="no-pedidos-text">No hay pedidos pendientes a confirmar.</p>
-            </div>
+            <p class="detalles">
+              <strong>Monto Final:</strong> ${{ pedido.montoFinal }}
+            </p>
+            <p class="detalles">
+              <strong>Tiempo Estimado:</strong> {{ pedido.tiempoEstimado }} min
+            </p>
+            <br />
             <ion-list>
-              <ion-item *ngFor="let producto of pedido.productos" class="ion-item-custom">
-                <p class="descripcion-producto">{{ producto.descripcion ?? 'Descripción no disponible' }}</p>
+              <ion-item
+                *ngFor="let producto of pedido.productos"
+                class="ion-item-custom"
+              >
+                <p class="descripcion-producto">
+                  {{ producto.descripcion ?? 'Descripción no disponible' }}
+                </p>
                 <div class="cantidad-container">
                   <span class="cantidad-numero">{{ producto.cantidad }}</span>
                 </div>
               </ion-item>
             </ion-list>
-            <br>
-            
-            <ion-button color="success" expand="block" (click)="pedido.id && confirmarPedido(pedido.id)">
+            <br />
+
+            <ion-button
+              color="success"
+              expand="block"
+              (click)="pedido.id && confirmarPedido(pedido.id)"
+            >
               Confirmar Pedido
             </ion-button>
           </div>
@@ -56,6 +66,4 @@
       </ion-card>
     </div>
   </div>
-
-  
 </ion-content>
