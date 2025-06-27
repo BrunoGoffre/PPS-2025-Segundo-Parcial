@@ -22,12 +22,12 @@ export const notificarCuentaPedida = onDocumentUpdated('pedidos/{pedidoId}', asy
           tokens,
           {
             title: 'Cliente Solicita Cuenta',
-            body: `Mesa ${afterData.mesa ?? beforeData.mesa} ha solicitado la cuenta`
+            body: `Mesa ${afterData.mesaNumero} ha solicitado la cuenta`
           },
           {
             route: 'entregar-cuenta',
             pedidoId: event.params.pedidoId,
-            mesa: afterData.mesa?.toString() || ''
+            mesa: afterData.mesaNumero?.toString() || ''
           },
           'cuenta_pedida'
         );

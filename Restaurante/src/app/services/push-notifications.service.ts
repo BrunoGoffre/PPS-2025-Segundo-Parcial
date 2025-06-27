@@ -116,11 +116,15 @@ export class PushNotificationsService {
     
     const data = notification.notification.data;
     
-    // Navegar según el tipo de notificación
-    if (data && data.type) {
+    // Navegar usando la ruta directa desde Firebase Functions
+    if (data && data.route) {
+      const route = data.route.startsWith('/') ? data.route : `/${data.route}`;
+      this.router.navigate([route]);
+    } else if (data && data.type) {
+      // Fallback para compatibilidad con notificaciones legacy
       switch (data.type) {
         case 'cliente_pendiente':
-          this.router.navigate(['/clientes/pendientes']);
+          this.router.navigate(['/clientes-pendientes']);
           break;
         case 'nueva_reserva':
           this.router.navigate(['/reservas']);
@@ -186,7 +190,7 @@ export class PushNotificationsService {
 
       // Filtrar por rol: obtener usuarios con el rol específico y luego sus tokens
       const usuariosCollection = collection(this.firestore, 'usuarios');
-      const usuariosQuery = query(usuariosCollection, where('tipo', '==', targetRole));
+      const usuariosQuery = query(usuariosCollection, where('perfil', '==', targetRole));
       const usuariosSnapshot = await getDocs(usuariosQuery);
       
       const userIds: string[] = [];

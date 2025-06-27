@@ -10,6 +10,7 @@ import { notificarCuentaPedida } from './cliente-solicita-cuenta';
 import { notificarConsultaAmozo } from './consulta-mozo';
 import { notificarPedidosAEntregar } from './empleado-deriva-pedido';
 import { notificarPedidosARealizar } from './mozo-deriva-pedido';
+import { notificarMesaAsignada } from './maitre-asigna-mesa';
 
 initializeApp();
 
@@ -20,7 +21,8 @@ export {
   notificarCuentaPedida,
   notificarConsultaAmozo,
   notificarPedidosAEntregar,
-  notificarPedidosARealizar
+  notificarPedidosARealizar,
+  notificarMesaAsignada
 };
 
 export const sendPushNotification = onCall({

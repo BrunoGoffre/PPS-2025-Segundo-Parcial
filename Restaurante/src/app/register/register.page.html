@@ -26,17 +26,27 @@
     <ion-card class="login-card">
       <div class="user-buttons-container" *ngIf="!imagePreview">
         <div class="avatar-row">
-          <button class="avatar-button" (click)="takePicture()">
-            <img src="assets/anonimo.png" alt="cliente">
-          </button>
-          <p class="avatar-text">Tomar Foto</p>
+          <div class="image-selector-container">
+            <button class="avatar-button" (click)="takePicture()">
+              <img src="assets/anonimo.png" alt="cliente">
+              <div class="camera-icon-overlay">
+                <ion-icon name="camera-outline"></ion-icon>
+              </div>
+            </button>
+            <p class="avatar-text">Tomar Foto</p>
+          </div>
         </div>
       </div>
       
       <div class="user-buttons-container" *ngIf="imagePreview">
         <div class="avatar-row">
-          <div class="avatar-ok">
-            <img [src]="imagePreview" alt="cliente">
+          <div class="image-selector-container">
+            <div class="avatar-ok" (click)="takePicture()">
+              <img [src]="imagePreview" alt="cliente">
+              <div class="edit-icon-overlay">
+                <ion-icon name="create-outline"></ion-icon>
+              </div>
+            </div>
           </div>
         </div>
       </div>

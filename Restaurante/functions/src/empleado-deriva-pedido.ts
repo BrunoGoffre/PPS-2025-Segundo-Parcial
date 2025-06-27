@@ -22,12 +22,12 @@ export const notificarPedidosAEntregar = onDocumentUpdated('pedidos/{pedidoId}',
           tokens,
           {
             title: 'Pedido Listo para Entregar',
-            body: `Mesa ${afterData.mesa} - Pedido preparado y listo para entregar`
+            body: `Mesa ${afterData.mesaNumero} - Pedido preparado y listo para entregar`
           },
           {
             route: 'entregar-pedidos',
             pedidoId: event.params.pedidoId,
-            mesa: afterData.mesa?.toString() || ''
+            mesa: afterData.mesaNumero?.toString() || ''
           },
           'pedido_preparado'
         );

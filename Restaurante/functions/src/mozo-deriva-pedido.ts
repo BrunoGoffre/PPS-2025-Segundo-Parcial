@@ -27,7 +27,7 @@ export const notificarPedidosARealizar = onDocumentUpdated('pedidos/{pedidoId}',
           {
             route: 'tareas-sector',
             pedidoId: event.params.pedidoId,
-            mesa: afterData.mesa?.toString() || ''
+            mesa: afterData.mesaNumero?.toString() || ''
           },
           'pedido_confirmado'
         );

@@ -44,43 +44,103 @@ ion-content {
   }
 
   .avatar-text {
-    font-size: 5vw;
+    font-size: 4.5vw;
     color: #fff; 
     text-align: center;
-    margin-top: 10px;
+    margin-top: 5px;
+    font-weight: 500;
+  }
+
+  .avatar-text.success {
+    color: #28a745;
+    font-weight: 600;
+  }
+
+
+  .camera-icon-overlay {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    background-color: rgba(53, 92, 161, 0.9);
+    border-radius: 50%;
+    width: 6vw;
+    height: 6vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 3vw;
+  }
+
+  .edit-icon-overlay {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    background-color: rgba(23, 162, 184, 0.9);
+    border-radius: 50%;
+    width: 6vw;
+    height: 6vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 3vw;
+    transition: background-color 0.2s ease;
+  }
+
+  .avatar-ok:hover .edit-icon-overlay {
+    background-color: rgba(19, 132, 150, 0.9);
   }
   
+  .image-selector-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
   .avatar-button {
-    width: 20vw;
-    height: 20vw;
+    width: 22vw;
+    height: 22vw;
     border-radius: 50%;
-    border: none;
-    background-color: #f0f0f0;
+    border: 3px dashed rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
     margin-bottom: 5px;
+    position: relative;
+    cursor: pointer;
   }
 
   .avatar-ok {
-    width: 20vw;
-    height: 20vw;
+    width: 22vw;
+    height: 22vw;
     border-radius: 50%;
-    border: none;
+    border: 3px solid #28a745;
     background-color: #f0f0f0;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    transition: transform 0.3s ease;
-    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    margin-bottom: 5px;
+    position: relative;
+    cursor: pointer;
   }
   
   .avatar-button:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(194, 60, 60, 0.3);
+    border-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .avatar-ok:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
   }
   
   .avatar-button img, .avatar-ok img {
@@ -92,45 +152,84 @@ ion-content {
   /* Estilos para los inputs */
   .form-control {
     width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #000;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #333;
     font-size: 4vw;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #17a2b8;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .form-control::placeholder {
+    color: #666;
+    opacity: 0.8;
   }
 
   /* Estilos para el selector */
   .form-select {
     width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #000;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #333;
     font-size: 4vw;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    appearance: none;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDEwIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNSA1TDkgMSIgc3Ryb2tlPSIjNjY2IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+    padding-right: 40px;
+  }
+
+  .form-select:focus {
+    outline: none;
+    border-color: #17a2b8;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1);
   }
   
   .login-button {
     width: 100%;
-    background-color: #eb445a;
+    background: linear-gradient(135deg, #eb445a 0%, #c73650 100%);
     color: white;
     font-size: 4vw;
-    font-weight: bold;
-    padding: 3vw;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-bottom: 10px;
+    font-weight: 600;
+    padding: 3.5vw;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    margin-bottom: 12px;
     border: none;
+    box-shadow: 0 4px 8px rgba(235, 68, 90, 0.3);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
   }
   
   .login-button:hover,
   .login-button:focus {
-    background-color: #2b7070;
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(194, 60, 60, 0.3);
+    background: linear-gradient(135deg, #d63850 0%, #b12d45 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(235, 68, 90, 0.4);
+  }
+
+  .login-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(235, 68, 90, 0.3);
   }
 
   .login-button:disabled {
@@ -144,20 +243,28 @@ ion-content {
 
   .escanear-button {
     width: 100%;
-    background-color: #2e5569;
+    background: linear-gradient(135deg, #2e5569 0%, #1e3a47 100%);
     color: white;
     font-size: 4vw;
-    font-weight: bold;
-    padding: 3vw;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-bottom: 10px;
+    font-weight: 600;
+    padding: 3.2vw;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    margin-bottom: 12px;
     border: none;
+    box-shadow: 0 3px 6px rgba(46, 85, 105, 0.3);
+    letter-spacing: 0.3px;
   }
 
   .escanear-button:hover {
-    background-color: #445bb1;
-    transform: scale(1.05);
+    background: linear-gradient(135deg, #445bb1 0%, #2d4280 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(46, 85, 105, 0.4);
+  }
+
+  .escanear-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(46, 85, 105, 0.3);
   }
   
   .escanear-button:disabled {

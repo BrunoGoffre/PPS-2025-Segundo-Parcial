@@ -1,6 +1,5 @@
 import { onDocumentCreated } from 'firebase-functions/v2/firestore';
 import { sendNotificationPush } from './notifications';
-import { getFirestore } from 'firebase-admin/firestore';
 import { getTokensPorPerfiles } from './tokens-por-perfil';
 
 export const notificarConsultaAmozo = onDocumentCreated('mensajes/{consultaId}', async (event) => {
@@ -12,11 +11,8 @@ export const notificarConsultaAmozo = onDocumentCreated('mensajes/{consultaId}',
       return;
     }
 
-    const db = getFirestore();
-    const usuarioDoc = await db.collection('usuarios').doc(mensajeData.userId).get();
-    const usuarioData = usuarioDoc.data();
-
-    if (usuarioData && usuarioData.perfil === 'cliente') {
+    if (mensajeData.usuario && mensajeData.usuario.perfil === 'cliente') {
+      const usuarioData = mensajeData.usuario;
       console.log(`Nueva consulta de cliente: ${usuarioData.nombre}`);
       
       const tokens = await getTokensPorPerfiles(['mozo']);
@@ -29,7 +25,7 @@ export const notificarConsultaAmozo = onDocumentCreated('mensajes/{consultaId}',
             body: `${usuarioData.nombre} ha enviado una consulta`
           },
           {
-            route: `chat/${mensajeData.idPedido}`,
+            route: `/chat/${mensajeData.idPedido}`,
             consultaId: event.params.consultaId,
             clienteNombre: usuarioData.nombre
           },

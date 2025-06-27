@@ -21,7 +21,7 @@ export const notificarMaitreListaEspera = onDocumentCreated('pedidos/{pedidoId}'
         tokens,
         {
           title: 'Cliente en Lista de Espera',
-          body: `Un cliente está esperando mesa - Mesa ${pedidoData.mesa || 'sin asignar'}`
+          body: `Un cliente está esperando mesa - Mesa ${pedidoData.mesaNumero || 'sin asignar'}`
         },
         {
           route: 'lista-espera',
