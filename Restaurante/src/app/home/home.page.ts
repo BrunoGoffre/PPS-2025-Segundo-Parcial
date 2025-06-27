@@ -129,11 +129,12 @@ export class HomePage {
   }
 
   async LeerQRLocal() {
-    // this.isScanning = true; //TODO: eliminar
+    this.isScanning = true; //TODO: eliminar
     try {
       const result = await BarcodeScanner.scan();
       if (result.barcodes[0].rawValue == '/home') {
         this.isScanning = true;
+        this.crearPedido();
       } else {
         this.appAlert.showAlert('Debe escanear el QR de ingreso.');
       }
@@ -152,8 +153,8 @@ export class HomePage {
       this.appAlert.showAlert('Usted no posee una mesa asignada.');
       return;
     }
-    //this.router.navigate(['/menu-mesa']); //TODO: comentar/descomentar para probar
-
+    this.router.navigate(['/menu-mesa']); //TODO: comentar/descomentar para probar
+    return;
     try {
       const result = await BarcodeScanner.scan();
       if (result.barcodes[0].rawValue === `mesa-${this.pedido?.mesaNumero}`) {

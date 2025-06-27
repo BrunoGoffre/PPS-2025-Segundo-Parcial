@@ -88,13 +88,13 @@
 
   <div class="footer fixed-bottom bg-dark py-3">
     <div class="d-flex justify-content-between align-items-center px-3">
-      <div>
+      <div class="tiempo-estimado">
         <h6 class="mb-0">
-          <ion-icon size="small" name="time-outline"></ion-icon> {{
-          tiempoPedidoMaximo }} min
+          <ion-icon name="time-outline"></ion-icon>
+          <span>{{ tiempoPedidoMaximo }} min</span>
         </h6>
       </div>
-      <div>
+      <div class="precio-total">
         <h5 class="mb-0 fw-bold">{{ totalPedido | currency }}</h5>
       </div>
       <button

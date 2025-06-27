@@ -1,6 +1,13 @@
 .card-container {
-  margin-bottom: 120px;
+  margin-bottom: 200px;
   padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  margin-bottom: 15px;
 }
 
 ion-content {
@@ -16,36 +23,45 @@ ion-content {
 .card {
   background-color: rgba(53, 92, 161, 0.9);
   border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+  }
 }
 
 .card-body {
-  padding: 15px;
+  padding: 18px;
 }
 
 .card-title {
   color: #ffffff;
-  font-size: 1.3rem;
-  margin-bottom: 10px;
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .card-text {
   color: #e0e0e0;
-  font-size: 1rem;
-  margin-bottom: 8px;
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+  line-height: 1.4;
 }
 
 .imagenes-container {
   display: flex;
   flex-wrap: wrap;
-  border-radius: 12px 12px 0 0;
+  border-radius: 15px 15px 0 0;
   overflow: hidden;
 }
 
 .foto {
   width: 33.33%;
-  height: 120px;
+  height: 130px;
   object-fit: cover;
   transition: transform 0.3s ease;
 
@@ -60,7 +76,8 @@ ion-toolbar {
 
   ion-title {
     font-size: 1.5rem;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: 0.5px;
   }
 
   ion-icon {
@@ -85,8 +102,13 @@ ion-toolbar {
     --border-color: #355ca1;
     --border-radius: 8px;
     font-weight: bold;
-    height: 40px;
-    min-width: 40px;
+    height: 45px;
+    min-width: 45px;
+    font-size: 1.2rem;
+
+    &:active {
+      transform: scale(0.95);
+    }
   }
 
   ion-input {
@@ -98,9 +120,10 @@ ion-toolbar {
     border: 1px solid #355ca1;
     border-radius: 0;
     font-weight: bold;
-    height: 40px;
+    height: 45px;
     flex-grow: 1;
-    margin: 0 -1px; // Para que los bordes se junten
+    margin: 0 -1px;
+    font-size: 1.2rem;
   }
 
   ion-button:first-child {
@@ -122,25 +145,68 @@ ion-toolbar {
   left: 0;
   right: 0;
   z-index: 1000;
-  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
 
-  h6,
+  .tiempo-estimado {
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 8px 15px;
+    border-radius: 8px;
+    min-width: 100px;
+    text-align: center;
+  }
+
+  h6 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+
+    ion-icon {
+      margin-right: 5px;
+      font-size: 1.3rem;
+    }
+
+    span {
+      color: #ffffff;
+    }
+  }
+
+  .precio-total {
+    flex-grow: 1;
+    text-align: right;
+    padding-right: 20px;
+  }
+
   h5 {
     color: #ffffff;
     margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
   }
 
   .btn-success {
     background-color: #2b7070;
     border: none;
-    padding: 8px 20px;
-    font-weight: 500;
-    border-radius: 8px;
+    padding: 12px 25px;
+    font-weight: 600;
+    border-radius: 10px;
     transition: all 0.3s ease;
+    font-size: 1.1rem;
+    min-width: 160px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 
     &:hover:not(:disabled) {
       transform: scale(1.05);
       background-color: #eb445a;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
     }
 
     &:disabled {
@@ -168,6 +234,7 @@ ion-toolbar {
     .logo {
       width: 120px;
       margin-bottom: 20px;
+      animation: pulse 1.5s infinite ease-in-out;
     }
 
     .loading-label {
@@ -185,5 +252,17 @@ ion-toolbar {
         font-size: 1.1rem;
       }
     }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
   }
 }

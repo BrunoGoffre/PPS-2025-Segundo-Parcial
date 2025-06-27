@@ -23,71 +23,120 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <div class="card-container" *ngIf="!isLoading && !agregaPropina">
-      <ion-card>
-        <ion-card-content class="cuenta">
-            <br>
-            <ion-list>
-              <ion-item *ngFor="let producto of pedido?.productos">
-                <p class="descripcion-producto">{{ producto.nombre }}</p>
-               <div class="cantidad-container">
-                <span class="cantidad-text">${{producto.precio}} x {{producto.cantidad}} </span>
-              </div>
-              </ion-item> 
-            </ion-list>
-            <br>
-            <p class="detalles"><strong>Propina:</strong> ${{ porcentaje }}</p>
-            <p class="detalles"><strong>Monto Final:</strong> ${{ this.totalCuenta }}</p>
-            <ion-button *ngIf="!agregaPropina2" color="success" expand="block" (click)="AgregarPropina()">
-              Agregar Propina
-            </ion-button>
-            <ion-button *ngIf="agregaPropina2" color="success" expand="block" (click)="cancelarPropina()">
-              Cancelar Propina
-            </ion-button>
-            <ion-button color="success" expand="block" (click)="pagarPedido()">
-              Pagar pedido
-            </ion-button>
-        </ion-card-content>
-      </ion-card>
+    <ion-card>
+      <ion-card-content class="cuenta">
+        <ion-card-title>Detalle de Cuenta</ion-card-title>
+        <br />
+        <ion-list>
+          <ion-item *ngFor="let producto of pedido?.productos">
+            <p class="descripcion-producto">{{ producto.nombre }}</p>
+            <div class="cantidad-container">
+              <span class="cantidad-text"
+                >${{producto.precio}} x {{producto.cantidad}}
+              </span>
+            </div>
+          </ion-item>
+        </ion-list>
+        <br />
+        <p class="detalles"><strong>Propina:</strong> ${{ porcentaje }}</p>
+        <p class="detalles">
+          <strong>Monto Final:</strong> ${{ this.totalCuenta }}
+        </p>
+        <ion-button
+          *ngIf="!agregaPropina2"
+          color="success"
+          expand="block"
+          (click)="AgregarPropina()"
+        >
+          <ion-icon name="cash-outline" slot="start"></ion-icon>
+          Agregar Propina
+        </ion-button>
+        <ion-button
+          *ngIf="agregaPropina2"
+          color="danger"
+          expand="block"
+          (click)="cancelarPropina()"
+        >
+          <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+          Cancelar Propina
+        </ion-button>
+        <ion-button color="primary" expand="block" (click)="pagarPedido()">
+          <ion-icon name="card-outline" slot="start"></ion-icon>
+          Pagar pedido
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
   </div>
   <div class="card-container" *ngIf="!isLoading && agregaPropina">
-        <ion-card class="cardPropina">
+    <ion-card class="cardPropina">
       <ion-card-content>
+        <ion-card-title>Seleccione Propina</ion-card-title>
+        <br />
         <ion-card class="boton-porcentaje" (click)="leerVeinte()">
           <ion-card-content>
-            <p>20% + <span class="text-success">{{this.porcentaje20 | currency}}</span></p>
+            <p>
+              20% +
+              <span class="text-success">{{this.porcentaje20 | currency}}</span>
+            </p>
             <p>Grado de Satisfacción</p>
-          <ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon>
-      </ion-card-content> 
+            <ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon
+            ><ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon
+            ><ion-icon name="star"></ion-icon>
+          </ion-card-content>
         </ion-card>
         <ion-card class="boton-porcentaje" (click)="leerQuince()">
           <ion-card-content>
-            <p>15% + <span class="text-success">{{this.porcentaje15 | currency}}</span></p>
+            <p>
+              15% +
+              <span class="text-success">{{this.porcentaje15 | currency}}</span>
+            </p>
             <p>Grado de Satisfacción</p>
-          <ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon name="star-outline"></ion-icon>
+            <ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon
+            ><ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon
+            ><ion-icon name="star-outline"></ion-icon>
           </ion-card-content>
         </ion-card>
         <ion-card class="boton-porcentaje" (click)="leerDiez()">
           <ion-card-content>
-            <p>10% + <span class="text-success">{{this.porcentaje10 | currency}}</span></p>
+            <p>
+              10% +
+              <span class="text-success">{{this.porcentaje10 | currency}}</span>
+            </p>
             <p>Grado de Satisfacción</p>
-          <ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon name="star-outline"></ion-icon><ion-icon name="star-outline"></ion-icon>
+            <ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon
+            ><ion-icon name="star"></ion-icon
+            ><ion-icon name="star-outline"></ion-icon
+            ><ion-icon name="star-outline"></ion-icon>
           </ion-card-content>
         </ion-card>
         <ion-card class="boton-porcentaje" (click)="leerCinco()">
           <ion-card-content>
-            <p>5% + <span class="text-success">{{this.porcentaje5 | currency}}</span></p>
+            <p>
+              5% +
+              <span class="text-success">{{this.porcentaje5 | currency}}</span>
+            </p>
             <p>Grado de Satisfacción</p>
-            <ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon><ion-icon name="star-outline"></ion-icon><ion-icon name="star-outline"></ion-icon><ion-icon name="star-outline"></ion-icon>
+            <ion-icon name="star"></ion-icon><ion-icon name="star"></ion-icon
+            ><ion-icon name="star-outline"></ion-icon
+            ><ion-icon name="star-outline"></ion-icon
+            ><ion-icon name="star-outline"></ion-icon>
           </ion-card-content>
         </ion-card>
         <ion-card class="boton-porcentaje" (click)="leerZero()">
           <ion-card-content>
-            <p>0% + <span class="text-success">{{this.porcentaje0 | currency}}</span></p>
+            <p>
+              0% +
+              <span class="text-success">{{this.porcentaje0 | currency}}</span>
+            </p>
             <p>Grado de Satisfacción</p>
-            <ion-icon name="star"></ion-icon><ion-icon name="star-outline"></ion-icon><ion-icon name="star-outline"></ion-icon><ion-icon name="star-outline"></ion-icon><ion-icon name="star-outline"></ion-icon>
+            <ion-icon name="star"></ion-icon
+            ><ion-icon name="star-outline"></ion-icon
+            ><ion-icon name="star-outline"></ion-icon
+            ><ion-icon name="star-outline"></ion-icon
+            ><ion-icon name="star-outline"></ion-icon>
           </ion-card-content>
         </ion-card>
       </ion-card-content>
     </ion-card>
-</div>
+  </div>
 </ion-content>

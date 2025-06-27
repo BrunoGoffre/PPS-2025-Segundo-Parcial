@@ -23,6 +23,10 @@
   <app-custom-alert #customAlert></app-custom-alert>
 
   <div *ngIf="!loading" class="contenedor">
+    <div *ngIf="pedidosConCliente.length === 0" class="mensaje-vacio">
+      <h2>No hay clientes en lista de espera</h2>
+    </div>
+
     <div *ngFor="let pedido of pedidosConCliente" class="pedido-card">
       <div
         class="custom-card"
