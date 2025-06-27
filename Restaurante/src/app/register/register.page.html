@@ -28,7 +28,7 @@
         <div class="avatar-row">
           <div class="image-selector-container">
             <button class="avatar-button" (click)="takePicture()">
-              <img src="assets/anonimo.png" alt="cliente">
+              <img src="assets/uploadPicture.png" alt="cliente">
               <div class="camera-icon-overlay">
                 <ion-icon name="camera-outline"></ion-icon>
               </div>
@@ -104,7 +104,7 @@
 
         @if(flagError || (nombre?.invalid && (nombre?.touched || nombre?.dirty)) || (apellido?.invalid && (apellido?.touched || apellido?.dirty)) || (dni?.invalid && (dni?.touched || dni?.dirty)) || (mail?.invalid && (mail?.touched || mail?.dirty)) || (clave?.invalid && (clave?.touched || clave?.dirty)) || (clienteForm.errors?.['passwordMismatch'] && clave2?.touched))
         {
-          <div class="texto alert alert-danger alert-dismissible fade show mb-2 fw-bold" role="alert">
+          <div class="texto alert alert-danger alert-dismissible fade show mb-2 fw-bold alert-danger alert-danger-custom" role="alert">
             @if (flagError) {
               {{msjError}}
             }

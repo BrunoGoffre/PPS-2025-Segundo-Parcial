@@ -18,7 +18,7 @@ ion-content {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     background-color: #355ca1;
     margin: 0 auto;
-    margin-top: 2vw;
+    margin-top: 30px;
   }
   
   /* Título del card */
@@ -147,6 +147,10 @@ ion-content {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .contenedor {
+    margin-top: 80px;
   }
   
   /* Estilos para los inputs */
@@ -278,6 +282,7 @@ ion-content {
   
   ion-header {
     border-radius: 12px;
+    margin-bottom: 10px;
   }
   
   .header-toolbar {
@@ -343,4 +348,10 @@ ion-content {
 
   .mb-2 {
     margin-bottom: 10px;
+  }
+
+  .alert-danger-custom {
+    color: #d63850;
+    background-color: #f8d7da;
+    border-radius: 12px;
   }
