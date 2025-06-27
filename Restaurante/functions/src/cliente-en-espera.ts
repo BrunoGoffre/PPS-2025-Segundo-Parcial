@@ -1,6 +1,6 @@
 import { onDocumentCreated } from 'firebase-functions/v2/firestore';
 import { sendNotificationPush } from './notifications';
-import { getTokensPorTipos } from './tokens-por-tipos';
+import { getTokensPorPerfiles } from './tokens-por-perfil';
 
 export const notificarMaitreListaEspera = onDocumentCreated('pedidos/{pedidoId}', async (event) => {
   try {
@@ -14,7 +14,7 @@ export const notificarMaitreListaEspera = onDocumentCreated('pedidos/{pedidoId}'
     // Notificar cuando se crea cualquier pedido nuevo
     console.log(`Nuevo pedido creado - Pedido: ${event.params.pedidoId}`);
     
-    const tokens = await getTokensPorTipos(['maitre', 'mozo']);
+    const tokens = await getTokensPorPerfiles(['maitre']);
     
     if (tokens.length > 0) {
       await sendNotificationPush(
@@ -24,7 +24,7 @@ export const notificarMaitreListaEspera = onDocumentCreated('pedidos/{pedidoId}'
           body: `Un cliente está esperando mesa - Mesa ${pedidoData.mesa || 'sin asignar'}`
         },
         {
-          route: '/lista-espera',
+          route: 'lista-espera',
           pedidoId: event.params.pedidoId
         },
         'lista_espera'

@@ -36,7 +36,7 @@
       <img
         *ngIf="!mostrarBotonEstadoPedido"
         class="imagen-chica"
-        src="assets/hacerPedido.png"
+        src="assets/pedidoSolicitar.png"
         (click)="goTo('pedido-cliente')"
         alt="qr"
       />
@@ -58,7 +58,7 @@
       <img
         *ngIf="usuario?.encuestaCompletada"
         class="imagen-chica"
-        src="assets/resultadoEncuesta.png"
+        src="assets/encuestaResultados.png"
         (click)="goTo('resultados-encuestas')"
         alt="qr"
       />
@@ -67,7 +67,7 @@
       </p>
       <img
         class="imagen-chica"
-        src="assets/pagarPedido.png"
+        src="assets/pedidoPagar.png"
         alt="qr"
         (click)="pedirCuenta(pedido?.id,'cuenta-pedida')"
       />

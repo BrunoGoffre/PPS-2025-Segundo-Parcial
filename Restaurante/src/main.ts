@@ -14,6 +14,19 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { HttpClientModule } from '@angular/common/http';
 import { importProvidersFrom } from '@angular/core';
 
+// Fix para viewport height en dispositivos móviles
+function setViewportHeight() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// Configurar altura del viewport al cargar y al cambiar orientación
+window.addEventListener('load', setViewportHeight);
+window.addEventListener('resize', setViewportHeight);
+window.addEventListener('orientationchange', () => {
+  setTimeout(setViewportHeight, 100);
+});
+
 bootstrapApplication(AppComponent, {
   providers: [
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},

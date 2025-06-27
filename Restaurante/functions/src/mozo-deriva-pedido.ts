@@ -1,6 +1,6 @@
 import { onDocumentUpdated } from 'firebase-functions/v2/firestore';
 import { sendNotificationPush } from './notifications';
-import { getTokensPorTipos } from './tokens-por-tipos';
+import { getTokensPorPerfiles } from './tokens-por-perfil';
 
 export const notificarPedidosARealizar = onDocumentUpdated('pedidos/{pedidoId}', async (event) => {
   try {
@@ -15,17 +15,17 @@ export const notificarPedidosARealizar = onDocumentUpdated('pedidos/{pedidoId}',
     if (beforeData.estado !== 'confirmado' && afterData.estado === 'confirmado') {
       console.log(`Pedido confirmado para preparar - Pedido: ${event.params.pedidoId}`);
       
-      const tokens = await getTokensPorTipos(['bartender', 'cocinero']);
+      const tokens = await getTokensPorPerfiles(['bartender', 'cocinero']);
       
       if (tokens.length > 0) {
         await sendNotificationPush(
           tokens,
           {
             title: 'Nuevo Pedido Confirmado',
-            body: `Mesa ${afterData.mesa} - Pedido confirmado para preparar`
+            body: `Mesa ${afterData.mesaNumero} - Pedido confirmado para preparar`
           },
           {
-            route: '/tareas-sector',
+            route: 'tareas-sector',
             pedidoId: event.params.pedidoId,
             mesa: afterData.mesa?.toString() || ''
           },

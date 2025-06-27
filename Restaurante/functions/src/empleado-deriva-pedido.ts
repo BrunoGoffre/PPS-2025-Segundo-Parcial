@@ -1,6 +1,6 @@
 import { onDocumentUpdated } from 'firebase-functions/v2/firestore';
 import { sendNotificationPush } from './notifications';
-import { getTokensPorTipos } from './tokens-por-tipos';
+import { getTokensPorPerfiles } from './tokens-por-perfil';
 
 export const notificarPedidosAEntregar = onDocumentUpdated('pedidos/{pedidoId}', async (event) => {
   try {
@@ -15,7 +15,7 @@ export const notificarPedidosAEntregar = onDocumentUpdated('pedidos/{pedidoId}',
     if (beforeData.estado !== 'preparado' && afterData.estado === 'preparado') {
       console.log(`Pedido preparado para entregar - Pedido: ${event.params.pedidoId}`);
       
-      const tokens = await getTokensPorTipos(['mozo']);
+      const tokens = await getTokensPorPerfiles(['mozo']);
       
       if (tokens.length > 0) {
         await sendNotificationPush(
@@ -25,7 +25,7 @@ export const notificarPedidosAEntregar = onDocumentUpdated('pedidos/{pedidoId}',
             body: `Mesa ${afterData.mesa} - Pedido preparado y listo para entregar`
           },
           {
-            route: '/entregar-pedidos',
+            route: 'entregar-pedidos',
             pedidoId: event.params.pedidoId,
             mesa: afterData.mesa?.toString() || ''
           },
