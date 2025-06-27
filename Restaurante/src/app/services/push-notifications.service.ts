@@ -168,19 +168,51 @@ export class PushNotificationsService {
 
   private async getTokensFromFirebase(targetRole?: string): Promise<string[]> {
     try {
+      if (!targetRole) {
+        // Si no se especifica rol, obtener todos los tokens
+        const tokensCollection = collection(this.firestore, 'user_push_tokens');
+        const snapshot = await getDocs(tokensCollection);
+        
+        const tokens: string[] = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          if (data['token']) {
+            tokens.push(data['token']);
+          }
+        });
+        
+        return tokens;
+      }
+
+      // Filtrar por rol: obtener usuarios con el rol específico y luego sus tokens
+      const usuariosCollection = collection(this.firestore, 'usuarios');
+      const usuariosQuery = query(usuariosCollection, where('tipo', '==', targetRole));
+      const usuariosSnapshot = await getDocs(usuariosQuery);
+      
+      const userIds: string[] = [];
+      usuariosSnapshot.forEach(doc => {
+        userIds.push(doc.id);
+      });
+
+      if (userIds.length === 0) {
+        return [];
+      }
+
+      // Obtener tokens de los usuarios filtrados
       const tokensCollection = collection(this.firestore, 'user_push_tokens');
-      const snapshot = await getDocs(tokensCollection);
+      const tokensSnapshot = await getDocs(tokensCollection);
       
       const tokens: string[] = [];
-      snapshot.forEach(doc => {
+      tokensSnapshot.forEach(doc => {
         const data = doc.data();
-        if (data['token']) {
+        if (data['token'] && data['user_id'] && userIds.includes(data['user_id'])) {
           tokens.push(data['token']);
         }
       });
       
       return tokens;
     } catch (error) {
+      console.error('Error obteniendo tokens por rol:', error);
       return [];
     }
   }

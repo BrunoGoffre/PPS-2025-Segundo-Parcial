@@ -3,7 +3,25 @@ import { getMessaging } from 'firebase-admin/messaging';
 import { initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
+// Importar todas las funciones automáticas
+import { notificarClienteYsupervisorNuevoUsuario } from './cliente-nuevo';
+import { notificarMaitreListaEspera } from './cliente-en-espera';
+import { notificarCuentaPedida } from './cliente-solicita-cuenta';
+import { notificarConsultaAmozo } from './consulta-mozo';
+import { notificarPedidosAEntregar } from './empleado-deriva-pedido';
+import { notificarPedidosARealizar } from './mozo-deriva-pedido';
+
 initializeApp();
+
+// Exportar todas las funciones automáticas
+export { 
+  notificarClienteYsupervisorNuevoUsuario,
+  notificarMaitreListaEspera,
+  notificarCuentaPedida,
+  notificarConsultaAmozo,
+  notificarPedidosAEntregar,
+  notificarPedidosARealizar
+};
 
 export const sendPushNotification = onCall({
   cors: true
