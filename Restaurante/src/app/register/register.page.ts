@@ -131,7 +131,7 @@ export class RegisterPage implements OnInit {
         } else {
           const randomDigits = Math.floor(100000 + Math.random() * 900000);
           this.cliente!.mail = `anon_${randomDigits}@anon.com`;
-          this.cliente!.nombre = 'Anónimo';
+          // this.cliente!.nombre = 'Anónimo';
           this.cliente!.estadoAprobacion = 'aprobado';
 
           // Usar el nuevo método de registro con Supabase
