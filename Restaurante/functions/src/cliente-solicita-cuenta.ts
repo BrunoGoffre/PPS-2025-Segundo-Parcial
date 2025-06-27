@@ -1,6 +1,6 @@
 import { onDocumentUpdated } from 'firebase-functions/v2/firestore';
 import { sendNotificationPush } from './notifications';
-import { getTokensPorTipos } from './tokens-por-tipos';
+import { getTokensPorPerfiles } from './tokens-por-perfil';
 
 export const notificarCuentaPedida = onDocumentUpdated('pedidos/{pedidoId}', async (event) => {
   try {
@@ -15,17 +15,17 @@ export const notificarCuentaPedida = onDocumentUpdated('pedidos/{pedidoId}', asy
     if (beforeData.estado !== 'cuenta-pedida' && afterData.estado === 'cuenta-pedida') {
       console.log(`Cliente solicita cuenta - Pedido: ${event.params.pedidoId}`);
       
-      const tokens = await getTokensPorTipos(['mozo']);
+      const tokens = await getTokensPorPerfiles(['mozo']);
       
       if (tokens.length > 0) {
         await sendNotificationPush(
           tokens,
           {
             title: 'Cliente Solicita Cuenta',
-            body: `Mesa ${afterData.mesa} ha solicitado la cuenta`
+            body: `Mesa ${afterData.mesa ?? beforeData.mesa} ha solicitado la cuenta`
           },
           {
-            route: '/entregar-cuenta',
+            route: 'entregar-cuenta',
             pedidoId: event.params.pedidoId,
             mesa: afterData.mesa?.toString() || ''
           },

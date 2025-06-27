@@ -24,7 +24,7 @@ export const notificarClienteYsupervisorNuevoUsuario = onDocumentCreated('usuari
             body: `${userData.nombre} se ha registrado como cliente y necesita aprobación`
           },
           {
-            route: '/clientes-pendientes',
+            route: 'clientes-pendientes',
             userId: event.params.userId
           },
           'cliente_nuevo'

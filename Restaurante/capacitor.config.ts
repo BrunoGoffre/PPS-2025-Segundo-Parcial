@@ -17,11 +17,26 @@ const config: CapacitorConfig = {
     },
     PushNotifications: {
       presentationOptions: ["badge", "sound", "alert"]
+    },
+    StatusBar: {
+      style: 'DARK',
+      backgroundColor: '#355ca1',
+      overlaysWebView: false
+    },
+    SplashScreen: {
+      launchShowDuration: 2000,
+      backgroundColor: '#355ca1',
+      androidScaleType: 'CENTER_CROP',
+      splashFullScreen: false,
+      splashImmersive: false
     }
   },
   ios: {
     preferredContentMode: 'mobile',
     contentInset: 'automatic'
+  },
+  android: {
+    allowMixedContent: true
   },
   server: {
     androidScheme: 'https'

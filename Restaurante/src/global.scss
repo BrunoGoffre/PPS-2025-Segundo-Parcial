@@ -42,11 +42,56 @@
 
 /* Estilos para manejar safe areas en dispositivos con notch y barra de navegación */
 :root {
-  --ion-safe-area-top: env(safe-area-inset-top, 20px);
-  --ion-safe-area-bottom: env(safe-area-inset-bottom, 10px);
+  --ion-safe-area-top: env(safe-area-inset-top, 0px);
+  --ion-safe-area-bottom: env(safe-area-inset-bottom, 0px);
   --ion-safe-area-left: env(safe-area-inset-left, 0px);
   --ion-safe-area-right: env(safe-area-inset-right, 0px);
-  --header-height: 60px;
+  --header-height: 56px;
+  --status-bar-height: 24px;
+  --app-margin: 16px;
+}
+
+/* Configuración específica para plataformas */
+html {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Configuración para que la app ocupe toda la pantalla correctamente */
+app-root {
+  height: 100%;
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+}
+
+ion-app {
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Configuración mejorada para safe areas */
+@supports (padding: max(0px)) {
+  :root {
+    --ion-safe-area-top: max(env(safe-area-inset-top), var(--status-bar-height));
+    --ion-safe-area-bottom: max(env(safe-area-inset-bottom), 0px);
+    --ion-safe-area-left: max(env(safe-area-inset-left), 0px);
+    --ion-safe-area-right: max(env(safe-area-inset-right), 0px);
+  }
 }
 
 /* Estilos para el header */
@@ -96,6 +141,10 @@ ion-footer {
 ion-content {
   --padding-top: calc(var(--header-height) + 10px);
   --padding-bottom: var(--ion-safe-area-bottom);
+  --padding-start: var(--ion-safe-area-left);
+  --padding-end: var(--ion-safe-area-right);
+  height: auto;
+  min-height: calc(100vh - var(--header-height) - var(--ion-safe-area-top) - var(--ion-safe-area-bottom));
 }
 
 .loading-overlay {
@@ -216,13 +265,81 @@ ion-header ion-button {
   margin: 0 5px;
 }
 
-/* Ajuste para pantallas pequeñas */
-@media (max-width: 360px) {
+/* Ajustes responsivos para diferentes resoluciones */
+/* Pantallas muy pequeñas (iPhone SE, etc.) */
+@media (max-width: 375px) and (max-height: 667px) {
+  :root {
+    --header-height: 50px;
+    --app-margin: 12px;
+  }
+  
   ion-title {
     font-size: 1.2em !important;
   }
-
+  
   ion-icon {
     font-size: 20px !important;
+  }
+  
+  ion-content {
+    --padding-top: calc(var(--header-height) + 8px);
+    font-size: 0.9em;
+  }
+}
+
+/* Pantallas estándar (iPhone 6/7/8, Samsung Galaxy, etc.) */
+@media (min-width: 375px) and (max-width: 414px) {
+  :root {
+    --header-height: 56px;
+    --app-margin: 16px;
+  }
+}
+
+/* Pantallas grandes (iPhone Plus, Android XL) */
+@media (min-width: 414px) and (max-width: 768px) {
+  :root {
+    --header-height: 60px;
+    --app-margin: 20px;
+  }
+  
+  ion-title {
+    font-size: 1.6em !important;
+  }
+  
+  ion-icon {
+    font-size: 26px !important;
+  }
+}
+
+/* Ajustes específicos para dispositivos con notch */
+@media (orientation: portrait) and (-webkit-device-pixel-ratio: 3) {
+  :root {
+    --status-bar-height: 44px;
+  }
+}
+
+/* Ajustes para landscape en móviles */
+@media (orientation: landscape) and (max-height: 480px) {
+  :root {
+    --header-height: 48px;
+    --status-bar-height: 20px;
+  }
+  
+  ion-header {
+    height: var(--header-height);
+    min-height: var(--header-height);
+  }
+  
+  ion-content {
+    --padding-top: calc(var(--header-height) + 5px);
+  }
+}
+
+/* Fix para viewport height en móviles */
+@media screen and (max-width: 768px) {
+  ion-app {
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    height: -webkit-fill-available;
   }
 }
