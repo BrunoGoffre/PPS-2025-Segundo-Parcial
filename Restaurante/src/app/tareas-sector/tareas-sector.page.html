@@ -32,7 +32,7 @@
   </div>
   <div *ngFor="let pedidoConProductos of pedidosConProductos">
     <div *ngFor="let producto of pedidoConProductos.productos">
-      <ion-card class="custom-card">
+      <ion-card class="custom-card" [ngClass]="{'preparado': producto.estado === 'preparado'}">
         <ion-card-header>
           <ion-card-title class="card-title-container"
             ><span class="product-name">{{ producto.nombre }}</span
@@ -59,9 +59,15 @@
             >
               Marcar como preparado
             </ion-button>
-            <p *ngIf="producto.estado === 'preparado'" class="text-small pe-1">
+            <ion-button
+              *ngIf="producto.estado === 'preparado'"
+              disabled
+              color="success"
+              class="preparado-button"
+            >
+              <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
               Preparado
-            </p>
+            </ion-button>
           </div>
         </ion-card-content>
       </ion-card>
