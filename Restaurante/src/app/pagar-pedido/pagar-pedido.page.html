@@ -39,12 +39,10 @@
         </ion-list>
         <br />
         <p class="detalles"><strong>Propina:</strong> ${{ porcentaje }}</p>
-        <p class="detalles">
-          <strong>Monto Final:</strong> ${{ this.totalCuenta }}
-        </p>
+        <p class="detalles"><strong>Monto Final:</strong> <span style="font-weight: bold; font-size: 1.5em;">${{ this.totalCuenta }}</span></p>
         <ion-button
           *ngIf="!agregaPropina2"
-          color="success"
+          color="warning"
           expand="block"
           (click)="AgregarPropina()"
         >
@@ -60,7 +58,7 @@
           <ion-icon name="close-circle-outline" slot="start"></ion-icon>
           Cancelar Propina
         </ion-button>
-        <ion-button color="primary" expand="block" (click)="pagarPedido()">
+        <ion-button color="success" expand="block" (click)="pagarPedido()">
           <ion-icon name="card-outline" slot="start"></ion-icon>
           Pagar pedido
         </ion-button>

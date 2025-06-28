@@ -19,7 +19,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <div class="card-container mt-2" *ngIf="!isLoading ">
+  <div class="card-container mt-2 card-container-margin" *ngIf="!isLoading ">
     <div
       *ngIf="!isLoading && Object.keys(pedidosPorMesa).length === 0"
       class="no-pedidos-container"

@@ -32,7 +32,7 @@
         <ion-card-header>
           <ion-card-title>Mesa {{ mesa.key }}</ion-card-title>
         </ion-card-header>
-        <ion-card-content>
+        <ion-card-content class="item-pedido">
           <div *ngFor="let pedido of mesa.value">
             <p class="detalles">
               <strong>Estado del Pedido:</strong> {{ pedido.estado | uppercase}}

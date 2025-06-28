@@ -31,6 +31,7 @@ ion-icon {
   align-items: stretch;
   //height: 150px; /* Establecer una altura consistente */
   background-color: #355ca1; /* Color de las tarjetas de login y lista-espera */
+  margin-top: 80px;
 }
 
 .card-container {
@@ -97,22 +98,27 @@ ion-card {
   background-color: transparent;
 }
 
-.respondida {
-  //border: 1px solid #c3e6cb; // Borde verde
-  color: #d4edda; // Texto verde oscuro
-}
-
-.sin-responder {
-  //border: 1px solid #f5c6cb; // Borde rojo
-  color: #f6e8e9; // Texto rojo oscuro
+.consulta-estado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1.2em;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
 }
 
 .fondorespondida {
-  background-color: #155724; // Verde claro
+  background-color: #d4edda; /* Color de fondo para respondida */
+  color: #155724; /* Color del texto para respondida */
+  border: 1px solid #c3e6cb; /* Borde para respondida */
 }
 
 .fondosinresponder {
-  background-color: #721c24; // Rojo claro
+  background-color: #f8d7da; /* Color de fondo para sin responder */
+  color: #721c24; /* Color del texto para sin responder */
+  border: 1px solid #f5c6cb; /* Borde para sin responder */
 }
 
 ion-button {
