@@ -3,39 +3,76 @@
 - **Nombre**: Restaurante
 - **Tecnología**: Ionic + Angular + Capacitor + Firebase + Push Notifications
 - **Período de desarrollo**: 24 de Mayo 2025 - 26 de Junio 2025
-- **Total de commits**: 55
+- **Total de commits**: 66
 
-## Historial Completo de Commits (Últimos 25 commits más relevantes)
+## Historial Completo de Commits (Todos los commits de la rama main)
 
-| ID Commit | Desarrollador | Descripción del Commit | Fecha |
-|-----------|---------------|------------------------|-------|
-| `ad02f7b` | Bruno Goffredo | Delete package-lock.json | 2025-06-26 |
-| `e477740` | Bruno Goffredo | Delete .DS_Store | 2025-06-26 |
-| `1b735fe` | Bruno Goffredo | Push notification working | 2025-06-26 |
-| `03f86bd` | Alex Stocki | fix: anon user nombre | 2025-06-26 |
-| `214da47` | Alex Stocki | fix: icon background color | 2025-06-26 |
-| `0500dbc` | Alex Stocki | app logo in cellphone menu | 2025-06-25 |
-| `c58f816` | Alex Stocki | fix: anon users aprobadoEstado | 2025-06-25 |
-| `c1e2b21` | ThiagoMejias | test qr fix | 2025-06-25 |
-| `85e6048` | ThiagoMejias | chat + employee functions | 2025-06-25 |
-| `90e1ae3` | ThiagoMejias | mozo module and changes in cliente module | 2025-06-25 |
-| `ab56145` | ThiagoMejias | cliente module updates | 2025-06-25 |
-| `8726050` | Bruno Goffredo | environment restore | 2025-06-25 |
-| `9afa98e` | Bruno Goffredo | Charts | 2025-06-25 |
-| `1a707c4` | Bruno Goffredo | Push notification working | 2025-06-25 |
-| `e7920ef` | ThiagoMejias | user module in progress | 2025-06-25 |
-| `679ec6d` | Alex Stocki | fix: dynamic splash | 2025-06-25 |
-| `01594ce` | Alex Stocki | fix: image in loaders and fix the registration of anon users | 2025-06-24 |
-| `0bc0ee0` | Bruno Goffredo | build successful | 2025-06-24 |
-| `919ec12` | Bruno Goffredo | First push notification try | 2025-06-24 |
-| `7669cf4` | ThiagoMejias | maitre-module | 2025-06-24 |
-| `5a019fa` | Alex Stocki | feat: sending email confirmation when accept-reject a new user | 2025-06-22 |
-| `1b01a76` | Alex Stocki | feat: config for push notification - template | 2025-06-22 |
-| `f651ee4` | Alex Stocki | config: firebase - authentication - firestore | 2025-06-21 |
-| `e01cbc9` | Alex Stocki | refactor: deletes supabase dependency | 2025-06-21 |
-| `8434d92` | Alex Stocki | fix: login, home, dynamicsplash and services | 2025-06-21 |
-
-**Nota**: Se muestran los 25 commits más recientes de un total de 55 commits. Los commits anteriores incluyen desarrollo inicial, configuración base y implementación de funcionalidades core.
+| ID Commit | Descripción del Commit |
+|-----------|------------------------|
+| `3e7e18a` | fix: invalid credentials error message at login |
+| `967ef93` | fix: register styles. Camera img, error message color |
+| `3638751` | fix table state and fix styles |
+| `2b0034f` | Push notifications fixed - resolution fixes |
+| `eac4432` | Merge branches 'main' and 'main' of https://github.com/BrunoGoffre/PPS-2025-Segundo-Parcial |
+| `e796372` | general style changes |
+| `2274dac` | fix: loading logos, missing imgs in client menu |
+| `eb4d069` | fix mobile resolutions |
+| `4339137` | Readme updated |
+| `ad02f7b` | Delete package-lock.json |
+| `e477740` | Delete .DS_Store |
+| `1b735fe` | Push notification working |
+| `03f86bd` | fix: anon user nombre |
+| `214da47` | fix: icon background color |
+| `0500dbc` | app logo in cellphone menu |
+| `c58f816` | fix: anon users aprobadoEstado |
+| `743192b` | Merge branch 'main' of github.com:BrunoGoffre/PPS-2025-Segundo-Parcial |
+| `c1e2b21` | test qr fix |
+| `85e6048` | chat + employee functions |
+| `90e1ae3` | mozo module and changes in cliente module |
+| `ab56145` | cliente module updates |
+| `8726050` | environment restore |
+| `9afa98e` | Charts |
+| `b23c41b` | pulling changes |
+| `1a707c4` | Push notification working |
+| `d21b8b3` | Merge branch 'integration/1.0.0' of https://github.com/BrunoGoffre/PPS-2025-Segundo-Parcial into integration/1.0.0 |
+| `e7920ef` | user module in progress |
+| `679ec6d` | fix: dynamic splash |
+| `01594ce` | fix: image in loaders and fix the registration of anon users. prop estadoAprobacion |
+| `0bc0ee0` | build succesfull |
+| `7cd5748` | Dependencys |
+| `47bcc35` | Merge branch 'integration/1.0.0' of https://github.com/BrunoGoffre/PPS-2025-Segundo-Parcial into integration/1.0.0 |
+| `919ec12` | First push notification try |
+| `8053874` | package.json updated |
+| `60e39c6` | package.json |
+| `7669cf4` | maitre-module |
+| `4386c78` | On main: push-notification |
+| `395c708` | index on main: b8b89e7 login improvements |
+| `9b2bf36` | untracked files on main: b8b89e7 login improvements |
+| `b7d5176` | Update README.md |
+| `8e78a8b` | Update README.md |
+| `1775a3e` | Update README.md |
+| `85b9819` | fix: app-alert and some error keys |
+| `5a019fa` | feat: sending email confirmation when accept-reject a new user as a supervisor or duenio |
+| `957c54e` | fix: styles of register page and supabase config for storage |
+| `1b01a76` | feat: config for push notification - template |
+| `f651ee4` | feat: register - incompleted syn with firebase |
+| `e01cbc9` | config: firebase - authentication - firestore |
+| `8434d92` | refactor: deletes supabase dependency |
+| `45178a4` | fix: login, home, dynamicsplash and services |
+| `b8b89e7` | refactor - incomplete login-register |
+| `5fa37a1` | login improvements |
+| `f3bd124` | Add navigation, fixed owner creation, add home page, add manage clientes |
+| `167dbd2` | Owner creation + Scan and camera fixes + Register UI Fixes |
+| `347a975` | Fixes in login- add client list - add new employee |
+| `0c3c1c9` | fix: create client - register page |
+| `ef12ab4` | fix: authentication at login |
+| `bc144fb` | login - register |
+| `ca5fc05` | tools service - LoaderService |
+| `268e5c4` | Login UI Done |
+| `90c10d4` | supabase service |
+| `de55fa2` | auth.service |
+| `9ecaa58` | Primer commit |
+| `90c10d4` | Initial commit |
 
 ## Análisis Temporal - Tareas por Semana
 
