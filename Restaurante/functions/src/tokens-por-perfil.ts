@@ -11,26 +11,29 @@ export const getTokensPorPerfiles = async (perfiles: string[]): Promise<string[]
       .get();
 
     const userIds: string[] = [];
+
     usuariosSnapshot.forEach(doc => {
-      userIds.push(doc.id);
+      let userData = doc.data();
+      if (perfiles.includes(userData.perfil)){
+        userIds.push(doc.id);
+      }
     });
 
     if (userIds.length === 0) {
-      console.log(`No se encontraron usuarios con perfiles: ${perfiles.join(', ')}`);
       return [];
     }
 
     // 2. Obtener tokens de la colección user_push_tokens para esos usuarios
     const tokensSnapshot = await db.collection('user_push_tokens').get();
-    
     tokensSnapshot.forEach(doc => {
       const tokenData = doc.data();
-      if (tokenData.token && tokenData.user_id && userIds.includes(tokenData.user_id)) {
-        tokens.push(tokenData.token);
+      if (tokenData.token && tokenData.user_id) {
+        if (userIds.includes(tokenData.user_id)) {
+          tokens.push(tokenData.token);
+        } 
       }
     });
 
-    console.log(`Encontrados ${tokens.length} tokens para perfiles: ${perfiles.join(', ')}`);
     return tokens;
   } catch (error) {
     console.error('Error obteniendo tokens por perfiles:', error);

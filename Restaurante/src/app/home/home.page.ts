@@ -20,9 +20,9 @@ import { AppAlertComponent } from '../app-alert/app-alert.component';
 import { Pedido } from '../models/pedido';
 import { PedidoService } from '../services/pedido.service';
 import { StatusPedidoAlertComponent } from '../status-pedido-alert/status-pedido-alert.component';
-import { PushNotificationsService } from '../services/push-notifications.service';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { CustomAlertComponent } from '../custom-alert/custom-alert.component';
+import { PushNotificationsService } from '../services/push-notifications.service';
 
 @Component({
   selector: 'app-home',
@@ -70,6 +70,10 @@ export class HomePage {
   async ionViewWillEnter() {
     if (this.user == null) {
       this.user = await this.userService.getUser(this.authService.getUserId()!);
+      // Inicializar push notifications con el usuario
+      if (this.authService.userActive) {
+        this.pushNotificationsService.init(this.authService.userActive);
+      }
     }
 
     if (this.user?.perfil === 'cliente') {

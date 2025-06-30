@@ -35,11 +35,13 @@ ion-content {
 
 /* Estilos para los mensajes */
 .mensaje {
-  padding: 12px;
+  padding: 14px;
   border-radius: 12px;
   max-width: 80%;
   word-break: break-word;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 29px;
+  line-height: 1.2;
 }
 
 .mensaje--izquierda {
@@ -52,7 +54,9 @@ ion-content {
 .mensaje--izquierda h6 {
   color: #355ca1;
   margin-top: 0;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .mensaje--derecha {
@@ -87,8 +91,8 @@ ion-content {
 
 .form-control {
   border: none;
-  padding: 12px 15px;
-  font-size: 16px;
+  padding: 16px 20px;
+  font-size: 20px;
   background: transparent;
   flex: 1;
   color: #000000;
@@ -96,6 +100,7 @@ ion-content {
 
 .form-control::placeholder {
   color: #666666;
+  font-size: 18px;
 }
 
 .form-control:focus {
@@ -122,11 +127,10 @@ ion-content {
 
 /* Estilos para la fecha de los mensajes */
 .fecha-mensaje {
-  font-size: 0.8rem;
+  font-size: 16px;
   color: rgb(56, 56, 56);
-  margin-top: 4px;
-  font-weight: bold;
-  // text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  margin-top: 6px;
+  font-weight: 500;
 }
 
 .color-fecha-mensaje {
@@ -184,7 +188,8 @@ ion-icon {
   align-items: center;
   gap: 10px;
   color: white;
-  font-size: 16px;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 /* Ajustes para responsive */

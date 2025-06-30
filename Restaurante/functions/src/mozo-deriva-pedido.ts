@@ -13,7 +13,6 @@ export const notificarPedidosARealizar = onDocumentUpdated('pedidos/{pedidoId}',
     }
 
     if (beforeData.estado !== 'confirmado' && afterData.estado === 'confirmado') {
-      console.log(`Pedido confirmado para preparar - Pedido: ${event.params.pedidoId}`);
       
       const tokens = await getTokensPorPerfiles(['bartender', 'cocinero']);
       
@@ -31,8 +30,6 @@ export const notificarPedidosARealizar = onDocumentUpdated('pedidos/{pedidoId}',
           },
           'pedido_confirmado'
         );
-        
-        console.log('Notificación enviada a bartenders y cocineros');
       } else {
         console.log('No se encontraron tokens para bartenders/cocineros');
       }

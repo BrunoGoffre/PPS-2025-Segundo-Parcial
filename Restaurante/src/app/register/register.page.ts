@@ -117,10 +117,6 @@ export class RegisterPage implements OnInit {
 
           if (success) {
             this.playSound('1');
-            
-            // Enviar push notification ANTES de resetForm
-            this.sendNewClientNotification();
-            
             this.resetForm();
             this.authService.logoutSinRedireccion();
             this.appAlert.showInfo('Alta exitosa. Aguarde a ser aprobado.', 'success');

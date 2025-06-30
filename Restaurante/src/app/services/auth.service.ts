@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
-import { PushNotificationsService } from '../services/push-notifications.service';
 import { User } from '../models/user';
 import { SupabaseService } from './supabase.service';
 
@@ -23,7 +22,6 @@ export class AuthService {
     private auth: Auth, 
     private router: Router, 
     private firestore: Firestore, 
-    private pushNotificationsService: PushNotificationsService,
     private supabaseService: SupabaseService
   ) {
     this.currentUser$ = authState(this.auth);
@@ -31,7 +29,6 @@ export class AuthService {
     this.currentUser$.subscribe(user => {
       if(user){
         this.userActive = user;
-        this.pushNotificationsService.init(this.userActive);
       }
       else
       {
@@ -86,7 +83,6 @@ export class AuthService {
   }
 
   logout() {
-    this.pushNotificationsService.clearUserToken();
     const auth = getAuth();
 
     signOut(auth)
@@ -96,7 +92,6 @@ export class AuthService {
   }
 
   logoutSinRedireccion(){
-    this.pushNotificationsService.clearUserToken();
     const auth = getAuth();
     signOut(auth);
   }

@@ -27,7 +27,7 @@ export const notificarMesaAsignada = onDocumentUpdated('pedidos/{pedidoId}', asy
             body: `Su mesa ${afterData.mesaNumero} está lista. Puede dirigirse al restaurante.`
           },
           {
-            route: '/menu-mesa',
+            route: 'menu-mesa',
             pedidoId: event.params.pedidoId,
             mesa: afterData.mesaNumero?.toString() || ''
           },

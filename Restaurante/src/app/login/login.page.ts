@@ -20,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { AppAlertComponent } from '../app-alert/app-alert.component';
 import { UsersService } from '../services/users.service';
+import { PushNotificationsService } from '../services/push-notifications.service';
 import { addIcons } from 'ionicons';
 import {
   eyeOutline,
@@ -92,7 +93,8 @@ export class LoginPage {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private usuariosService: UsersService
+    private usuariosService: UsersService,
+    private pushNotificationsService: PushNotificationsService
   ) {
     addIcons({
       eyeOutline,
@@ -164,6 +166,8 @@ export class LoginPage {
 
       if (result && result.user) {
         console.log('[LoginPage] Usuario logueado:', result.user);
+        // Inicializar push notifications después del login exitoso
+        this.pushNotificationsService.init(result.user);
         if (this.emailControl.value == 'duenio@bonappetit.com') {
           this.loading = false;
           // this.router.navigate(['/clientes-pendientes']);
