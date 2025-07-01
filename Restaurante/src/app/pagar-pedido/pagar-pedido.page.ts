@@ -62,6 +62,7 @@ export class PagarPedidoPage {
   totalProducto: number = 0;
   totalCuenta: number = 0;
   porcentaje: number = 0;
+  porcentajeSeleccionado: number = 0;
   porcentaje20: number = 0;
   porcentaje15: number = 0;
   porcentaje10: number = 0;
@@ -111,53 +112,28 @@ export class PagarPedidoPage {
     this.agregaPropina = true;
   }
 
-  async leerVeinte() {
+  async escanearPropinaQR() {
     try {
       const result = await BarcodeScanner.scan();
+      const valorQR = result.barcodes[0].rawValue;
 
-      if (result.barcodes[0].rawValue === `20`) {
-        this.porcentaje =
-          (this.totalCuenta * parseInt(result.barcodes[0].rawValue)) / 100;
+      // Mapa de valores QR a porcentajes
+      const porcentajesPropina: { [key: string]: number } = {
+        '20': 20,
+        '15': 15,
+        '10': 10,
+        '5': 5,
+        '1': 0,
+      };
+
+      if (valorQR in porcentajesPropina) {
+        const porcentajeSeleccionado = porcentajesPropina[valorQR];
+        this.porcentajeSeleccionado = porcentajeSeleccionado;
+        this.porcentaje = (this.totalCuenta * porcentajeSeleccionado) / 100;
         this.totalCuenta = this.totalCuenta + this.porcentaje;
-        this.agregaPropina = false;
         this.agregaPropina2 = true;
       } else {
-        this.customAlert.showAlert(`Este no es el QR para el  20% de propina`);
-      }
-    } catch (error) {
-      this.customAlert.showAlert('Error al escanear el código QR.');
-    }
-  }
-
-  async leerQuince() {
-    try {
-      const result = await BarcodeScanner.scan();
-      if (result.barcodes[0].rawValue === `15`) {
-        this.porcentaje =
-          (this.totalCuenta * parseInt(result.barcodes[0].rawValue)) / 100;
-        this.totalCuenta = this.totalCuenta + this.porcentaje;
-        this.agregaPropina = false;
-        this.agregaPropina2 = true;
-      } else {
-        this.customAlert.showAlert(`Este no es el QR para el 15% de propina`);
-      }
-    } catch (error) {
-      this.customAlert.showAlert('Error al escanear el código QR.');
-    }
-  }
-
-  async leerDiez() {
-    try {
-      const result = await BarcodeScanner.scan();
-
-      if (result.barcodes[0].rawValue === `10`) {
-        this.porcentaje =
-          (this.totalCuenta * parseInt(result.barcodes[0].rawValue)) / 100;
-        this.totalCuenta = this.totalCuenta + this.porcentaje;
-        this.agregaPropina = false;
-        this.agregaPropina2 = true;
-      } else {
-        this.customAlert.showAlert(`Este no es el QR para el 10% de propina`);
+        this.customAlert.showAlert(`QR no válido para propina`);
       }
     } catch (error) {
       this.customAlert.showAlert('Error al escanear el código QR.');
@@ -168,41 +144,7 @@ export class PagarPedidoPage {
     this.agregaPropina2 = false;
     if (this.pedido?.montoFinal) this.totalCuenta = this.pedido?.montoFinal;
     this.porcentaje = 0;
-  }
-
-  async leerCinco() {
-    try {
-      const result = await BarcodeScanner.scan();
-
-      if (result.barcodes[0].rawValue === `5`) {
-        this.porcentaje =
-          (this.totalCuenta * parseInt(result.barcodes[0].rawValue)) / 100;
-        this.totalCuenta = this.totalCuenta + this.porcentaje;
-        this.agregaPropina = false;
-        this.agregaPropina2 = true;
-      } else {
-        this.customAlert.showAlert(`Este no es el QR para el 5% de propina`);
-      }
-    } catch (error) {
-      this.customAlert.showAlert('Error al escanear el código QR.');
-    }
-  }
-
-  async leerZero() {
-    try {
-      const result = await BarcodeScanner.scan();
-
-      if (result.barcodes[0].rawValue === `1`) {
-        this.porcentaje = (this.totalCuenta * 0) / 100;
-        this.totalCuenta = this.totalCuenta + this.porcentaje;
-        this.agregaPropina = false;
-        this.agregaPropina2 = true;
-      } else {
-        this.customAlert.showAlert(`Este no es el QR para el 0% de propina`);
-      }
-    } catch (error) {
-      this.customAlert.showAlert('Error al escanear el código QR.');
-    }
+    this.porcentajeSeleccionado = 0;
   }
 
   async procesarPedidos(pedido: Pedido) {

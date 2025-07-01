@@ -14,6 +14,7 @@ import {
   IonButton,
   IonButtons,
   IonIcon,
+  IonCardSubtitle,
 } from '@ionic/angular/standalone';
 import { PedidoService } from '../services/pedido.service';
 import { User } from '../models/user';
@@ -44,6 +45,7 @@ import { doc, Firestore, getDoc, updateDoc } from '@angular/fire/firestore';
     CommonModule,
     FormsModule,
     IonSpinner,
+    IonCardSubtitle,
   ],
 })
 export class TareasSectorPage {
@@ -104,6 +106,7 @@ export class TareasSectorPage {
 
   async cargarPedidosConfirmados() {
     this.pedidosService.obtenerPedidosConfirmados((pedidos) => {
+      this.pedidosConfirmados = pedidos;
       if (pedidos.length === 0) {
         this.loading = false;
       }

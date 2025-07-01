@@ -32,11 +32,25 @@
   </div>
   <div *ngFor="let pedidoConProductos of pedidosConProductos">
     <div *ngFor="let producto of pedidoConProductos.productos">
-      <ion-card class="custom-card" [ngClass]="{'preparado': producto.estado === 'preparado'}">
+      <ion-card
+        class="custom-card"
+        [ngClass]="{'preparado': producto.estado === 'preparado'}"
+      >
         <ion-card-header>
+          <ion-card-subtitle
+            *ngIf="producto.estado !== 'preparado'"
+            style="
+              color: white;
+              font-size: 1.3em;
+              padding-bottom: 5px;
+              text-align: center;
+            "
+            >Mesa: {{ pedidoConProductos.pedidoDetalles?.mesaNumero
+            }}</ion-card-subtitle
+          >
           <ion-card-title class="card-title-container"
-            ><span class="product-name">{{ producto.nombre }}</span
-            ><span class="product-quantity"
+            ><span class="product-name">{{ producto.nombre }}</span>
+            <span class="product-quantity"
               >{{ producto.cantidad }}</span
             ></ion-card-title
           >

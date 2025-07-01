@@ -57,8 +57,13 @@
         </div>
         } @else {
         <div class="mensaje mensaje--izquierda">
+          @if (usuario?.tipo === 'mozo') {
+          <h6 class="fw-bold">
+            Mesa {{pedido?.mesaNumero}} - {{registro.usuario.nombre}}
+          </h6>
+          } @else {
           <h6 class="fw-bold">{{registro.usuario.nombre}}</h6>
-          {{registro.mensaje}}
+          } {{registro.mensaje}}
           <div class="fecha-mensaje">
             {{(registro.fecha.seconds * 1000) | date:'dd/MM/yy HH:mm'}}
           </div>

@@ -33,7 +33,7 @@ ion-icon {
 }
 
 .custom-card.preparado::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -72,6 +72,13 @@ ion-card-title {
   flex: 1;
   text-align: left;
   white-space: normal;
+}
+
+.mesa-info {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
 }
 
 .product-quantity {

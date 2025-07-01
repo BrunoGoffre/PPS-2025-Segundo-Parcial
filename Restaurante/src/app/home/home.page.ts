@@ -134,6 +134,9 @@ export class HomePage {
 
   async LeerQRLocal() {
     try {
+      // this.isScanning = true;
+      // this.crearPedido();
+      // return;
       const result = await BarcodeScanner.scan();
       if (result.barcodes[0].rawValue == '/home') {
         this.isScanning = true;
