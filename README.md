@@ -2,13 +2,18 @@
 
 - **Nombre**: Restaurante
 - **Tecnología**: Ionic + Angular + Capacitor + Firebase + Push Notifications
-- **Período de desarrollo**: 24 de Mayo 2025 - 26 de Junio 2025
-- **Total de commits**: 66
+- **Período de desarrollo**: 24 de Mayo 2025 - 4 de Julio 2025
+- **Total de commits**: 71
 
 ## Historial Completo de Commits (Todos los commits de la rama main)
 
 | ID Commit | Descripción del Commit |
 |-----------|------------------------|
+| `685a2d7` | fix: general styles. feature: change in tip scan |
+| `958188e` | Enhance chat and push notification changes |
+| `132e2db` | fix: colors, sizes, and margins in different sections. totalAmount size increased to better understanding |
+| `afa0331` | fix: bartender card producto pendiente styles. Client pedidoEstado.png missing image |
+| `a10d76e` | readme updated |
 | `3e7e18a` | fix: invalid credentials error message at login |
 | `967ef93` | fix: register styles. Camera img, error message color |
 | `3638751` | fix table state and fix styles |
@@ -91,6 +96,8 @@
 - **Bruno Goffredo**: Mejoras en navegación y gestión (`Owner creation + Scan and camera fixes + Register UI Fixes`, `Add navigation, fixed owner creation, add home page, add manage clientes`, `login improvements`)
 
 ### Semana 4 (21-26 Junio) - Migración a Firebase y Push Notifications
+
+### Semana 5 (1-4 Julio) - Refinamiento y Mejoras Finales
 - **Alex Stocki**: Migración completa de Supabase a Firebase (`refactor: deletes supabase dependency`, `config: firebase - authentication - firestore`)
 - **Alex Stocki**: Configuración inicial de push notifications (`feat: config for push notification - template`)
 - **Alex Stocki**: Sistema de confirmación por email (`feat: sending email confirmation when accept-reject a new user`)
@@ -100,6 +107,13 @@
 - **ThiagoMejias**: Módulos de empleados (`maitre-module`, `user module in progress`)
 - **ThiagoMejias**: Funcionalidades de chat y módulos de mozo/cliente (`chat + employee functions`, `mozo module and changes in cliente module`)
 - **ThiagoMejias**: Correcciones de QR (`test qr fix`)
+
+### Semana 5 (1-4 Julio) - Refinamiento y Mejoras Finales
+- **ThiagoMejias**: Mejoras generales de estilos y funcionalidad de escaneo (`fix: general styles. feature: change in tip scan`)
+- **Bruno Goffredo**: Mejoras en chat y notificaciones push (`Enhance chat and push notification changes`)
+- **Alex Stocki**: Correcciones de colores, tamaños y márgenes (`fix: colors, sizes, and margins in different sections. totalAmount size increased to better understanding`)
+- **ThiagoMejias**: Fixes en estilos de bartender y cliente (`fix: bartender card producto pendiente styles. Client pedidoEstado.png missing image`)
+- **Bruno Goffredo**: Actualización del README (`readme updated`)
 
 ## Funcionalidades Implementadas por Desarrollador
 
@@ -123,6 +137,20 @@
    - Creación de owners/propietarios (`Owner creation`)
    - Home page y gestión de clientes (`Add navigation, fixed owner creation, add home page, add manage clientes`)
 
+5. **Push Notifications y Sistema de Comunicación**
+   - Implementación completa de push notifications (`First push notification try`, `Push notification working`)
+   - Mejoras en sistema de chat (`Enhance chat and push notification changes`)
+   - Correcciones en notificaciones push (`Push notifications fixed - resolution fixes`)
+
+6. **Sistema de Gráficos y Reportes**
+   - Dashboard con estadísticas (`Charts`)
+   - Métricas de rendimiento del restaurante
+
+7. **Refinamiento Final y Estilos**
+   - Mejoras generales de estilos (`fix: general styles. feature: change in tip scan`)
+   - Correcciones de colores, tamaños y márgenes (`fix: colors, sizes, and margins in different sections`)
+   - Fixes en estilos de bartender y cliente (`fix: bartender card producto pendiente styles`)
+
 ### **ThiagoMejias**
 1. **Infraestructura Backend**
    - Implementación de servicios de Supabase (`supabase service`)
@@ -133,6 +161,16 @@
    - Alta de empleados (`add new employee`)
    - Fixes en sistema de login (`Fixes in login`)
 
+3. **Módulos de Empleados**
+   - Módulo de maitre (`maitre-module`)
+   - Módulo de usuario en progreso (`user module in progress`)
+   - Módulo de mozo y cambios en cliente (`mozo module and changes in cliente module`)
+   - Actualizaciones del módulo cliente (`cliente module updates`)
+
+4. **Sistema de Chat y Comunicación**
+   - Chat y funciones de empleado (`chat + employee functions`)
+   - Correcciones de QR (`test qr fix`)
+
 ### **Alex Stocki**
 1. **Sistema de Autenticación**
    - Implementación completa de login y registro (`login - register`)
@@ -142,6 +180,22 @@
 2. **Validaciones y Seguridad**
    - Mejoras en validaciones de registro
    - Correcciones en flujo de autenticación
+
+3. **Migración a Firebase**
+   - Eliminación de dependencias de Supabase (`refactor: deletes supabase dependency`)
+   - Configuración completa de Firebase (`config: firebase - authentication - firestore`)
+   - Configuración inicial de push notifications (`feat: config for push notification - template`)
+
+4. **Sistema de Notificaciones y Email**
+   - Confirmación por email para usuarios (`feat: sending email confirmation when accept-reject a new user`)
+   - Mejoras en usuarios anónimos (`fix: anon users aprobadoEstado`)
+   - Correcciones en splash dinámico (`fix: dynamic splash`)
+
+5. **Mejoras de UI y UX**
+   - Estilos de página de registro (`fix: styles of register page`)
+   - Correcciones en login y home (`fix: login, home, dynamicsplash and services`)
+   - Estilos de registro y mensaje de error (`fix: register styles. Camera img, error message color`)
+   - Mensaje de credenciales inválidas (`fix: invalid credentials error message at login`)
 
 ### **Desarrollos Adicionales (Firebase Functions + Características Avanzadas)**
 1. **Sistema de Notificaciones Push**
